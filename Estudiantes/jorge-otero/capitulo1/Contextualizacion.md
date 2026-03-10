@@ -15,7 +15,9 @@ Como consecuencia, la gestión administrativa y técnica asociada a estas actuac
 
 ## 1.1 Telefónica como organización del sector de las telecomunicaciones
 
-elefónica es una de las principales compañías multinacionales del sector de las telecomunicaciones a nivel mundial. Fundada en 1924 en España, la empresa ha evolucionado desde un operador nacional de telefonía fija hasta convertirse en un grupo tecnológico global con presencia en múltiples países de Europa y Latinoamérica.
+![](./imagenes/evolucion_logo.jpg)
+
+Telefónica es una de las principales compañías multinacionales del sector de las telecomunicaciones a nivel mundial. Fundada en 1924 en España, la empresa ha evolucionado desde un operador nacional de telefonía fija hasta convertirse en un grupo tecnológico global con presencia en múltiples países de Europa y Latinoamérica.
 
 Actualmente Telefónica ofrece una amplia gama de servicios de comunicaciones, entre los que se incluyen telefonía fija, telefonía móvil, acceso a internet de banda ancha, servicios de transmisión de datos y soluciones digitales orientadas tanto a clientes particulares como a empresas y administraciones públicas.
 
@@ -169,57 +171,170 @@ Este sistema utiliza técnicas de aprendizaje automático para analizar el conte
 
 + Integración compleja con sistemas corporativos existentes.
 
-## 2.3 Justificación de la propuesta
+# 3. Justificación de la propuesta
 
-El análisis de la situación actual evidencia una oportunidad clara de mejora en la gestión del buzón corporativo de variaciones. El elevado volumen de correos electrónicos recibidos diariamente, unido a la naturaleza repetitiva de una parte significativa de las consultas, permite identificar tareas susceptibles de automatización sin comprometer la calidad del servicio.
+Tras analizar las diferentes soluciones existentes para la gestión de grandes volúmenes de correos electrónicos, se observa que las organizaciones suelen optar por tres enfoques principales: la ampliación de recursos humanos, la implantación de sistemas de ticketing o helpdesk, y la automatización mediante inteligencia artificial o sistemas de clasificación automática.
 
-Aunque existen soluciones consolidadas en el mercado orientadas a la automatización de procesos y a la gestión de incidencias, su implantación directa en el contexto específico del departamento presenta limitaciones técnicas y organizativas. Entre ellas destacan la necesidad de integración con sistemas internos, restricciones de seguridad en el acceso a bases de datos corporativas y la elevada personalización requerida para adaptarse a los procedimientos internos existentes.
+Aunque estas soluciones han demostrado ser eficaces en determinados contextos empresariales, no siempre resultan adecuadas para todos los entornos organizativos. En el caso del buzón analizado en este proyecto, la adopción directa de estas alternativas presenta una serie de limitaciones que dificultan su implementación.
 
-En este escenario, el desarrollo de una solución específica orientada a la automatización del flujo de gestión del buzón permite:
+En primer lugar, la opción de incrementar los recursos humanos no se considera una solución óptima desde el punto de vista operativo y económico. Este enfoque implica un aumento directo de los costes asociados al personal, así como la necesidad de realizar procesos de selección, formación y gestión del equipo. Además, no resuelve el problema estructural del proceso, ya que el modelo seguiría dependiendo de una gestión manual de los correos electrónicos.
 
-+ Reducir la carga operativa asociada a tareas repetitivas.
-+ Mejorar los tiempos de respuesta.
-+ Minimizar el riesgo de error humano.
-+ Optimizar el uso de los recursos disponibles.
-+ Establecer una base escalable para futuras mejoras tecnológicas.
+Por otro lado, la implantación de sistemas de ticketing comerciales tampoco se considera la alternativa más adecuada para el contexto analizado. Aunque estas herramientas permiten centralizar las solicitudes y mejorar la trazabilidad de las incidencias, su integración con los sistemas corporativos existentes puede resultar compleja. En este caso concreto, la información necesaria para responder a los correos se encuentra distribuida en diversas aplicaciones internas, como sistemas de gestión de expedientes o plataformas de seguimiento de actuaciones. La adaptación de un sistema de ticketing a este entorno requeriría procesos de integración adicionales y podría introducir nuevas capas de complejidad en el flujo de trabajo.
 
-La propuesta planteada en este Trabajo de Fin de Grado consiste en el diseño e implementación de un sistema automatizado capaz de analizar el contenido de los correos electrónicos entrantes, extraer información relevante (como el número de petición o expediente), consultar automáticamente las bases de datos corporativas y generar respuestas estructuradas de forma autónoma cuando sea posible.
+Asimismo, las soluciones basadas en inteligencia artificial avanzada presentan también ciertas barreras para su adopción directa. Aunque estas tecnologías ofrecen un gran potencial para automatizar la clasificación y gestión de correos electrónicos, su implementación suele requerir infraestructuras tecnológicas complejas, grandes volúmenes de datos para el entrenamiento de los modelos y la participación de personal especializado en ciencia de datos o aprendizaje automático. Estas condiciones pueden dificultar su implantación en entornos donde se busca una solución más sencilla y adaptable a los sistemas existentes.
 
-## 5. Hipótesis de trabajo
-La hipótesis que sustenta el presente Trabajo de Fin de Grado es la siguiente:
+Ante estas limitaciones, se plantea la necesidad de desarrollar una solución adaptada específicamente al contexto del buzón analizado, que permita mejorar la eficiencia del proceso sin introducir cambios estructurales complejos en los sistemas actuales.
 
-*La implementación de un sistema automatizado de análisis y respuesta de correos electrónicos mejorará la eficiencia operativa del buzón de variaciones, reduciendo los tiempos de respuesta y la carga de trabajo manual del personal asignado, manteniendo la coherencia y fiabilidad de la información proporcionada.*
+La propuesta desarrollada en este proyecto se basa en la automatización parcial del proceso de gestión de correos mediante herramientas de automatización de procesos, combinando tecnologías de integración y tratamiento de datos. El objetivo principal es reducir la carga operativa asociada a la lectura, interpretación y gestión manual de los correos recibidos, manteniendo al mismo tiempo la compatibilidad con las herramientas ya utilizadas por la organización.
 
-Esta hipótesis parte de la premisa de que una proporción significativa de las consultas recibidas presenta una estructura repetitiva y se basa en la solicitud de información que ya se encuentra disponible en sistemas internos, lo que hace viable su automatización mediante reglas predefinidas y consultas automatizadas a bases de datos.
+Para ello, la solución propuesta utiliza tecnologías como Power Automate, que permite automatizar flujos de trabajo relacionados con la recepción y procesamiento de correos electrónicos, así como la integración con otros servicios y aplicaciones corporativas. Además, se plantea el uso de bases de datos estructuradas para almacenar la información relevante de las solicitudes recibidas, facilitando su seguimiento y análisis posterior.
 
-# 6. Objetivos
+Este enfoque permite automatizar determinadas tareas del proceso, como la identificación de números de expediente en los correos, el registro de las solicitudes recibidas o la generación de determinadas respuestas, reduciendo así el tiempo necesario para gestionar cada correo.
 
-## 6.1 Objetivo general
-Diseñar e implementar un sistema automatizado capaz de gestionar parcialmente el buzón corporativo de variaciones mediante el análisis del contenido de los correos electrónicos, la consulta automatizada de bases de datos internas y la generación de respuestas estructuradas de forma autónoma.
+Entre las principales ventajas de la solución propuesta destacan:
 
-## 6.2 Objetivos específicos
-1. Analizar el proceso actual de gestión del buzón e identificar las tareas susceptibles de automatización.
-2. Definir los requisitos funcionales y no funcionales del sistema propuesto.
-3. Diseñar la arquitectura del sistema, contemplando la integración con el servicio de correo electrónico y las bases de datos corporativas.
-4. Desarrollar un prototipo funcional (MVP) que permita automatizar las consultas relacionadas con el estado de expedientes o peticiones.
-5. Validar el funcionamiento del sistema mediante pruebas con casos reales o simulados.
-6. Evaluar el impacto potencial del sistema en términos de eficiencia operativa y reducción de carga manual.
++ Reducción de la carga de trabajo manual, al automatizar tareas repetitivas del proceso.
 
-# 7. Metodología
++ Mejora en los tiempos de respuesta, gracias a la automatización de determinadas acciones.
 
-El desarrollo del presente proyecto se abordará siguiendo un enfoque iterativo e incremental, permitiendo una evolución progresiva del sistema desde un análisis inicial del problema hasta la implementación de un prototipo funcional. 
++ Compatibilidad con los sistemas existentes, evitando la necesidad de sustituir las herramientas actuales.
 
-Se estructura en las siguientes fases:
++ Coste de implementación reducido, al utilizar tecnologías ya disponibles dentro del entorno corporativo.
 
-1. **Análisis del problema y levantamiento de requisitos**
-Estudio detallado del flujo actual de gestión del buzón, identificación de actores implicados y definición de requisitos funcionales y no funcionales.
++ Escalabilidad, permitiendo gestionar un mayor volumen de correos sin incrementar proporcionalmente los recursos humanos.
 
-2. **Análisis y diseño del sistema**
-Definición de la arquitectura del sistema, modelado del flujo de datos, diseño de la integración con bases de datos y especificación de la lógica de negocio.
+En conjunto, la solución propuesta busca ofrecer un enfoque equilibrado entre automatización y adaptabilidad, permitiendo mejorar la eficiencia del proceso de gestión del buzón sin introducir cambios drásticos en la infraestructura tecnológica existente.
 
-3. **Desarrollo del prototipo funcional**
-Implementación del sistema automatizado, incluyendo la detección de correos entrantes, extracción de datos relevantes, consulta automatizada y generación de respuestas.
-4. **Pruebas y validación**
-Evaluación del funcionamiento del sistema mediante pruebas controladas, análisis de resultados y verificación del cumplimiento de los requisitos definidos.
-5. **Evaluación y conclusiones**
-Análisis del impacto potencial del sistema y propuesta de posibles mejoras o líneas futuras de actuación.
+# 4. Alcance de la propuesta
+
+La solución propuesta en este proyecto tiene como objetivo mejorar la gestión del buzón de correo analizado mediante la automatización de determinadas tareas del proceso actual. Sin embargo, es importante definir claramente el alcance de la solución con el fin de delimitar qué aspectos del proceso se abordan en este trabajo y cuáles quedan fuera del mismo.
+
+El sistema desarrollado se centra principalmente en la automatización de la recepción, análisis y registro de los correos electrónicos recibidos en el buzón, así como en la identificación de determinados elementos clave dentro de los mensajes, como números de expediente, actuaciones o peticiones asociadas.
+
+Para ello, la solución se basa en la utilización de herramientas de automatización de procesos que permiten analizar el contenido de los correos entrantes, extraer información relevante y almacenarla en una base de datos estructurada que facilite su seguimiento y posterior tratamiento.
+
+Dentro del alcance de este proyecto se incluyen las siguientes funcionalidades:
+
++ Automatización de la recepción y procesamiento de correos electrónicos.
+
++ Identificación automática de números de expediente, actuaciones o peticiones presentes en los mensajes.
+
++ Consulta en base de datos de los expedientes para extraer la información necesaria.
+
++ Generación de una respuesta basada en una plantilla a partir de la información obtenida.
+
++ Envío automatizado de la respuesta generada al remitente del correo.
+
++ Generación de un formulario para recoger las reclamaciones, acuerdos y desacuerdos de las consultas.
+
++ Almacenamiento de la información necesaria en base de datos para el futuro análisis y estudio del funcionamiento del buzón.
+
+Por otro lado, existen algunos aspectos que no forman parte del alcance de este proyecto, entre los que destacan:
+
++ La sustitución completa del proceso de gestión manual del buzón, ya que existen determinadas situaciones que requieren intervención humana.
+
++ La implementación de un sistema avanzado de inteligencia artificial entrenado específicamente para interpretar el contenido completo de los correos.
+
++ La integración completa con todos los sistemas corporativos utilizados por la organización.
+
++ El análisis avanzado de la información almacenada en la base de datos generada por el sistema.
+
+Por tanto, la solución propuesta debe entenderse como un primer paso hacia la automatización parcial del proceso, centrado principalmente en la optimización de las tareas más repetitivas y en la mejora de la gestión de la información asociada a los correos recibidos.
+
+Este enfoque permite evaluar el impacto de la automatización en el proceso actual sin necesidad de realizar cambios estructurales complejos en los sistemas existentes.
+
+## 4.1 Hipótesis
+La hipótesis planteada en este proyecto es:
+
+*La implementación de un sistema automatizado de análisis y respuesta de correos mejorará la eficiencia operativa del buzón de variaciones, reduciendo los tiempos de respuesta y la carga de trabajo manual del personal*
+
+En la situación actual, la gestión del buzón se realiza principalmente de forma manual. Cada correo recibido debe ser leído e interpretado por un técnico, quien posteriormente debe identificar si el mensaje hace referencia a algún número de expediente, actuación o petición. Una vez identificado, el técnico debe acceder a diferentes aplicaciones corporativas para consultar la información asociada y elaborar la respuesta correspondiente. Este procedimiento implica una serie de tareas repetitivas que consumen una parte significativa del tiempo de trabajo y que, además, incrementan la posibilidad de retrasos en la gestión de las solicitudes.
+
+La hipótesis de este trabajo plantea que la automatización de determinadas etapas del proceso puede mejorar significativamente la eficiencia del sistema. En concreto, mediante el uso de herramientas de automatización es posible analizar automáticamente el contenido de los correos entrantes, identificar los números de expediente mencionados, consultar la información necesaria en las bases de datos disponibles y generar una respuesta basada en plantillas predefinidas.
+
+De esta forma, se espera que el sistema propuesto permita reducir el tiempo necesario para gestionar cada consulta, al eliminar gran parte de las tareas manuales asociadas al análisis inicial de los correos y a la recopilación de información. Además, la automatización de estas tareas contribuiría a disminuir la carga operativa del personal, permitiendo que los técnicos puedan centrarse en aquellos casos que requieren un análisis más complejo o una intervención manual.
+
+Por tanto, el desarrollo e implementación de la solución propuesta permitirá evaluar si la automatización parcial del proceso puede optimizar la gestión del buzón de variaciones, mejorando los tiempos de respuesta y aumentando la eficiencia del proceso sin necesidad de incrementar los recursos humanos destinados a esta tarea.
+
+## 4.2 Objetivos
+
+Partiendo de la hipótesis planteada anteriormente, según la cual la implementación de un sistema automatizado de análisis y respuesta de correos permitirá mejorar la eficiencia operativa del buzón de variaciones, se establecen una serie de objetivos que guían el desarrollo del presente trabajo.
+
+La consecución de estos objetivos permitirá evaluar si la solución propuesta contribuye a optimizar el proceso actual de gestión del buzón, reduciendo la carga de trabajo manual y mejorando los tiempos de respuesta.
+
+### Objetivo general
+
+El objetivo general de este proyecto consiste en diseñar e implementar una solución que permita automatizar parcialmente la gestión del buzón de variaciones, teniendo en cuenta el estado del arte analizado y las particularidades del entorno en el que se desarrolla el sistema.
+
+Esta solución debe permitir mejorar la eficiencia del proceso actual mediante la automatización de tareas repetitivas, como el análisis de los correos recibidos, la identificación de números de expediente y la generación de respuestas basadas en información obtenida de los sistemas disponibles.
+
+### Objetivos específicos
+
+Para alcanzar el objetivo general se plantean los siguientes objetivos específicos:
+
+#### 1. Analizar el problema y definir los requisitos del sistema
+
+Identificar las necesidades del proceso actual de gestión del buzón, analizando el funcionamiento del sistema existente y definiendo los requisitos funcionales y no funcionales que debe cumplir la solución propuesta.
+
+#### 2. Diseñar la arquitectura y el funcionamiento de la solución propuesta
+
+Definir la arquitectura del sistema, así como los componentes necesarios para su funcionamiento, incluyendo los flujos de automatización, la estructura de la base de datos y la interacción con los sistemas utilizados en el proceso.
+
+#### 3. Implementar una primera versión funcional del sistema
+
+Desarrollar una primera iteración del sistema en forma de producto mínimo viable (MVP) que permita automatizar parte del proceso de gestión del buzón, incluyendo la recepción y análisis de correos, la consulta de información y la generación de respuestas automatizadas.
+
+#### 4. Realizar pruebas de funcionamiento del sistema
+
+Diseñar y ejecutar pruebas que permitan validar el correcto funcionamiento de la solución implementada, comprobando que los procesos automatizados se ejecutan de forma adecuada y que el sistema responde correctamente ante diferentes escenarios.
+
+#### 5. Poner en funcionamiento la solución en el entorno de trabajo
+
+Integrar la solución desarrollada en el entorno operativo del buzón con el fin de evaluar su comportamiento en condiciones reales de uso.
+
+#### 6. Analizar los resultados obtenidos
+
+Evaluar el impacto de la solución implementada en el proceso de gestión del buzón, analizando indicadores como la reducción del tiempo de gestión de los correos, la disminución de la carga de trabajo manual y la eficiencia del sistema automatizado.
+
+
+## 4.3 Metodología
+
+Para el desarrollo de la solución propuesta se seguirá una metodología basada en un enfoque iterativo e incremental, que permitirá diseñar, implementar y validar progresivamente los distintos componentes del sistema. Este enfoque resulta especialmente adecuado para proyectos de desarrollo de software de tamaño reducido o medio, como es el caso de este trabajo, ya que permitirá desarrollar una primera versión funcional del sistema e ir incorporando mejoras de forma progresiva.
+
+La metodología adoptada se basará en las principales fases del ciclo de vida del desarrollo de software, adaptadas al contexto del proyecto. Estas fases permitirán estructurar el trabajo de forma ordenada, desde el análisis inicial del problema hasta la implementación y evaluación de la solución.
+
+Las principales etapas del proceso metodológico serán las siguientes:
+
+### Análisis del problema y definición de requisitos
+
+En esta primera fase se realizará un análisis del funcionamiento actual del buzón de correo y de los procesos asociados a su gestión. El objetivo será identificar las necesidades existentes, los problemas del sistema actual y los requisitos que deberá cumplir la solución propuesta.
+
+Durante esta etapa se estudiará el flujo actual de trabajo, las aplicaciones utilizadas para consultar la información de los expedientes y las tareas que realizan los técnicos para gestionar cada correo recibido. A partir de este análisis se definirán los requisitos funcionales y no funcionales que deberá cumplir el sistema automatizado.
+
+### Diseño de la solución
+
+Una vez identificados los requisitos del sistema, se procederá al diseño de la arquitectura de la solución. En esta fase se definirán los diferentes componentes del sistema y la forma en que interactuarán entre sí.
+
+El diseño incluirá la definición de los flujos de automatización encargados de procesar los correos electrónicos, la estructura de la base de datos utilizada para almacenar la información relevante y los mecanismos de generación de respuestas automáticas. Asimismo, se establecerá la forma en que el sistema se integrará con las herramientas y aplicaciones existentes en el entorno de trabajo.
+
+### Implementación del sistema
+
+En esta fase se desarrollará la solución propuesta mediante la configuración de los flujos de automatización y la implementación de los diferentes componentes del sistema.
+
+La implementación incluirá la creación de los procesos encargados de analizar los correos electrónicos recibidos, identificar los números de expediente presentes en los mensajes, consultar la información necesaria en la base de datos y generar las respuestas correspondientes. Además, se implementarán los mecanismos necesarios para registrar la información relevante en la base de datos y permitir su posterior análisis.
+
+El resultado de esta fase será una primera versión funcional del sistema, que actuará como un producto mínimo viable (MVP) capaz de automatizar parte del proceso de gestión del buzón.
+
+### Pruebas y validación del sistema
+
+Una vez desarrollada la solución, se realizarán diferentes pruebas con el objetivo de comprobar el correcto funcionamiento del sistema y validar que cumple los requisitos definidos en las fases anteriores.
+
+Estas pruebas permitirán verificar que los correos serán procesados correctamente, que los números de expediente serán identificados de forma adecuada y que las respuestas generadas contendrán la información esperada.
+
+### Evaluación de resultados
+
+Finalmente, se analizará el comportamiento del sistema una vez puesto en funcionamiento, evaluando su impacto en el proceso de gestión del buzón.
+
+En esta fase se estudiarán diferentes indicadores que permitirán medir la eficiencia de la solución implementada, como la reducción del tiempo necesario para gestionar cada correo o la disminución de la carga de trabajo manual del personal.
+
+El análisis de estos resultados permitirá determinar si la solución propuesta contribuye a validar la hipótesis planteada en el proyecto.
