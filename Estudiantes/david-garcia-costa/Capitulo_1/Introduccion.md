@@ -25,7 +25,7 @@ A partir de esta información, el ingeniero de QA define planes de prueba que ac
 
 Este flujo de trabajo se apoya en herramientas ya existentes detalladas en la foto que se presenta a continuación y en la experiencia del personal de QA, pero mantiene una importante dependencia del análisis manual y de la intervención directa del ingeniero. 
 
-![Flujo QA Actual](../fotos/FlujoQA_Actual.svg)
+![Flujo QA Actual](../Capitulo_1//fotos/FlujoQA_Actual.svg)
 
  
 Por lo que para el ingeniero de QA supone un gran esfuerzo interpretar correctamente la documentación de entrada y traducirla a elementos útiles para validar el producto.
