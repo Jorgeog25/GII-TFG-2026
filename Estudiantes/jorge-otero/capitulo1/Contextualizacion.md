@@ -56,10 +56,9 @@ De forma simplificada, el proceso actual puede resumirse en las siguientes fases
 
 + Identificación de números de expediente o referencias, si existen.
 
-+ Consulta de información en aplicaciones corporativas (Sgipe, Atlas, Petter, etc.).
++ Consulta de información en Sgipe, Atlas, Petter, etc.
 
 + Elaboración manual de la respuesta y envío al solicitante.
-
 
 En aquellos casos en los que el correo no incluye ningún número identificador, el proceso requiere un análisis adicional. El técnico debe interpretar el contenido del mensaje para determinar qué tipo de solicitud se está realizando y decidir si puede gestionarla directamente o si debe redirigir el correo al área o departamento correspondiente. Esta tarea de clasificación también se realiza manualmente y depende de la experiencia y criterio del técnico.
 
@@ -79,42 +78,98 @@ Entre las principales limitaciones del modelo actual destacan:
 
 En conjunto, la combinación de alto volumen de correos, procesos manuales y limitación de recursos genera un entorno en el que la gestión del buzón resulta cada vez más compleja. Por este motivo, se identifica una clara oportunidad de mejora mediante la introducción de mecanismos de automatización, especialmente en aquellas tareas repetitivas como la identificación de números de expediente, la consulta de información en sistemas corporativos y la generación de respuestas estándar. Estas mejoras permitirían reducir la carga operativa del equipo y mejorar la eficiencia del proceso de gestión del buzón.
 
-# 3. Estado del arte 
-La automatización de procesos repetitivos se ha convertido en una práctica habitual para mejorar la eficiencia operativa. Las tecnologías de Robotic Process Automation (RPA) permiten replicar tareas humanas basadas en reglas, como la lectura de correos, extracción de datos o consulta de sistemas.
+## 2.2 Soluciones existentes para la gestión de grandes volúmenes de correo
 
-Plataformas como [Microsoft Power Automate](./glosario/powerAutomate.md) o UiPath permiten diseñar flujos automatizados capaces de integrarse con servicios de correo electrónico y bases de datos corporativas. Estas herramientas facilitan la creación de procesos desencadenados por eventos, como la recepción de un correo, que ejecutan acciones automáticas predefinidas.
+El problema de gestionar grandes volúmenes de correos electrónicos no es exclusivo del contexto analizado, sino que constituye una situación habitual en múltiples organizaciones que gestionan servicios de atención al cliente, soporte técnico o procesos administrativos. Muchas empresas reciben diariamente cientos o miles de consultas por correo electrónico, lo que genera cargas operativas significativas y dificulta mantener tiempos de respuesta adecuados. En este contexto, diferentes organizaciones han adoptado diversas estrategias para mejorar la gestión de estas comunicaciones.
 
-Sin embargo, su implementación en entornos corporativos complejos requiere una adecuada integración con sistemas internos y una definición precisa de reglas de negocio.
+Entre las soluciones más habituales se encuentran la ampliación de recursos humanos, la implantación de sistemas de ticketing o helpdesk, y más recientemente la automatización mediante inteligencia artificial y sistemas de clasificación automática de correos.
 
-## 3.2 Sistemas de gestión de tickets
-Otra aproximación común es el uso de plataformas de gestión de incidencias o tickets donde los usuarios consultan ahí estandarizando la entrada.
+### Incremento de recursos humanos
 
-En telefónica ya existen estos sistemas aunque el desarrollo de este sería costoso y tardío, dejando una situación imposible de gestionar ante el despido de empleados.
+Una de las soluciones más tradicionales consiste en aumentar el número de empleados encargados de gestionar el buzón de correo. Este enfoque ha sido ampliamente utilizado en departamentos de atención al cliente o soporte técnico, donde el incremento del volumen de solicitudes suele resolverse mediante la ampliación del equipo de agentes.
 
-Estas plataformas suelen incluir funcionalidades básicas de respuesta automática y plantillas estandarizadas, así como capacidades de integración con sistemas empresariales.
+La lógica de este enfoque consiste en incrementar la capacidad operativa del servicio mediante la incorporación de más personal que se encargue de leer los correos recibidos, analizar las solicitudes y proporcionar una respuesta adecuada a cada caso.
 
-No obstante, su adopción puede implicar costes elevados de implantación y adaptación, especialmente cuando se requiere una integración profunda con sistemas internos específicos o bases de datos propietarias.
+Un ejemplo de este enfoque puede observarse en grandes centros de atención al cliente. Empresas como Amazon o Telefónica han incrementado en distintos momentos el número de agentes de soporte para hacer frente a picos de demanda en sus servicios de atención al cliente.
 
-## 3.3 Automatización basada en inteligencia artificial
+Por ejemplo, Amazon ha ampliado en diversas ocasiones su plantilla de atención al cliente para poder gestionar el crecimiento del comercio electrónico y el aumento de consultas de usuarios, especialmente en periodos de alta demanda como campañas comerciales o eventos de venta online. [1](enlaces.md)
 
-En los últimos años, se ha avanzado significativamente en el uso de técnicas de procesamiento de lenguaje natural (NLP) para la clasificación automática de correos electrónicos y la detección de intención. Estos sistemas permiten identificar automáticamente el tipo de solicitud recibida y dirigirla al flujo de gestión correspondiente.
+**Ventajas**
++ Permite aumentar la capacidad de respuesta de forma inmediata.
 
-Asimismo, la incorporación de modelos de generación de texto posibilita la elaboración automática de respuestas coherentes en función de la información obtenida.
++ No requiere cambios tecnológicos ni modificaciones en los sistemas existentes.
 
-Sin embargo, la aplicación directa de soluciones basadas en inteligencia artificial en entornos corporativos con datos sensibles requiere garantizar aspectos como la seguridad, la confidencialidad y el cumplimiento normativo.
++ Mantiene una gestión completamente humana de las solicitudes.
 
-## 3.4 Limitaciones de las soluciones existentes en el contexto específico
+**Limitaciones**
++ No escala de forma eficiente ante incrementos continuos del volumen de correos.
 
-Aunque las tecnologías descritas ofrecen soluciones consolidadas en el mercado, su aplicación directa en el contexto específico del departamento de variaciones presenta ciertas limitaciones:
-+ Necesidad de integración con sistemas internos no estandarizados.
-+ Restricciones de seguridad en el acceso a bases de datos corporativas.
-+ Costes asociados a licencias y despliegue.
-+ Requerimientos de personalización para adaptarse a procesos específicos.
-+ Complejidad organizativa para implantar un sistema global en un entorno ya operativo.
++ Supone un incremento directo de los costes operativos.
 
-En consecuencia, se plantea la conveniencia de desarrollar una solución adaptada al contexto particular del buzón de variaciones, capaz de integrarse con las herramientas existentes y automatizar aquellas tareas repetitivas susceptibles de ser sistematizadas.
++ Requiere procesos de formación y adaptación del personal.
 
-## 4. Justificación de la propuesta
+### Sistemas de ticketing o helpdesk
+
+Otra de las soluciones ampliamente adoptadas por las empresas consiste en implantar sistemas de ticketing, que permiten transformar los correos electrónicos recibidos en incidencias o solicitudes gestionadas mediante un sistema centralizado.
+
+Un sistema de ticketing convierte cada correo recibido en un ticket identificado con un número único, lo que permite registrar, clasificar, priorizar y realizar el seguimiento de cada solicitud. Estos sistemas permiten organizar las consultas recibidas, asignarlas a distintos equipos y realizar un seguimiento del estado de cada caso.
+
+Además, muchas de estas herramientas incorporan funciones de automatización que permiten asignar tickets automáticamente a determinados departamentos, priorizar incidencias o generar respuestas automáticas.
+
+Entre las herramientas más utilizadas en el mercado destacan plataformas como Zendesk, Zoho Desk, Jira Service Management o Kayako.
+
+Numerosas empresas utilizan sistemas de ticketing para gestionar sus servicios de soporte. Un ejemplo es la empresa tecnológica Shopify, que utiliza la plataforma Zendesk para gestionar las consultas de sus clientes y centralizar todas las solicitudes recibidas desde diferentes canales de comunicación.
+
+Gracias a esta herramienta, la empresa puede organizar las solicitudes en tickets, asignarlas a distintos equipos y realizar un seguimiento del estado de cada incidencia. [2](enlaces.md)
+
+**Ventajas**
++ Centralización de todas las solicitudes en una única plataforma.
+
++ Mejora en la trazabilidad y seguimiento de las incidencias.
+
++ Posibilidad de establecer prioridades y acuerdos de nivel de servicio (SLA).
+
++ Automatización parcial de procesos de gestión.
+
+**Limitaciones**
++ Coste de licencias y mantenimiento.
+
++ Necesidad de integración con los sistemas internos de la organización.
+
++ Adaptación limitada a procesos específicos de cada empresa.
+
+### Automatización mediante inteligencia artificial
+
+En los últimos años, muchas empresas han comenzado a incorporar tecnologías de inteligencia artificial y procesamiento del lenguaje natural (NLP) en sus procesos de atención y gestión de correos electrónicos.
+
+Estas soluciones permiten analizar automáticamente el contenido de los correos recibidos para identificar su temática, clasificar las solicitudes o dirigirlas al departamento correspondiente. En algunos casos, estas herramientas también pueden generar respuestas automáticas o sugerencias de respuesta para los agentes de soporte.
+
+El objetivo de estas tecnologías es reducir la carga de trabajo manual asociada a la lectura y clasificación de correos, permitiendo gestionar grandes volúmenes de solicitudes de forma más eficiente.
+
+Un ejemplo de aplicación de estas tecnologías se encuentra en Bosch Service Solutions, que ha implementado sistemas basados en inteligencia artificial para analizar y clasificar automáticamente los correos electrónicos recibidos por sus servicios de atención al cliente.
+
+Este sistema utiliza técnicas de aprendizaje automático para analizar el contenido de los correos y asignarlos automáticamente al departamento correspondiente. Gracias a esta automatización, la empresa ha conseguido reducir significativamente el tiempo necesario para procesar cada solicitud. [3](enlaces.md)
+
+**Ventajas**
++ Reducción significativa del trabajo manual.
+
++ Mejora en la velocidad de clasificación de solicitudes.
+
++ Capacidad para gestionar grandes volúmenes de correos.
+
++ Optimización del tiempo de los agentes de soporte.
+
+**Limitaciones**
+
++ Necesidad de grandes volúmenes de datos para entrenar los modelos.
+
++ Coste de desarrollo e implementación.
+
++ Requiere personal técnico especializado.
+
++ Integración compleja con sistemas corporativos existentes.
+
+## 2.3 Justificación de la propuesta
 
 El análisis de la situación actual evidencia una oportunidad clara de mejora en la gestión del buzón corporativo de variaciones. El elevado volumen de correos electrónicos recibidos diariamente, unido a la naturaleza repetitiva de una parte significativa de las consultas, permite identificar tareas susceptibles de automatización sin comprometer la calidad del servicio.
 
