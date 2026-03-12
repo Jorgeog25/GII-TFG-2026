@@ -211,7 +211,47 @@ Entre las principales ventajas de la solución propuesta destacan:
 
 En conjunto, la solución propuesta busca ofrecer un enfoque equilibrado entre automatización y adaptabilidad, permitiendo mejorar la eficiencia del proceso de gestión del buzón sin introducir cambios drásticos en la infraestructura tecnológica existente.
 
-# 4. Alcance de la propuesta
+# 4. Objetivos
+
+Partiendo de la hipótesis planteada anteriormente, según la cual la implementación de un sistema automatizado de análisis y respuesta de correos permitirá mejorar la eficiencia operativa del buzón de variaciones, se establecen una serie de objetivos que guían el desarrollo del presente trabajo.
+
+La consecución de estos objetivos permitirá evaluar si la solución propuesta contribuye a optimizar el proceso actual de gestión del buzón, reduciendo la carga de trabajo manual y mejorando los tiempos de respuesta.
+
+## Objetivo general
+
+El objetivo general de este proyecto consiste en diseñar e implementar una solución que permita automatizar parcialmente la gestión del buzón de variaciones, teniendo en cuenta el estado del arte analizado y las particularidades del entorno en el que se desarrolla el sistema.
+
+Esta solución debe permitir mejorar la eficiencia del proceso actual mediante la automatización de tareas repetitivas, como el análisis de los correos recibidos, la identificación de números de expediente y la generación de respuestas basadas en información obtenida de los sistemas disponibles.
+
+## Objetivos específicos
+
+Para alcanzar el objetivo general se plantean los siguientes objetivos específicos:
+
+### 1. Analizar el problema y definir los requisitos del sistema
+
+Identificar las necesidades del proceso actual de gestión del buzón, analizando el funcionamiento del sistema existente y definiendo los requisitos funcionales y no funcionales que debe cumplir la solución propuesta.
+
+### 2. Diseñar la arquitectura y el funcionamiento de la solución propuesta
+
+Definir la arquitectura del sistema, así como los componentes necesarios para su funcionamiento, incluyendo los flujos de automatización, la estructura de la base de datos y la interacción con los sistemas utilizados en el proceso.
+
+### 3. Implementar una primera versión funcional del sistema
+
+Desarrollar una primera iteración del sistema en forma de producto mínimo viable (MVP) que permita automatizar parte del proceso de gestión del buzón, incluyendo la recepción y análisis de correos, la consulta de información y la generación de respuestas automatizadas.
+
+### 4. Realizar pruebas de funcionamiento del sistema
+
+Diseñar y ejecutar pruebas que permitan validar el correcto funcionamiento de la solución implementada, comprobando que los procesos automatizados se ejecutan de forma adecuada y que el sistema responde correctamente ante diferentes escenarios.
+
+### 5. Poner en funcionamiento la solución en el entorno de trabajo
+
+Integrar la solución desarrollada en el entorno operativo del buzón con el fin de evaluar su comportamiento en condiciones reales de uso.
+
+### 6. Analizar los resultados obtenidos
+
+Evaluar el impacto de la solución implementada en el proceso de gestión del buzón, analizando indicadores como la reducción del tiempo de gestión de los correos, la disminución de la carga de trabajo manual y la eficiencia del sistema automatizado.
+
+## 4.1 Alcance de la propuesta
 
 La solución propuesta en este proyecto tiene como objetivo mejorar la gestión del buzón de correo analizado mediante la automatización de determinadas tareas del proceso actual. Sin embargo, es importante definir claramente el alcance de la solución con el fin de delimitar qué aspectos del proceso se abordan en este trabajo y cuáles quedan fuera del mismo.
 
@@ -249,62 +289,7 @@ Por tanto, la solución propuesta debe entenderse como un primer paso hacia la a
 
 Este enfoque permite evaluar el impacto de la automatización en el proceso actual sin necesidad de realizar cambios estructurales complejos en los sistemas existentes.
 
-## 4.1 Hipótesis
-
-La hipótesis planteada en este proyecto es:
-
-*La implementación de un sistema automatizado de análisis y respuesta de correos mejorará la eficiencia operativa del buzón de variaciones, reduciendo los tiempos de respuesta y la carga de trabajo manual del personal*
-
-En la situación actual, la gestión del buzón se realiza principalmente de forma manual. Cada correo recibido debe ser leído e interpretado por un técnico, quien posteriormente debe identificar si el mensaje hace referencia a algún número de expediente, actuación o petición. Una vez identificado, el técnico debe acceder a diferentes aplicaciones corporativas para consultar la información asociada y elaborar la respuesta correspondiente. Este procedimiento implica una serie de tareas repetitivas que consumen una parte significativa del tiempo de trabajo y que, además, incrementan la posibilidad de retrasos en la gestión de las solicitudes.
-
-La hipótesis de este trabajo plantea que la automatización de determinadas etapas del proceso puede mejorar significativamente la eficiencia del sistema. En concreto, mediante el uso de herramientas de automatización es posible analizar automáticamente el contenido de los correos entrantes, identificar los números de expediente mencionados, consultar la información necesaria en las bases de datos disponibles y generar una respuesta basada en plantillas predefinidas.
-
-De esta forma, se espera que el sistema propuesto permita reducir el tiempo necesario para gestionar cada consulta, al eliminar gran parte de las tareas manuales asociadas al análisis inicial de los correos y a la recopilación de información. Además, la automatización de estas tareas contribuiría a disminuir la carga operativa del personal, permitiendo que los técnicos puedan centrarse en aquellos casos que requieren un análisis más complejo o una intervención manual.
-
-Por tanto, el desarrollo e implementación de la solución propuesta permitirá evaluar si la automatización parcial del proceso puede optimizar la gestión del buzón de variaciones, mejorando los tiempos de respuesta y aumentando la eficiencia del proceso sin necesidad de incrementar los recursos humanos destinados a esta tarea.
-
-## 4.2 Objetivos
-
-Partiendo de la hipótesis planteada anteriormente, según la cual la implementación de un sistema automatizado de análisis y respuesta de correos permitirá mejorar la eficiencia operativa del buzón de variaciones, se establecen una serie de objetivos que guían el desarrollo del presente trabajo.
-
-La consecución de estos objetivos permitirá evaluar si la solución propuesta contribuye a optimizar el proceso actual de gestión del buzón, reduciendo la carga de trabajo manual y mejorando los tiempos de respuesta.
-
-### Objetivo general
-
-El objetivo general de este proyecto consiste en diseñar e implementar una solución que permita automatizar parcialmente la gestión del buzón de variaciones, teniendo en cuenta el estado del arte analizado y las particularidades del entorno en el que se desarrolla el sistema.
-
-Esta solución debe permitir mejorar la eficiencia del proceso actual mediante la automatización de tareas repetitivas, como el análisis de los correos recibidos, la identificación de números de expediente y la generación de respuestas basadas en información obtenida de los sistemas disponibles.
-
-### Objetivos específicos
-
-Para alcanzar el objetivo general se plantean los siguientes objetivos específicos:
-
-#### 1. Analizar el problema y definir los requisitos del sistema
-
-Identificar las necesidades del proceso actual de gestión del buzón, analizando el funcionamiento del sistema existente y definiendo los requisitos funcionales y no funcionales que debe cumplir la solución propuesta.
-
-#### 2. Diseñar la arquitectura y el funcionamiento de la solución propuesta
-
-Definir la arquitectura del sistema, así como los componentes necesarios para su funcionamiento, incluyendo los flujos de automatización, la estructura de la base de datos y la interacción con los sistemas utilizados en el proceso.
-
-#### 3. Implementar una primera versión funcional del sistema
-
-Desarrollar una primera iteración del sistema en forma de producto mínimo viable (MVP) que permita automatizar parte del proceso de gestión del buzón, incluyendo la recepción y análisis de correos, la consulta de información y la generación de respuestas automatizadas.
-
-#### 4. Realizar pruebas de funcionamiento del sistema
-
-Diseñar y ejecutar pruebas que permitan validar el correcto funcionamiento de la solución implementada, comprobando que los procesos automatizados se ejecutan de forma adecuada y que el sistema responde correctamente ante diferentes escenarios.
-
-#### 5. Poner en funcionamiento la solución en el entorno de trabajo
-
-Integrar la solución desarrollada en el entorno operativo del buzón con el fin de evaluar su comportamiento en condiciones reales de uso.
-
-#### 6. Analizar los resultados obtenidos
-
-Evaluar el impacto de la solución implementada en el proceso de gestión del buzón, analizando indicadores como la reducción del tiempo de gestión de los correos, la disminución de la carga de trabajo manual y la eficiencia del sistema automatizado.
-
-
-## 4.3 Metodología
+## 4.2 Metodología
 
 Para el desarrollo de la solución propuesta se seguirá una metodología basada en un enfoque iterativo e incremental, que permitirá diseñar, implementar y validar progresivamente los distintos componentes del sistema. Este enfoque resulta especialmente adecuado para proyectos de desarrollo de software de tamaño reducido o medio, como es el caso de este trabajo, ya que permitirá desarrollar una primera versión funcional del sistema e ir incorporando mejoras de forma progresiva.
 
@@ -345,3 +330,17 @@ Finalmente, se analizará el comportamiento del sistema una vez puesto en funcio
 En esta fase se estudiarán diferentes indicadores que permitirán medir la eficiencia de la solución implementada, como la reducción del tiempo necesario para gestionar cada correo o la disminución de la carga de trabajo manual del personal.
 
 El análisis de estos resultados permitirá determinar si la solución propuesta contribuye a validar la hipótesis planteada en el proyecto.
+
+## 4.3 Hipótesis
+
+La hipótesis planteada en este proyecto es:
+
+*La implementación de un sistema automatizado de análisis y respuesta de correos mejorará la eficiencia operativa del buzón de variaciones, reduciendo los tiempos de respuesta y la carga de trabajo manual del personal*
+
+En la situación actual, la gestión del buzón se realiza principalmente de forma manual. Cada correo recibido debe ser leído e interpretado por un técnico, quien posteriormente debe identificar si el mensaje hace referencia a algún número de expediente, actuación o petición. Una vez identificado, el técnico debe acceder a diferentes aplicaciones corporativas para consultar la información asociada y elaborar la respuesta correspondiente. Este procedimiento implica una serie de tareas repetitivas que consumen una parte significativa del tiempo de trabajo y que, además, incrementan la posibilidad de retrasos en la gestión de las solicitudes.
+
+La hipótesis de este trabajo plantea que la automatización de determinadas etapas del proceso puede mejorar significativamente la eficiencia del sistema. En concreto, mediante el uso de herramientas de automatización es posible analizar automáticamente el contenido de los correos entrantes, identificar los números de expediente mencionados, consultar la información necesaria en las bases de datos disponibles y generar una respuesta basada en plantillas predefinidas.
+
+De esta forma, se espera que el sistema propuesto permita reducir el tiempo necesario para gestionar cada consulta, al eliminar gran parte de las tareas manuales asociadas al análisis inicial de los correos y a la recopilación de información. Además, la automatización de estas tareas contribuiría a disminuir la carga operativa del personal, permitiendo que los técnicos puedan centrarse en aquellos casos que requieren un análisis más complejo o una intervención manual.
+
+Por tanto, el desarrollo e implementación de la solución propuesta permitirá evaluar si la automatización parcial del proceso puede optimizar la gestión del buzón de variaciones, mejorando los tiempos de respuesta y aumentando la eficiencia del proceso sin necesidad de incrementar los recursos humanos destinados a esta tarea.
