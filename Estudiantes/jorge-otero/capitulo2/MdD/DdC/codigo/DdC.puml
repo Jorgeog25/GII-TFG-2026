@@ -1,0 +1,34 @@
+@startuml DdC
+
+hide circle
+hide empty members
+
+class Cliente
+class Tecnico
+
+class Correo
+class Intencion
+class Peticion
+class Respuesta
+
+class Sgipe
+class Petter
+class Wepes
+
+Cliente -- Correo : envia
+Tecnico -- Correo : analiza
+
+Correo -- Intencion : contiene
+Correo -- Peticion : contiene
+
+Tecnico -- Peticion : interpreta
+
+Tecnico -- Sgipe : consulta
+Tecnico -- Petter : consulta
+Tecnico -- Wepes : consulta
+
+Respuesta -- Cliente : recibe
+
+Tecnico -- Respuesta : genera
+
+@enduml
