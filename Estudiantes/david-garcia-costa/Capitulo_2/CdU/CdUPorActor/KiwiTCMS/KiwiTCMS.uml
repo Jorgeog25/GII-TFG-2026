@@ -1,0 +1,17 @@
+@startuml
+left to right direction
+title Casos de uso - Kiwi TCMS
+
+actor "Kiwi TCMS" as Kiwi
+
+rectangle "Sistema" {
+  usecase "Recibir casos\nde prueba" as CU01
+  usecase "Almacenar casos\nde prueba" as CU02
+  usecase "Permitir consulta\nde casos de prueba" as CU03
+}
+
+Kiwi --> CU01
+Kiwi --> CU02
+Kiwi --> CU03
+
+@enduml

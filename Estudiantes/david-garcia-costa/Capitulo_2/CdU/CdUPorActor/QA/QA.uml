@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+title Casos de uso - Ingeniero de QA
+
+actor "Ingeniero de QA" as QA
+
+rectangle "Sistema" {
+  usecase "Incorporar\ndocumentación" as CU01
+  usecase "Asociar documentación\na proyecto" as CU02
+  usecase "Extraer\ncasos de uso" as CU03
+  usecase "Extraer requisitos\nfuncionales" as CU04
+  usecase "Gestionar\ncasos de uso" as CU05
+  usecase "Gestionar requisitos\nfuncionales" as CU06
+  usecase "Generar escenarios\nde prueba" as CU07
+  usecase "Gestionar escenarios\nde prueba" as CU08
+  usecase "Incorporar feedback\na escenarios" as CU09
+  usecase "Generar\ncasos de prueba" as CU10
+  usecase "Publicar casos de prueba\nen Kiwi TCMS" as CU11
+  usecase "Consultar casos de prueba\nen Kiwi TCMS" as CU12
+}
+
+QA --> CU01
+QA --> CU02
+QA --> CU03
+QA --> CU04
+QA --> CU05
+QA --> CU06
+QA --> CU07
+QA --> CU08
+QA --> CU09
+QA --> CU10
+QA --> CU11
+QA--> CU12
+
+@enduml
