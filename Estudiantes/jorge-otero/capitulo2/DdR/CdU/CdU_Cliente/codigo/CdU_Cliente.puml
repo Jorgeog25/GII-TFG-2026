@@ -1,0 +1,16 @@
+@startuml CdU_Cliente
+left to right direction
+
+actor Cliente
+
+    
+    usecase "Enviar solicitud por correo" as EnviarCorreo
+    usecase "Recibir respuesta" as RecibirRespuesta
+    usecase "Completar formulario" as CompletarFormulario
+
+
+Cliente --> EnviarCorreo
+Cliente --> RecibirRespuesta
+Cliente --> CompletarFormulario
+
+@enduml
