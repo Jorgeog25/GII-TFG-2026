@@ -1,3 +1,5 @@
+|[ ← PriorizarCdU](./PriorizarCdU.md) | [ → Requisitos](./Requisitos.md) |
+
 # Detalle de Casos de Uso
 
 En esta sección se detallan los casos de uso más relevantes del sistema, seleccionados por su importancia dentro del flujo funcional principal.

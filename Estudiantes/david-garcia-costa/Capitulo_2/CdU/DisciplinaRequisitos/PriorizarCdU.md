@@ -1,3 +1,5 @@
+|[ ← ActoresCdU](./ActoresCdU.md) |[ → DetallarCdU](./DetallarCdU.md) |
+
 # Priorizacion de Casos de Uso por Actor
 
 ## Tabla de prioridad
@@ -49,3 +51,4 @@ El sistema `Kiwi TCMS` actúa como sistema externo participante que completa el 
 Las funcionalidades `Recibir casos de prueba` y `Almacenar casos de prueba` tienen prioridad `Alta`, ya que son imprescindibles para que la integración tenga efecto y los casos de prueba puedan persistir y ser utilizados.
 
 La funcionalidad `Permitir consulta de casos de prueba` se considera de prioridad `Media`, ya que facilita el acceso posterior a los artefactos, pero depende de que estos hayan sido previamente publicados y almacenados.
+
