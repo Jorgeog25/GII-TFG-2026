@@ -30,7 +30,7 @@
 
 ##### [Necesidades del sistema](./Capitulo2/Necesidades.md)
 
-##### Requisitos funcionales
+##### [Requisitos](./Capitulo2/RequisitosFuncionales.md)
 
 ##### [Requisitos no funcionales](./Capitulo2/RequisitosNoFuncionales.md)
 
