@@ -296,3 +296,43 @@ Los 4 casos de uso Could añaden valor al sistema pero no son críticos para el 
 ![Prototipo 4](/Estudiantes/daniel-puente/Capitulo%202/imagenes/Prototipos4.jpeg)
 
 ## Estructurar Casos de Uso
+
+### Objetivo
+
+El objetivo de este paso es estructurar el modelo de casos de uso del sistema de gestión del Restaurante La Unión, identificando funcionalidades compartidas mediante relaciones de inclusión y comportamientos opcionales o alternativos mediante relaciones de extensión, reduciendo así la redundancia entre casos de uso y mejorando la trazabilidad del modelo.
+
+### Relaciones Include y Extend
+
+| Include | Extend |
+|---|---|
+| Representa funcionalidad obligatoria y común entre casos de uso | Representa comportamiento opcional o alternativo |
+| Reduce la duplicación de especificaciones | Permite modelar flujos alternativos y excepciones |
+
+
+### Relación `<<include>>`
+
+| Caso de uso principal | Caso de uso incluido | Explicación |
+|---|---|---|
+| **CU-06 Tomar comanda** | CU-01 Iniciar sesión | Para tomar una comanda el usuario debe estar autenticado en el sistema |
+| **CU-08 Editar comanda** | CU-07 Ver comanda de una mesa | Para editar una comanda es necesario consultarla previamente |
+| **CU-14 Enviar ticket a caja** | CU-07 Ver comanda de una mesa | El ticket se genera a partir de la comanda activa de la mesa |
+| **CU-17 Cobrar ticket en caja** | CU-05 Cerrar mesa | El cobro del ticket implica obligatoriamente el cierre de la mesa |
+| **CU-19 Gestionar reservas** | CU-18 Ver listado de reservas del día | La gestión de reservas requiere consultar el listado previo |
+| **CU-20 Asignar mesa a reserva** | CU-19 Gestionar reservas | Asignar una mesa es parte del flujo de gestión de reservas |
+| **CU-11 Marcar comanda en preparación** | CU-10 Ver comandas pendientes en KDS | El cocinero debe ver las comandas pendientes antes de marcarlas |
+| **CU-12 Marcar plato como listo** | CU-11 Marcar comanda en preparación | Un plato solo puede marcarse como listo si está en preparación |
+| **CU-09 Solicitar segundos platos** | CU-12 Marcar plato como listo | Solo se pueden solicitar segundos si los primeros están marcados como listos |
+
+
+#### Relación `<<extend>>`
+
+| Caso de uso principal | Caso de uso extendido | Explicación |
+|---|---|---|
+| **CU-01 Iniciar sesión** | CU-N01 Acceso denegado por credenciales incorrectas | El acceso se deniega si las credenciales introducidas son incorrectas |
+| **CU-01 Iniciar sesión** | CU-N10 Desbloquear cuenta por intentos fallidos | Tras 5 intentos fallidos el sistema bloquea la cuenta |
+| **CU-06 Tomar comanda** | CU-N03 Comanda rechazada por alérgenos incompletos | El envío se bloquea si alguna línea tiene alérgenos sin completar |
+| **CU-06 Tomar comanda** | CU-N07 Restringir pedido por falta de stock | El sistema impide añadir platos marcados como agotados |
+| **CU-08 Editar comanda** | CU-N05 Edición bloqueada de línea en preparación | La edición se bloquea si la línea ya está en preparación o lista |
+| **CU-14 Enviar ticket a caja** | CU-N06 Ticket rechazado por mesa ya cobrada | El envío se rechaza si la mesa ya ha sido cobrada y cerrada |
+| **CU-19 Gestionar reservas** | CU-N04 Reserva rechazada por conflicto de horario | La reserva se rechaza si existe otra activa en el mismo tramo horario |
+| **CU-21 Gestionar usuarios y roles** | CU-N02 Operación bloqueada por rol insuficiente | La operación se bloquea si el usuario no tiene rol de Administrador |
