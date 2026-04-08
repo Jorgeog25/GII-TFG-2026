@@ -28,7 +28,7 @@ El sistema es una aplicación web progresiva (PWA) pensada para funcionar direct
 
 ## Diagrama de Clases
 
-![Diagrama de Clases]()
+![Diagrama de Clases](/Estudiantes/daniel-puente/Capitulo%202/imagenes/DiagramaClases.svg)
 
 ## Diagrama de Objetos
 
@@ -36,9 +36,9 @@ El sistema es una aplicación web progresiva (PWA) pensada para funcionar direct
 
 ## Diagrama de Estados
 
-![Diagrama de Estados 1]()
-![Diagrama de Estados 2]()
-![Diagrama de Estados 3]()
+![Diagrama de Estados 1](/Estudiantes/daniel-puente/Capitulo%202/imagenes/EstadosComanda.svg)
+![Diagrama de Estados 2](/Estudiantes/daniel-puente/Capitulo%202/imagenes/EstadosMesa.svg)
+![Diagrama de Estados 3](/Estudiantes/daniel-puente/Capitulo%202/imagenes/EstadosReserva.png)
 
 ## Requisitos Funcionales
 
@@ -156,7 +156,7 @@ Esta disciplina tiene como finalidad establecer, de manera clara y estructurada,
 
 ## Identificación de Actores
 
-![Actores]()
+![Actores](/Estudiantes/daniel-puente/Capitulo%202/imagenes/Actores.svg)
 
 ## Casos de Uso Principales
 
@@ -213,16 +213,19 @@ En esta sección se detallan los casos de uso que conforman el flujo principal d
 ## Diagrama de Casos de Uso por Actor
 
 ### Cocinero
-![CDU-Cocinero]()
+![CDU-Cocinero](/Estudiantes/daniel-puente/Capitulo%202/imagenes/CDU-Cocinero.svg)
 
 ### Camarero
-![CDU-Camarero]()
+![CDU-Camarero](/Estudiantes/daniel-puente/Capitulo%202/imagenes/CDU-Camarero.svg)
 
 ### Administrador
-![CDU-Admin]()
+![CDU-Admin](/Estudiantes/daniel-puente/Capitulo%202/imagenes/CDU-Admin.svg)
 
 ### Sistema de Notificaciones
-![CDU-SistNoti]()
+![CDU-SistNoti](/Estudiantes/daniel-puente/Capitulo%202/imagenes/CDU-NotificacionesAuto.svg)
+
+### Casos de Uso Negativos
+![CDU-Negativos](/Estudiantes/daniel-puente/Capitulo%202/imagenes/CDU-Negativos.svg)
 
 
 ## Priorización MoSCoW
@@ -279,3 +282,17 @@ Los 8 casos de uso Should son importantes para la calidad del servicio pero no b
 ### 🟡 Could have — Baja prioridad
 
 Los 4 casos de uso Could añaden valor al sistema pero no son críticos para el lanzamiento del MVP. Cubren funcionalidades avanzadas como la configuración del plano de sala, la unión y separación de mesas, la anulación de tickets cobrados por error y el registro de reservas no presentadas. Se abordarán si el tiempo de desarrollo lo permite.
+
+## Detallar Casos de Uso
+
+## Prototipar Casos de Uso
+
+![Prototipo 1](/Estudiantes/daniel-puente/Capitulo%202/imagenes/Prototipos1.jpeg)
+
+![Prototipo 2](/Estudiantes/daniel-puente/Capitulo%202/imagenes/Prototipos2.jpeg)
+
+![Prototipo 3](/Estudiantes/daniel-puente/Capitulo%202/imagenes/Prototipos3.jpeg)
+
+![Prototipo 4](/Estudiantes/daniel-puente/Capitulo%202/imagenes/Prototipos4.jpeg)
+
+## Estructurar Casos de Uso
