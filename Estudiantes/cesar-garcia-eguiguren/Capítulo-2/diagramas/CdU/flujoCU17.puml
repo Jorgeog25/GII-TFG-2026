@@ -1,0 +1,51 @@
+@startuml CU17_ExactitudEstimacion
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-17 · Consultar Exactitud de Estimación
+
+start
+
+:CU-01 (JWT válido);
+:Actor en **/métricas** selecciona empleado;
+
+:verify_employee_scope(cu, responsable_id);
+
+if (¿Fuera de scope?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+:GET /metrics/estimation-accuracy
+ ?responsable_id=X [&root_only];
+
+:EstimationAccuracyService.calculate()
+ Tareas cerradas del responsable
+ con planned_hours > 0 y worked_hours > 0
+ ratio = actual / planned;
+
+:average_ratio = media de ratios;
+:accuracy_pct = average_ratio × 100;
+
+if (accuracy_pct > 110%) then
+  :Sesgo: **subestima**;
+else if (accuracy_pct < 90%) then
+  :Sesgo: **sobreestima**;
+else
+  :Sesgo: **preciso**;
+endif
+
+:Gauge con %;
+:Badge de sesgo con color;
+:KPIs: ratio promedio · total tareas;
+:Mensaje contextual explicativo;
+
+stop
+
+@enduml

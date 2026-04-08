@@ -1,0 +1,74 @@
+@startuml CU09_ResumenProyecto
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-09 · Consultar Resumen de Proyecto
+
+start
+
+:CU-01 (JWT válido);
+:Actor navega a **/proyectos/{id}**
+(desde CU-08 o resultado CU-25);
+
+:verify_project_scope(cu, project_id);
+
+if (¿Fuera del scope?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+fork
+  :GET /projects/{id};
+fork again
+  :GET /tasks/stages;
+fork again
+  :GET /dashboards/summary/project/{id}
+   → ProjectEfficiencyService
+   → RiskIndexService  [<<extend>> CU-15]
+   → ProfitabilityService
+     (coste estimado vs real por horas×tarifa);
+fork again
+  :GET /projects/{id}/tasks
+   ?page=1&page_size=20
+   &pending=false
+   &sort_by=date_deadline&sort_order=asc;
+end fork
+
+:Cabecera: Nombre + Cliente (partner_name) + code;
+:Badges:
+· Rentable/Pérdidas (profitability_pct > 0?)
+· Riesgo bajo/medio/alto (risk_index);
+
+:4 KPIs:
+· Índice de eficiencia (ProjectEfficiencyService)
+· Índice de riesgo % (RiskIndexService)
+· Rentabilidad % (ProfitabilityService)
+· Total tareas (de la paginación de tasks);
+
+:BarChart 2 barras: horas estimadas vs horas reales;
+
+:Actor selecciona pestaña;
+
+if (Pestaña) then (**Tareas**)
+  :<<extend>> CU-10
+  GET /projects/{id}/tasks
+  [?pending&stage_id&sort_by&sort_order&page&page_size];
+  :Filtros: [Todas][Pendientes] + select de etapa;
+  :Paginación;
+  :Click en tarea → CU-11;
+else (**Equipo**)
+  :GET /projects/{id}/employees
+   → horas imputadas + tarea count + coste/h;
+  :Click en empleado → CU-05;
+endif
+
+stop
+
+
+@enduml

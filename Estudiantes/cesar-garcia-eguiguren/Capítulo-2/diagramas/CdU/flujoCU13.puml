@@ -1,0 +1,44 @@
+@startuml CU13_Cumplimiento
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-13 · Consultar Cumplimiento de Plazos
+
+start
+
+:CU-01 (JWT válido);
+:Métrica disponible en **/métricas**
+ (también cargada en CU-02 para panel de salud);
+
+:GET /metrics/compliance
+ [?employee_id & project_id & root_only];
+
+if (¿Filtros de scope inválidos?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+:ComplianceService.calculate()
+ count_tasks_on_time():
+ → on_time: date_end ≤ date_deadline
+ → total: tareas cerradas con ambas fechas;
+
+:compliance_rate = (on_time / total) × 100;
+
+:Gauge / PieChart central con %:
+· Verde ≥ 80% · Naranja ≥ 60% · Rojo < 60%;
+
+:KPIs:
+· Tareas a tiempo
+· Tareas con retraso
+· Total analizadas;
+
+stop
+
+@enduml

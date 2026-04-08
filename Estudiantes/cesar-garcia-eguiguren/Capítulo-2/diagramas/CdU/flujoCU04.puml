@@ -1,0 +1,54 @@
+
+@startuml CU04_ListarEmpleados
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+skinparam NoteFontColor #07090F
+
+title CU-04 · Listar y Buscar Empleados
+
+start
+
+:CU-01 (JWT válido);
+:Actor navega a **/empleados**;
+
+:GET /employees/
+ ?page&page_size=50
+ &search&department_id&active
+ &sort_by&sort_order;
+
+if (¿Responsable?) then (SÍ)
+  :Aplica filtro: Employee.id IN (employee_ids del JWT);
+else (Director)
+  :Sin filtro adicional;
+endif
+
+:Renderiza tabla paginada (50/página):
+· Nombre, Departamento, Cargo
+· Email, Coste/h, Badge activo/inactivo;
+
+
+:Actor filtra por departamento (select);
+note right: ?department_id=X
+
+:Actor activa/desactiva toggle "activos";
+note right: ?active=true/false
+
+:Ordenación global server-side:
+ sort_by ∈ {name, department_name,
+              job_title, hourly_cost};
+
+if (¿Click en fila?) then (SÍ)
+  :Navega a CU-05 /empleados/{id};
+endif
+
+:Paginación → carga página siguiente;
+
+stop
+
+@enduml

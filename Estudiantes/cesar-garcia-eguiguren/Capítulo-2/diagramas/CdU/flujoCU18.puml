@@ -1,0 +1,43 @@
+@startuml CU18_LeadTime
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-18 · Consultar Lead Time
+
+start
+
+:CU-01 (JWT válido);
+:Métrica disponible en **/métricas**
+ (también cargada en CU-02 para panel de salud);
+
+:GET /metrics/lead-time
+ [?employee_id & project_id & root_only];
+
+:LeadTimeService.calculate()
+ Tareas cerradas con date_assign y date_end:
+ seconds = date_end - date_assign
+ días = seconds / 86400;
+
+:average_lead_time_days = media de días;
+
+if (¿Sin tareas con datos?) then (SÍ)
+  :Valor: N/A "No hay datos";
+  stop
+endif
+
+:KPI central con valor en días (ej: 4.2d);
+
+:KPI: total tareas analizadas;
+
+:Semáforo referencial:
+< 5d verde · 5-10d naranja · > 10d rojo;
+
+stop
+
+@enduml

@@ -1,0 +1,70 @@
+@startuml CU22_GraficosAnaliticos
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+skinparam NoteFontColor #07090F
+
+title CU-22 · Visualizar Gráficos Analíticos
+
+start
+
+:CU-01 (JWT válido);
+:Actor navega a **/gráficos**;
+
+:Carga de soporte al montar:
+ GET /employees/?page_size=200
+ GET /departments/
+ GET /projects/;
+
+:Actor configura filtros:
+ · Rango de fechas (shortcuts: 30d/3m/6m/1a)
+ · Agrupación: semana | mes
+ · Tipo de entidad: empresa / empleado / dpto / proyecto
+ · Entidad específica (select dependiente del tipo);
+
+fork
+  :GET /charts/task-evolution
+   ?date_from&date_to&group_by
+   [&employee_id | department_id | project_id];
+fork again
+  :GET /charts/task-distribution
+   ?date_from&date_to;
+fork again
+  :GET /metrics/client-distribution
+   ?date_from&date_to
+   (Solo visible para Director en UI);
+end fork
+
+if (¿Responsable?) then (SÍ)
+  :task-distribution filtrado por project_ids del JWT;
+  :client-distribution NO se llama (hidden en UI);
+  :task-evolution filtrado por project_ids del JWT;
+endif
+
+:Gráfico 1 (LineChart): Evolución de tareas
+ completadas / abiertas / vencidas por período;
+
+:Gráfico 2 (PieChart): Distribución por estado
+ (etapas actuales con % inline);
+
+if (¿Director?) then (SÍ)
+  :Gráfico 3 (BarChart horizontal):
+   Horas por cliente — top 10;
+endif
+
+:Actor cambia agrupación semana/mes;
+note right: Nueva petición a task-evolution
+
+if (¿Sin datos en período?) then (SÍ)
+  :Cada gráfico muestra empty state o "Sin datos";
+endif
+
+stop
+
+
+@enduml

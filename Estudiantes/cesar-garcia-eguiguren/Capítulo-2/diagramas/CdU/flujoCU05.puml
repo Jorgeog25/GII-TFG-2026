@@ -1,0 +1,86 @@
+@startuml CU05_ResumenEmpleado
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+skinparam NoteFontColor #07090F
+title CU-05 · Consultar Resumen de Empleado
+
+start
+
+:CU-01 (JWT válido);
+:Actor navega a **/empleados/{id}**
+(desde CU-04, CU-03 o CU-07);
+
+:verify_employee_scope(cu, employee_id);
+
+if (¿Empleado fuera del scope?) then (SÍ)
+  :HTTP 403 — Acceso denegado;
+  stop
+else (EN SCOPE)
+endif
+
+fork
+  :GET /employees/{id};
+fork again
+  :GET /dashboards/summary/employee/{id}
+   → WorkloadService(detailed=True):
+     pending_tasks con fechas, is_overdue
+   → WIPService: wip_count, status
+   → ProductivityService(últimos 30d);
+end fork
+
+:Cabecera:
+· Avatar inicial (primera letra del nombre)
+· Nombre, cargo, departamento, email
+· Coste/h · Badge workload (sobrecargado/normal/subcargado);
+
+:4 KPIs:
+· Tareas pendientes + horas pendientes (WorkloadService)
+· Vencidas sin cerrar (filtradas client-side de wl.pending_tasks)
+· WIP actual (WIPService)
+· Productividad 30d (ProductivityService);
+
+:Tarjeta "Asignadas hoy"
+ — filtra client-side: isToday(task.date_assign)
+ → click navega a
+   /tareas/filtro?status=pending&date_assign={hoy}&employee_id={id};
+
+:Tarjeta "Vencidas sin cerrar"
+ — filtra client-side: task.is_overdue == true
+ → click navega a
+   /tareas/filtro?status=overdue&employee_id={id};
+
+:Actor selecciona pestaña de tareas;
+
+if (Pestaña) then (**Pendientes**)
+  :<<extend>> CU-10
+  GET /employees/{id}/pending-tasks
+  [?date_from&date_to];
+else if (Pestaña) then (**Completadas**)
+  :<<extend>> CU-10
+  GET /employees/{id}/completed-tasks
+  [?date_from&date_to];
+else if (Pestaña) then (**Asignadas**)
+  :<<extend>> CU-10
+  GET /employees/{id}/assigned-tasks
+  [?date_from&date_to]
+  + filtro local: Todas/Abiertas/Cerradas;
+else (**Responsable**)
+  :<<extend>> CU-10
+  GET /employees/{id}/responsible-tasks
+  [?date_from&date_to];
+endif
+
+if (¿Click en tarea?) then (SÍ)
+  :Navega a CU-11 /tareas/{id};
+endif
+
+stop
+
+
+@enduml

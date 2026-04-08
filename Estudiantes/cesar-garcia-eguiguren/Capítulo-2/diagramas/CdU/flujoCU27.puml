@@ -1,0 +1,39 @@
+@startuml CU27_LineasCliente
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-27 · Consultar Líneas Analíticas de Cliente
+
+start
+
+:CU-01 (JWT válido, role = director);
+
+:Actor en CU-24 hace click en
+ "Ver Detalles" de un cliente;
+
+:GET /metrics/profitability/per-client/{id}/lines
+ [?date_from & date_to & project_id & manager_id];
+
+:Devuelve account_analytic_line de todos
+ los proyectos del cliente (partner_id)
+ separadas en:
+ · incomes: amount >= 0
+ · expenses: amount < 0;
+
+:Panel con dos tablas:
+ **Ingresos**: fecha | nombre | importe | horas | project_id
+ **Gastos**: fecha | nombre | importe | horas | project_id;
+
+if (¿Sin líneas?) then (SÍ)
+  :Tablas vacías;
+endif
+
+stop
+
+@enduml

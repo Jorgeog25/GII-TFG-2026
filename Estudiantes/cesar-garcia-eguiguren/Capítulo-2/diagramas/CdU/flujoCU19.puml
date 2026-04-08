@@ -1,0 +1,40 @@
+@startuml CU19_TiempoPorEstado
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-19 · Consultar Tiempo por Estado
+
+start
+
+:CU-01 (JWT válido);
+:Actor en **/métricas**;
+
+:GET /metrics/state-time
+ [?project_id & employee_id & root_only];
+
+:StateTimeService.calculate()
+ Por cada tarea en scope:
+  get_stage_changes() analiza mail_tracking_value
+  → horas entre cambios consecutivos de etapa
+  → acumula en {stage_id: [horas]};
+
+if (¿Sin datos de tracking?) then (SÍ)
+  :Tabla vacía "Sin datos";
+  stop
+endif
+
+:Obtiene nombres de etapas
+ (TaskStage.id → name);
+
+:Tabla ordenada por horas medias (desc):
+ Etapa | Horas medias | Nº tareas;
+
+stop
+
+@enduml

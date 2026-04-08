@@ -1,0 +1,48 @@
+@startuml CU15_RiesgoProyecto
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-15 · Consultar Riesgo de Proyecto
+
+start
+
+:CU-01 (JWT válido);
+:Actor en **/métricas** selecciona proyecto;
+
+:verify_project_scope(cu, project_id);
+
+if (¿Fuera de scope?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+:GET /metrics/risk-index?project_id=X
+ [&root_only];
+
+:RiskIndexService.calculate()
+ Tareas abiertas con date_deadline:
+ → En riesgo si:
+   · date_deadline < hoy (vencida), O
+   · elapsed/total ≥ 80% del plazo
+     desde date_assign;
+
+:risk_index = (en_riesgo / abiertas) × 100;
+
+:PieChart: En riesgo vs En plazo;
+
+:KPIs:
+· Índice de riesgo %
+· Tareas en riesgo
+· Total tareas abiertas;
+
+:Semáforo: < 20% bajo · 20-50% medio · > 50% alto;
+
+stop
+
+@enduml

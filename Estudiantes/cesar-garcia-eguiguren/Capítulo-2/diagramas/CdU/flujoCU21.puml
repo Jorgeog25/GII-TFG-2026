@@ -1,0 +1,38 @@
+@startuml CU21_TiempoPorPrioridad
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-21 · Consultar Tiempo por Prioridad
+
+start
+
+:CU-01 (JWT válido);
+:Actor en **/métricas**;
+
+:GET /metrics/priority-time
+ [?employee_id & project_id & root_only];
+
+:PriorityTimeService.calculate()
+ Tareas cerradas agrupadas por prioridad:
+ · muy baja, baja, normal, alta, critica
+ Suma worked_hours, count de tareas;
+
+:Por cada grupo:
+ valor = total_hours / task_count (media)
+ unit = "horas"
+ description = "Promedio de N tareas";
+
+:Resultado: {Normal: PriorityTimeItem, Urgente: PriorityTimeItem};
+
+:Visualización en tarjeta de métrica:
+ Horas medias por nivel de prioridad;
+
+stop
+
+@enduml

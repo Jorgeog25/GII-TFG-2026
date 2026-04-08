@@ -1,0 +1,41 @@
+@startuml CU16_Retrabajo
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-16 · Consultar Tasa de Retrabajo
+
+start
+
+:CU-01 (JWT válido);
+:Métrica disponible en **/métricas**
+ (también cargada en CU-02 para panel de salud);
+
+:GET /metrics/rework-rate
+ [?project_id & employee_id & root_only];
+
+:ReworkRateService.calculate()
+ 1. Obtiene tareas cerradas en scope
+ 2. get_tasks_reopened() analiza
+    mail_tracking_value:
+    tarea reabierta = cerrada → abierta en historial;
+
+:rework_rate = (reabiertos / cerradas) × 100;
+
+:PieChart: Reabiertos vs OK;
+
+:KPIs:
+· Tasa de retrabajo %
+· Tareas reabiertos
+· Total cerradas;
+
+:Semáforo: < 8% verde · 8-15% naranja · > 15% rojo;
+
+stop
+
+@enduml

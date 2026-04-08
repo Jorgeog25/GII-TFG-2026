@@ -1,0 +1,99 @@
+@startuml CU10_ListarTareas
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+skinparam NoteFontColor #07090F
+
+title CU-10 · Listar Tareas
+
+start
+
+:CU-01 (JWT válido);
+
+:Determinar contexto de invocación y filtros;
+
+if (¿Filtro project_id?) then (Sí)
+  if (¿Responsable fuera de scope?) then (Sí)
+    :HTTP 403 - Acceso denegado al proyecto;
+    stop
+  else
+    :Filtrar tasks por project_id;
+  endif
+endif
+
+if (¿Filtro employee_id?) then (Sí)
+  if (¿Responsable fuera de scope?) then (Sí)
+    :HTTP 403 - Acceso denegado al empleado;
+    stop
+  else
+    if (responsable=True) then (Sí)
+      :Filtrar tasks donde employee es responsable;
+    else
+      :Filtrar tasks asignadas al employee;
+    endif
+  endif
+endif
+
+if (¿Filtro department_id?) then (Sí)
+  if (¿Responsable fuera de scope?) then (Sí)
+    :HTTP 403 - Acceso denegado al departamento;
+    stop
+  else
+    :Filtrar tasks de empleados en el departamento;
+  endif
+endif
+
+if (stage_id presente?) then (Sí)
+  :Filtrar por stage_id (status ignorado);
+else
+  if (status=pending) then (Sí)
+    :Filtrar por etapas abiertas;
+  else if (status=completed) then (Sí)
+    :Filtrar por etapas cerradas;
+  else if (status=overdue) then (Sí)
+    :Filtrar por etapas abiertas + deadline pasado;
+  endif
+endif
+
+:Aplicar filtros adicionales (date_from, date_to, search, root_only, date_assign);
+
+:JOIN con Project (para acceder al nombre del proyecto);
+
+:Aplicar ordenamiento (apply_sort);
+
+:Ejecutar query paginada;
+
+if (¿Sin resultados?) then (Sí)
+  :EmptyState con mensaje;
+  stop
+endif
+
+:Construir items según modelo:
+· PendingTaskItem si status=pending & employee_id
+· CompletedTaskItem si status=completed & employee_id
+· AssignedTaskItem si employee_id sin status
+· TaskResponse otros casos;
+
+:Tabla paginada (page_size=50):
+· Nombre tarea (link → CU-11)
+· Etapa (badge coloreado)
+· Horas estimadas / trabajadas
+· Deadline (rojo + ⚠ si vencida)
+· Fecha cierre
+· Estado (abierta/cerrada/cancelada)
+· Productivity (si aplica);
+
+if (Click en tarea?) then (Sí)
+  :Navegar a CU-11 /tareas/{id};
+endif
+
+:Paginación;
+
+stop
+
+@enduml

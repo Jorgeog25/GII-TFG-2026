@@ -1,0 +1,43 @@
+@startuml CU06_ListarDepartamentos
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-06 · Listar Departamentos
+
+start
+
+:CU-01 (JWT válido);
+:Actor navega a **/departamentos**;
+
+:GET /departments/
+ ?page&page_size&search&sort_by&sort_order;
+
+if (¿Responsable?) then (SÍ)
+  :Filtra: Department.id IN (department_ids del JWT);
+else (Director)
+  :Sin filtro adicional;
+endif
+
+if (¿Sin departamentos?) then (SÍ)
+  :EmptyState "Sin departamentos";
+  stop
+endif
+
+:Cuadrícula de tarjetas:
+· Nombre del departamento
+· Nombre del manager (si existe)
+· Nombre completo jerárquico;
+
+if (¿Click en tarjeta?) then (SÍ)
+  :Navega a CU-07 /departamentos/{id};
+endif
+
+stop
+
+@enduml

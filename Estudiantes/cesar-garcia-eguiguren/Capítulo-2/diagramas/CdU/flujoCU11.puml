@@ -1,0 +1,69 @@
+@startuml CU11_DetalleTarea
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-11 · Consultar Detalle de Tarea
+
+start
+
+:CU-01 (JWT válido);
+:Actor accede a **/tareas/{id}**
+(desde CU-10, CU-09 o CU-05);
+
+:GET /tasks/{id}
+ → TaskService.get_task_detail();
+
+if (¿Tarea no encontrada?) then (SÍ)
+  :HTTP 404;
+  stop
+endif
+
+if (¿Responsable con proyecto fuera de scope?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+:Cabecera:
+· Nombre de la tarea
+· Badge etapa | Badge vencida (si aplica)
+· Badge subtarea (si parent_id)
+· Badge nº subtareas (si las hay);
+
+:Sección Información general:
+· Proyecto → link a CU-09
+· Deadline (rojo si vencida)
+· Fecha de cierre
+· Fecha de asignación;
+
+:Sección Personas:
+· Responsable (pill clickable → CU-05)
+· Empleados asignados (pills clickables → CU-05);
+
+if (¿planned_hours > 0?) then (SÍ)
+  :Sección Horas:
+   · KPIs: estimadas / invertidas / restantes
+   · Barra de progreso (rojo si > 100%)
+   · Métrica productividad = (est/real)×100;
+endif
+
+if (¿Hay subtareas?) then (SÍ)
+  :Lista de subtareas clickables
+   (cada una navega a CU-11 recursivo);
+endif
+
+if (¿Tiene tarea padre?) then (SÍ)
+  :Link a tarea padre (CU-11);
+endif
+
+:Panel lateral Metadatos:
+· ID interno · Prioridad · Kanban state;
+
+stop
+
+@enduml

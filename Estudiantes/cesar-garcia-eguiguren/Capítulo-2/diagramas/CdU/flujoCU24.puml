@@ -1,0 +1,100 @@
+@startuml CU24_Rentabilidad
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-24 · Consultar Rentabilidad Financiera (Director exclusivo)
+
+start
+
+:<<include>> CU-01 (JWT válido);
+
+if (¿role == "director"?) then (NO)
+  :ProtectedRoute (frontend) muestra
+   pantalla "Acceso restringido";
+  :require_director (backend) devuelve HTTP 403;
+  stop
+endif
+
+:Actor navega a **/rentabilidad**;
+:Actor selecciona rango de fechas;
+:Actor selecciona modo de filtro;
+
+if (Modo filtro) then (**Global**)
+  :Sin filtro adicional;
+else if (Modo filtro) then (**Por proyecto**)
+  :Actor selecciona proyecto (select);
+  :?project_id=X;
+else (**Por responsable**)
+  :Actor selecciona manager (select)
+   o hace click en botón de la lista de managers;
+  :?manager_id=X;
+  :Aparece botón "Ver detalle →";
+endif
+
+fork
+  :GET /metrics/profitability/summary
+   ?date_from&date_to;
+  :Totales globales:
+   income, expense, net, total_hours
+   Conteo proyectos: ganancia/neutro/perdida;
+fork again
+  :GET /metrics/profitability/per-project
+   [?project_id & manager_id & dates];
+fork again
+  :GET /metrics/profitability/per-client
+   [?project_id & manager_id & dates];
+end fork
+
+note right
+  Fuente: account_analytic_line.amount
+  positivo = ingreso
+  negativo = gasto
+end note
+
+:4 KPIs: Ingresos | Gastos (abs) | Neto | Rentabilidad %;
+
+:BarChart agrupado ingresos vs gastos por proyecto (top 12);
+:PieChart: Ganancia / Neutro / Pérdida (count por estado);
+
+:Pestaña **Por proyecto** → tabla con
+ income, expense, net, horas, rentabilidad%, badge;
+
+if (¿Click en "Ver Detalles" fila proyecto?) then (SÍ)
+  :<<extend>> CU-26
+   → GET /metrics/profitability/per-project/{id}/lines
+   → Panel de líneas analíticas ingresos/gastos;
+endif
+
+:Pestaña **Por cliente** → tabla agrupada
+ por partner_id;
+
+if (¿Click en "Ver Detalles" fila cliente?) then (SÍ)
+  :<<extend>> CU-27
+   → GET /metrics/profitability/per-client/{id}/lines
+   → Panel de líneas analíticas por cliente;
+endif
+
+if (Modo == Por responsable AND manager seleccionado) then (SÍ)
+  if (¿Click "Ver detalle →"?) then (SÍ)
+    :ManagerPanel:
+     GET /metrics/profitability/manager/{id}
+     → tabla de proyectos + KPIs del responsable
+     → BarChart ingresos vs gastos top-10;
+    :Botón "← Volver" para regresar a la vista principal;
+  endif
+endif
+
+stop
+
+note right
+  ⚠ No existe GET /dashboards/team-assignment
+  ni panel de "Estado del equipo" en esta página.
+end note
+
+@enduml

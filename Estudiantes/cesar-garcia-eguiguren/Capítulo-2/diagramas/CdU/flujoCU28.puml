@@ -1,0 +1,75 @@
+@startuml CU28_Workload
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-28 · Consultar Carga de Trabajo (Workload) de Empleado
+
+start
+
+:CU-01 (JWT válido);
+:Actor en /métricas selecciona empleado
+ en panel de parámetros;
+
+:verify_employee_scope(cu, employee_id);
+
+if (¿Fuera de scope?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+:Actor hace click en tarjeta "Carga de trabajo";
+
+:GET /metrics/workload?employee_id=X
+ [&detailed&root_only]
+ → WorkloadService.calculate();
+
+:get_user_id_for_employee(db, employee_id);
+
+if (¿Sin user_id vinculado?) then (SÍ)
+  :WorkloadResponse vacío
+   (workload_percentage=0, status="subcargado");
+  stop
+endif
+
+:get_assigned_open_tasks(db, user_id):
+ JOIN TaskAssignment + open_stage_ids;
+
+:pending_hours = SUM(max(planned - worked, 0)
+  por cada tarea abierta);
+
+:workload_pct = (pending_hours / 40h) × 100;
+
+if (workload_pct > 120%) then
+  :Status: **SOBRECARGADO** (rojo);
+else if (workload_pct < 70%) then
+  :Status: **SUBCARGADO** (amarillo);
+else
+  :Status: **NORMAL** (verde);
+endif
+
+:get_assigned_closed_tasks(últimos 30d)
+ → total_completed_tasks;
+
+:Gauge de workload%;
+:Barra de progreso (color según estado);
+:KPIs:
+· pending_hours
+· pending_tasks (tareas abiertas asignadas)
+· completed_tasks (últimos 30d)
+· available_hours (referencia: 40h);
+
+if (¿detailed=True?) then (SÍ)
+  :Incluye lista de pending_tasks y completed_tasks
+   (usado desde CU-05 y GET /dashboards/summary/employee);
+endif
+
+stop
+
+
+@enduml

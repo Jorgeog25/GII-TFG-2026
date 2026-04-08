@@ -1,5 +1,7 @@
 @startuml Actor_Director
 left to right direction
+skinparam actorStyle awesome
+
 actor Director as D
 
 usecase "CU-01 Autenticarse" as CU01
@@ -11,12 +13,13 @@ usecase "CU-06 Listar departamentos" as CU06
 usecase "CU-07 Resumen de departamento" as CU07
 usecase "CU-08 Listar proyectos" as CU08
 usecase "CU-09 Resumen de proyecto" as CU09
-usecase "CU-10 Consultar tareas" as CU10
+usecase "CU-10 Listar tareas" as CU10
 usecase "CU-11 Detalle de tarea" as CU11
 usecase "CU-12 Productividad" as CU12
 usecase "CU-13 Cumplimiento" as CU13
-usecase "CU-14 Carga / WIP" as CU14
-usecase "CU-15 Riesgo" as CU15
+usecase "CU-14 WIP de Empleado" as CU14
+usecase "CU-28 Workload de Empleado" as CU28
+usecase "CU-15 Riesgo de Proyecto" as CU15
 usecase "CU-16 Retrabajo" as CU16
 usecase "CU-17 Exactitud estimación" as CU17
 usecase "CU-18 Lead Time" as CU18
@@ -27,8 +30,8 @@ usecase "CU-22 Gráficos analíticos" as CU22
 usecase "CU-23 Asistencia" as CU23
 usecase "CU-24 Rentabilidad financiera" as CU24
 usecase "CU-25 Búsqueda global" as CU25
-usecase "CU-26 Líneas proyecto" as CU26
-usecase "CU-27 Líneas cliente" as CU27
+usecase "CU-26 Líneas analíticas proyecto" as CU26
+usecase "CU-27 Líneas analíticas cliente" as CU27
 
 D --> CU01
 D --> CU02
@@ -44,6 +47,7 @@ D --> CU11
 D --> CU12
 D --> CU13
 D --> CU14
+D --> CU28
 D --> CU15
 D --> CU16
 D --> CU17

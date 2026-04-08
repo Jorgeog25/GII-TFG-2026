@@ -1,0 +1,60 @@
+@startuml CU07_ResumenDepartamento
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam ActivityBorderColor #1E2840
+skinparam ActivityBackgroundColor #141824
+skinparam ActivityDiamondBackgroundColor #0D1018
+skinparam ActivityDiamondBorderColor #38BDF8
+
+title CU-07 · Consultar Resumen de Departamento
+
+start
+
+:CU-01 (JWT válido);
+:Actor accede a **/departamentos/{id}**
+(desde CU-06 o enlace en CU-03);
+
+:verify_department_scope(cu, department_id);
+
+if (¿Fuera de scope?) then (SÍ)
+  :HTTP 403;
+  stop
+endif
+
+fork
+  :GET /departments/{id};
+fork again
+  :GET /departments/{id}/workload-summary
+   → WorkloadService por cada empleado;
+end fork
+
+:Cabecera: Nombre + Manager;
+
+:4 KPIs:
+· Total empleados
+· Sobrecargados (workload_pct > 120%)
+· Subcargados (workload_pct < 70%)
+· Sin tareas;
+
+if (¿Hay sobrecargados?) then (SÍ)
+  :Banner rojo con nombres de sobrecargados;
+endif
+
+:Actor selecciona pestaña;
+
+if (Pestaña) then (**Carga de trabajo**)
+  :Tabla ordenable client-side:
+   Empleado | Pend. | H. pend.
+   Completadas | Barra carga% | Badge estado;
+  :Click en empleado → CU-05;
+else (**Empleados**)
+  :GET /departments/{id}/employees
+   → Tabla: Nombre | Cargo | Email | Coste/h | Badge activo;
+  :Click en empleado → CU-05;
+endif
+
+stop
+
+@enduml
