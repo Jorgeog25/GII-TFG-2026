@@ -745,6 +745,51 @@ Todos los casos de uso existentes para esta solución están documentados aqui :
 
 ---
 
+### Prototipo CU-11 - Detalle de Tarea
+
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ ← Volver                                                    │
+├─────────────────────────────────────────────────────────────┤
+│ API Autenticación                                           │
+│ [En progreso]  [Vencida] ⚠  [Subtarea]  [2 subtareas]      │
+├─────────────────────────────────────────────────────────────┤
+│ Información general                                         │
+│ ┌──────────────────────────────┬─────────────────────────┐ │
+│ │ Proyecto                     │ Ver proyecto #12        │ │
+│ │ Deadline                     │ 08 abr 26 ⚠             │ │
+│ │ Fecha fin                     │ 10 abr 26              │ │
+│ │ Asignada el                   │ 01 abr 26              │ │
+│ └──────────────────────────────┴─────────────────────────┘ │
+├─────────────────────────────────────────────────────────────┤
+│ Personas                                                    │
+│ Responsable: Ana García                                     │
+│ Asignados (3): Juan, Pedro, Luis                             │
+├─────────────────────────────────────────────────────────────┤
+│ Horas                                                       │
+│ ┌─────────────┬─────────────┬─────────────┐                  │
+│ │ Estimadas   │ Invertidas  │ Restantes   │                  │
+│ │ 20h         │ 16h         │ 4h          │                  │
+│ └─────────────┴─────────────┴─────────────┘                  │
+│ Progreso de horas: 80%                                       │
+│ Productividad: 125%                                          │
+├─────────────────────────────────────────────────────────────┤
+│ Subtareas (2)                                                │
+│ [✅] Tests unitarios backend       2h                       │
+│ [⚠] Diseño UX portal              2d                        │
+├──────────────────────────────────────────────────────────────┤
+│ Sidebar: Metadatos                                           │
+│ ID interno: #123                                           │
+│ Kanban: En desarrollo                                        │
+│ Prioridad: Urgente                                           │
+│ Tarea padre: #45                                             │
+└─────────────────────────────────────────────────────────────┘
+
+```
+
+---
+
 ### Prototipo CU-24 – Rentabilidad Financiera
 
 ```
