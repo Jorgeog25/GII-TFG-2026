@@ -49,6 +49,24 @@ El diagrama de estados del Cliente describe un flujo sencillo en el que este pas
 
 Por otro lado, el diagrama de estados del Técnico representa un proceso más complejo. El técnico comienza en espera de nuevos correos, y cuando recibe uno, lo analiza e interpreta su intención. En función de esta interpretación, decide si es necesario consultar los sistemas internos. En caso afirmativo, realiza consultas a diferentes aplicaciones para obtener la información necesaria. Finalmente, genera y envía una respuesta, regresando al estado inicial a la espera de nuevos correos.
 
+## Requisitos Funcionales
+| Categoría              | Requisito                           | Descripción                                                                                                                                                                    |
+| ---------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Gestión de solicitudes | Enviar solicitud                    | El cliente debe poder generar y enviar una solicitud al sistema tras identificar una necesidad.                                                                                |
+| Gestión de solicitudes | Recibir respuesta                   | El sistema debe procesar las solicitudes y proporcionar una respuesta al cliente.                                                                                              |
+| Gestión de solicitudes | Completar formulario                | El cliente debe poder aportar información adicional mediante un formulario asociado a una solicitud.                                                                           |
+| Gestión de solicitudes | Registrar solicitudes               | El sistema debe registrar todas las solicitudes entrantes, sin necesidad de almacenar el detalle completo de su contenido.                                                     |
+| Gestión interna        | Ver solicitudes pendientes          | El sistema debe almacenar la información necesaria para permitir la consulta de solicitudes pendientes, aunque el desarrollo de la vista de datos no forma parte del proyecto. |
+| Gestión interna        | Actualizar estado                   | El técnico debe poder marcar como resuelto un formulario o solicitud.                                                                                                          |
+| Gestión interna        | Validar existencia de formulario    | El sistema debe comprobar si existe un formulario asociado antes de actualizar el estado de una solicitud.                                                                     |
+| Procesamiento          | Procesar solicitudes                | El sistema debe analizar las solicitudes recibidas para generar una respuesta adecuada.                                                                                        |
+| Procesamiento          | Identificar intención               | El sistema debe identificar la intención de la solicitud a partir del contenido recibido.                                                                                      |
+| Comunicación           | Enviar respuesta                    | El sistema debe enviar la respuesta generada al cliente.                                                                                                                       |
+| Comunicación           | Solicitar información adicional     | El sistema debe poder requerir información adicional al cliente cuando la solicitud no sea suficiente.                                                                         |
+| Integración de datos   | Consultar bases de datos existentes | El sistema debe ser capaz de consultar la información de las solicitudes en bases de datos ya existentes para su procesamiento y gestión.                                      |
+
+
+
 ## Requisitos Suplementarios
 
 | Categoría      | Requisito                  | Descripción                                                                                        |
