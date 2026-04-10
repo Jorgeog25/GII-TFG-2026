@@ -53,7 +53,7 @@ Este diagrama permite interpretar correctamente los datos obtenidos de la base d
 
 | ID | Descripción | Actor | Prioridad |
 |---|---|---|---|
-| RF-01 | El sistema debe autenticar a los usuarios mediante su `res_users.id` de Odoo, determinar su rol (director/responsable/empleado) y emitir un JWT HS256 de 8 horas con el scope calculado dinámicamente (`employee_ids`, `department_ids`, `project_ids`). | Director, Responsable | Alta |
+| RF-01 | El sistema debe autenticar a los usuarios mediante **login y contraseña** (`res_users.login` y `res_users.password`), verificando el hash PBKDF2-SHA512 almacenado por Odoo, determinar su rol (director/responsable/empleado) y emitir un JWT HS256 de 8 horas con el scope calculado dinámicamente (`employee_ids`, `department_ids`, `project_ids`). | Director, Responsable | Alta |
 | RF-02 | El sistema debe proporcionar un overview global con KPIs de proyectos activos, empleados activos, tareas abiertas, tareas vencidas y actividad de los últimos 14 días. Los datos deben estar filtrados por el scope del actor autenticado. | Director, Responsable | Alta |
 | RF-03 | El sistema debe mostrar un panel manager con el estado de carga de todo el equipo, clasificando a los empleados como sobrecargado (>120%), normal (70–120%), subcargado (<70%) o sin tareas, con gráfico de distribución y ranking de los 5 más cargados. | Director, Responsable | Alta |
 | RF-04 | El sistema debe listar empleados con paginación server-side (50/pág.), búsqueda por nombre con debounce de 300 ms, filtro por departamento y ordenación global por cualquier columna. | Director, Responsable | Alta |
