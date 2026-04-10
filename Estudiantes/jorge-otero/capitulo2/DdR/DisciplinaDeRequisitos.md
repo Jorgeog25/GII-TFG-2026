@@ -200,14 +200,133 @@ Este proceso permite complementar la información de una solicitud previa de for
 
 ## Estructurar la Descripción de los Casos de Uso
 
-## Diagramas de Contexto  
+### CA1 – Enviar solicitud
 
-| Diagrama | Código |
-|---------|---------|
-|![Diagrama de Contexto](./DdC/imagen/DdC_Tecnico.png)|[Ver código](./DdC/codigo/DdC_Tecnico.puml)|
+- **Actor:** Cliente  
 
-| Diagrama | Código |
-|---------|---------|
-|![Diagrama de Contexto](./DdC/imagen/DdC_Cliente.png)|[Ver código](./DdC/imagen/DdC_Cliente.png)|
+- **Descripción:**  
+El cliente genera y envía una solicitud al sistema para comunicar una necesidad o incidencia.
+
+- **Precondiciones:**  
+- El cliente dispone de la información necesaria para redactar la solicitud.  
+
+- **Postcondiciones:**  
+- La solicitud queda registrada en el sistema.  
+
+- **Flujo principal:**  
+1. El cliente redacta la solicitud.  
+2. El cliente revisa la información introducida.  
+3. El cliente envía la solicitud.  
+4. El sistema registra la solicitud.  
+
+- **Flujos alternativos:**  
+- 2a. El cliente detecta errores → modifica la solicitud antes de enviarla.  
+
+- **Criterios de aceptación:**  
+- La solicitud contiene información mínima obligatoria.  
+- El sistema confirma la recepción de la solicitud.  
+
+### CA2 – Recibir respuesta
+
+- **Actor:** Cliente  
+
+- **Descripción:**  
+El cliente recibe la respuesta generada por el sistema tras el procesamiento de su solicitud.
+
+- **Precondiciones:**  
+- Existe una solicitud previamente enviada.  
+
+- **Postcondiciones:**  
+- El cliente dispone de una respuesta asociada a su solicitud.  
+
+- **Flujo principal:**  
+1. El sistema procesa la solicitud.  
+2. El sistema genera una respuesta.  
+3. El sistema envía la respuesta al cliente.  
+4. El cliente recibe y visualiza la respuesta.  
+
+- **Flujos alternativos:**  
+- 1a. La información es insuficiente → el sistema solicita información adicional.  
+
+- **Criterios de aceptación:**  
+- La respuesta es generada correctamente.  
+- El cliente puede visualizar la respuesta.  
+
+### CA3 – Ver solicitudes pendientes
+
+- **Actor:** Técnico  
+
+- **Descripción:**  
+El técnico consulta las solicitudes o formularios pendientes para su gestión.
+
+- **Precondiciones:**  
+- Existen solicitudes o formularios pendientes en el sistema.  
+
+- **Postcondiciones:**  
+- El técnico visualiza la información necesaria para su gestión.  
+
+- **Flujo principal:**  
+1. El técnico accede a la vista de datos.  
+2. El sistema recupera las solicitudes pendientes.  
+3. El sistema muestra la información al técnico.  
+
+- **Flujos alternativos:**  
+- 2a. Error en la carga de datos → el sistema muestra un mensaje de error.  
+
+- **Criterios de aceptación:**  
+- Solo se muestran solicitudes no resueltas.  
+- La información es accesible y está actualizada.  
+
+### CA4 – Actualizar estado
+
+- **Actor:** Técnico  
+
+- **Descripción:**  
+El técnico actualiza el estado de un formulario o solicitud en el sistema.
+
+- **Precondiciones:**  
+- Existe una solicitud o formulario pendiente.  
+
+- **Postcondiciones:**  
+- El estado queda actualizado correctamente o no se modifica si no procede.  
+
+- **Flujo principal:**  
+1. El técnico selecciona una solicitud o formulario.  
+2. El técnico marca como resuelto.  
+3. El sistema verifica si existe formulario asociado.  
+4. El sistema actualiza el estado.  
+
+- **Flujos alternativos:**  
+- 3a. No existe formulario → el sistema no realiza cambios.  
+
+- **Criterios de aceptación:**  
+- El estado se actualiza correctamente si se cumplen las condiciones.  
+- El sistema valida la existencia del formulario.  
 
 
+### CA5 – Completar formulario
+
+- **Actor:** Cliente  
+
+- **Descripción:**  
+El cliente completa un formulario para aportar información adicional a una solicitud.
+
+- **Precondiciones:**  
+- El sistema ha solicitado información adicional.  
+
+- **Postcondiciones:**  
+- La información adicional queda registrada en el sistema.  
+
+- **Flujo principal:**  
+1. El cliente accede al formulario.  
+2. El cliente completa los campos requeridos.  
+3. El cliente revisa la información.  
+4. El cliente envía el formulario.  
+5. El sistema registra la información.  
+
+- **Flujos alternativos:**  
+- 3a. El cliente detecta errores → modifica la información antes de enviarla.  
+
+- **Criterios de aceptación:**  
+- Los campos obligatorios están cumplimentados.  
+- El formulario se registra correctamente.  
