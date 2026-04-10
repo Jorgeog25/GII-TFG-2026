@@ -17,22 +17,22 @@ El diagrama de actores representa los dos roles principales que interactúan con
 
 | Caso de Uso                    | Requisitos Funcionales relacionados                                                               |
 | ------------------------------ | ------------------------------------------------------------------------------------------------- |
-| CU1 Enviar solicitud           | RF1 Enviar solicitud, RF4 Registrar solicitudes                                                   |
-| CU2 Recibir respuesta          | RF2 Recibir respuesta, RF8 Procesar solicitudes, RF9 Identificar intención, RF10 Enviar respuesta |
-| CU3 Ver solicitudes pendientes | RF5 Ver solicitudes pendientes                                                                    |
-| CU4 Actualizar estado          | RF6 Actualizar estado, RF7 Validar existencia de formulario                                       |
-| CU5 Completar formulario       | RF3 Completar formulario, RF11 Solicitar información adicional                                    |
+| CA1 Enviar solicitud           | RF1 Enviar solicitud, RF4 Registrar solicitudes                                                   |
+| CA2 Recibir respuesta          | RF2 Recibir respuesta, RF8 Procesar solicitudes, RF9 Identificar intención, RF10 Enviar respuesta |
+| CA3 Ver solicitudes pendientes | RF5 Ver solicitudes pendientes                                                                    |
+| CA4 Actualizar estado          | RF6 Actualizar estado, RF7 Validar existencia de formulario                                       |
+| CA5 Completar formulario       | RF3 Completar formulario, RF11 Solicitar información adicional                                    |
 
 
 ## Priorizar Casos de Uso 
 
 | ID  | Caso de uso                | Prioridad | Justificación                                                                              |
 | --- | -------------------------- | --------- | ------------------------------------------------------------------------------------------ |
-| CU1 | Enviar solicitud           | Alta      | Es el punto de entrada del sistema y condición necesaria para el resto de funcionalidades. |
-| CU2 | Recibir respuesta          | Alta      | Constituye la finalidad principal del sistema: proporcionar respuesta al cliente.          |
-| CU3 | Ver solicitudes pendientes | Media     | Permite la gestión por parte del técnico, pero depende de solicitudes previas.             |
-| CU4 | Actualizar estado          | Media     | Necesario para la gestión interna, ligado al seguimiento de solicitudes.                   |
-| CU5 | Completar formulario       | Baja      | Funcionalidad complementaria para aportar información adicional en casos específicos.      |
+| CA1 | Enviar solicitud           | Alta      | Es el punto de entrada del sistema y condición necesaria para el resto de funcionalidades. |
+| CA2 | Recibir respuesta          | Alta      | Constituye la finalidad principal del sistema: proporcionar respuesta al cliente.          |
+| CA3 | Ver solicitudes pendientes | Media     | Permite la gestión por parte del técnico, pero depende de solicitudes previas.             |
+| CA4 | Actualizar estado          | Media     | Necesario para la gestión interna, ligado al seguimiento de solicitudes.                   |
+| CA5 | Completar formulario       | Baja      | Funcionalidad complementaria para aportar información adicional en casos específicos.      |
 
 
 ## Detallar Casos de Uso
