@@ -624,59 +624,92 @@ Todos los casos de uso existentes para esta solución están documentados aquí:
 
 ## 4. Prototipar Casos de Uso
 
+Los prototipos de baja fidelidad presentados a continuación representan la disposición visual de cada pantalla del sistema. Cada prototipo ilustra la estructura de la interfaz, la organización de los datos y los puntos de interacción disponibles para el usuario, sirviendo como referencia para la implementación del frontend en React.
+
 ### Prototipo CU-01 – Autenticarse
+Formulario de login centrado con campos de usuario y contraseña, botón de acceso y área de mensajes de error. Incluye el logo de la aplicación y la indicación de acceso restringido.
+
 ![Prototipo de autenticación](./imagenes/prototipado/CU-01.png)
 ---
 
 ### Prototipo CU-02 – Listar Empleados
+Tabla paginada con barra de búsqueda por nombre, selector de departamento y toggle de empleados activos. Las columnas incluyen nombre, departamento, cargo, email, coste/h y badge de estado. Cada fila es clickable para acceder al resumen del empleado.
+
 ![Prototipo de listar empleados](./imagenes/prototipado/CU-04.png)
 
 ---
 
 ### Prototipo CU-03 – Resumen de Empleado
+Dashboard individual con cabecera de perfil (avatar, nombre, cargo, badge de carga), cuatro KPIs principales y sección "Hoy" con tarjetas de asignadas y vencidas. En la parte inferior, cuatro pestañas de tareas (pendientes, completadas, asignadas, responsable) con filtro de fechas.
+
 ![Prototipo de resumen de empleado](./imagenes/prototipado/CU-05.png)
 
 ---
 ### Prototipo CU-04 – Listar Departamentos
+Cuadrícula de tarjetas con el nombre del departamento, el manager asignado y el nombre jerárquico. Cada tarjeta navega al resumen del departamento.
+
 ![Prototipo de listar departamentos](./imagenes/prototipado/CU-06.png)
 
 ---
 ### Prototipo CU-05 – Resumen de Departamento
+Dashboard de departamento con cabecera (nombre + manager), cuatro KPIs de distribución de carga, banner de alerta para empleados sobrecargados y dos pestañas: carga de trabajo (tabla ordenable con barra de %) y listado de empleados.
+
 ![Prototipo de resumen de departamento](./imagenes/prototipado/CU-07.png)
 
 ---
 ### Prototipo CU-06 – Listar Proyectos
-Similar al CU-04, mostrando tarjetas para cada proyecto.
+Cuadrícula de tarjetas similar a CU-04, mostrando nombre del proyecto, cliente asociado y código. Cada tarjeta navega al resumen del proyecto.
 
 ---
 ### Prototipo CU-07 – Resumen de Proyecto
+Dashboard de proyecto con cabecera (nombre, cliente, badges de rentabilidad y riesgo), cuatro KPIs (eficiencia, riesgo, rentabilidad, total tareas), gráfico de barras estimadas vs. reales y dos pestañas: tareas del proyecto (con filtro por etapa) y equipo (con horas imputadas).
+
 ![Prototipo de resumen de proyecto](./imagenes/prototipado/CU-09.png)
 
 ---
 ### Prototipo CU-08 – Listar Tareas
+Tabla paginada con barra de filtros combinables: selector de estado, selector de etapa, selector de proyecto, rango de fechas y checkbox "solo tareas padre". Columnas: nombre, etapa, horas estimadas, deadline (con indicador de vencida), fecha cierre y estado.
+
 ![Prototipo de listar tareas](./imagenes/prototipado/CU-10.png)
 
 ---
 ### Prototipo CU-09 – Detalle de Tarea
+Ficha de tarea organizada en dos columnas. Izquierda: información general (proyecto, deadline, fechas), personas (responsable y asignados como pills clickables), horas (tres KPIs + barra de progreso + productividad) y subtareas. Derecha: panel de metadatos (ID, prioridad, tarea padre).
+
 ![Prototipo de detalle de tarea](./imagenes/prototipado/CU-11.png)
 
 ---
 ### Prototipo P6 – Métricas Operativas (CU-10 a CU-20)
+Página `/métricas` con layout de dos columnas: izquierda con cuadrícula de tarjetas métricas (cada una con icono, valor preview y mini gráfico), derecha con panel de detalle de la métrica seleccionada (gráficos, KPIs y texto explicativo). Panel superior de filtros con selector de empleado/proyecto y rango de fechas. Agrupación por categoría (todas, por proyecto, por empleado, generales).
+
 ![Prototipo de métricas](./imagenes/prototipado/CU-P7.png)
 
 ---
 ### Prototipo CU-21 – Gráficos Analíticos
+Página `/gráficos` con barra de filtros (fechas, agrupación semana/mes, tipo de entidad) y tres gráficos en cuadrícula 2×2: evolución de tareas, distribución por etapa y horas por cliente (solo Director).
+
 ![Prototipo de gráficos analíticos](./imagenes/prototipado/CU-22.png)
 
 ---
 ### Prototipo CU-22 – Asistencia vs Imputaciones
+Página `/asistencia` con filtro por equipo global o por responsable, filtros de fecha y departamento. Sección superior con cuatro KPIs, gráfico de barras agrupadas (fichadas vs. imputadas, top 15) y tabla de empleados con badge de cobertura. Al hacer click en un empleado se expande un panel inferior con serie diaria y línea de diferencia.
+
 ![Prototipo de asistencia](./imagenes/prototipado/CU-23.png)
 
 ---
 ### Prototipo CU-23 – Rentabilidad Financiera
+Página `/rentabilidad` con filtros de fecha y modo (global/proyecto/responsable). Cuatro KPIs superiores (ingresos, gastos, neto, rentabilidad %), gráfico de barras agrupadas (top 12) y donut de estados. Dos pestañas: por proyecto y por cliente, ambas con tabla y botón "Ver Detalles" para drill-down a líneas analíticas (CU-24/CU-25).
+
 ![Prototipo de rentabilidad](./imagenes/prototipado/CU-24.png)
 ---
-### Prototipo CU-24 – Búsqueda Global
+### Prototipo CU-24/CU-25 – Líneas Analíticas por Proyecto/Cliente
+Panel de drill-down accesible desde CU-23 que muestra dos tablas paralelas: ingresos y gastos, con columnas de fecha, descripción, importe y horas. En el caso de líneas por cliente se añade la columna de proyecto.
+
+![Prototipo de líneas analíticas](./imagenes/prototipado/CU-26-27.png)
+---
+### Prototipo CU-26 – Búsqueda Global
+Página `/buscar` con campo de búsqueda prominente y botones de filtro por tipo de entidad (Todos, Tareas, Proyectos, Empleados). Los resultados se muestran como tarjetas con icono del tipo, nombre, código y badge de categoría. Cada resultado navega directamente al detalle correspondiente.
+
 ![Prototipo de búsqueda global](./imagenes/prototipado/CU-25.png)
 
 ---
