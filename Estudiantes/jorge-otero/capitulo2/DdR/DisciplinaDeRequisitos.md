@@ -23,6 +23,30 @@ El diagrama de actores representa los dos roles principales que interactúan con
 | CA4 Actualizar estado          | RF6 Actualizar estado, RF7 Validar existencia de formulario                                       |
 | CA5 Completar formulario       | RF3 Completar formulario, RF11 Solicitar información adicional                                    |
 
+## Flujo de Procesos por Entidad
+
+### Solicitud
+
+| Diagrama | Código |
+|---------|---------|
+|![Flujo](./FlujoEntidades/imagen/Flujo_Solicitud.png)|[Ver código](./FlujoEntidades/codigo/Flujo_Solicitud.puml)|
+
+El proceso se inicia cuando el cliente envía una solicitud, pasando esta al estado Enviada. A continuación, el sistema actúa de forma automática, realizando consultas a las bases de datos y procesando la información necesaria, lo que sitúa la solicitud en el estado En proceso.
+
+Una vez finalizado este tratamiento, se genera la respuesta y la solicitud pasa al estado Respondida, momento en el que el cliente recibe la contestación. Tras ello, el flujo finaliza al haberse completado la gestión de la solicitud.
+
+## Formulario
+
+| Diagrama | Código |
+|---------|---------|
+|![Flujo](./FlujoEntidades/imagen/Flujo_Formulario.png)|[Ver código](./FlujoEntidades/codigo/Flujo_Formulario.puml)
+
+El proceso comienza cuando el cliente decide aportar información adicional, lo que da lugar a la creación del formulario. A continuación, el cliente completa los campos requeridos, pasando el formulario al estado Completado.
+
+Posteriormente, el sistema procesa la información recibida y el formulario queda en estado Formulario pendiente, quedando disponible para su gestión. En este punto, el técnico puede visualizarlo a través de la vista de formularios pendientes.
+
+Una vez revisado, el técnico inicia su gestión, llevando el formulario al estado En resolución. Finalmente, tras realizar las acciones necesarias, el técnico actualiza su estado, quedando el formulario como resuelto y finalizando el proceso.
+
 
 ## Priorizar Casos de Uso 
 
