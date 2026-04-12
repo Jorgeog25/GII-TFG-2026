@@ -1,0 +1,17 @@
+@startuml
+left to right direction
+title Diagrama de contexto
+
+actor "Ingeniero de QA" as QA
+
+rectangle "Sistema" as SISTEMA
+rectangle "Modelo de IA\n(OpenAI)" as MODELO
+rectangle "Kiwi TCMS\nSistema externo" as KIWI
+
+QA --> SISTEMA 
+QA --> KIWI
+MODELO --> SISTEMA
+SISTEMA --> MODELO : Consume modelo
+SISTEMA --> KIWI 
+KIWI --> SISTEMA 
+@enduml
