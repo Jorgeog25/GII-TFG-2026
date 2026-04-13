@@ -1,0 +1,36 @@
+@startuml cerrarSesion
+
+skinparam linetype polyline
+
+state cerrarSesion as "cerrarSesion()" {
+
+    state " " as SolicitandoCierre
+    state " " as CerrandoSesion
+
+    [*] -[#green]-> SolicitandoCierre
+    note on link
+    Se solicita cerrar sesion
+    end note
+
+    SolicitandoCierre -[#green]-> CerrandoSesion
+    note on link
+    <b>Sistema</b> finaliza la sesion activa
+    end note
+
+    CerrandoSesion -[#green]-> [*]
+    note on link
+    <b>Sistema</b> vuelve al estado inicial
+    end note
+}
+
+cerrarSesion -[#green]-> SISTEMA_CERRADO
+note on link
+completarCierre()
+end note
+
+cerrarSesion -[#red]-> SISTEMA_ABIERTO
+note on link
+rechazarCierre()
+end note
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml eliminarRequisitoFuncional
+
+skinparam linetype polyline
+
+state eliminarRequisitoFuncional as "eliminarRequisitoFuncional()" {
+
+    state " " as SeleccionandoRequisito
+    state " " as ConfirmandoEliminacion
+    state " " as EliminandoRequisito
+
+    [*] -[#green]-> SeleccionandoRequisito
+    note on link
+    Se solicita eliminar un requisito funcional
+    end note
+
+    SeleccionandoRequisito -[#green]-> ConfirmandoEliminacion
+    note on link
+    <b>Sistema</b> solicita confirmacion
+    de la operacion
+    end note
+
+    ConfirmandoEliminacion -[#green]-> EliminandoRequisito
+    note on link
+    <b>Sistema</b> valida la confirmacion
+    y prepara la eliminacion
+    end note
+
+    EliminandoRequisito -[#green]-> [*]
+    note on link
+    <b>Sistema</b> elimina el requisito funcional
+    end note
+}
+
+eliminarRequisitoFuncional -[#green]-> REQUISITOS_FUNCIONALES_ABIERTO
+note on link
+completarEliminacion()
+end note
+
+eliminarRequisitoFuncional -[#red]-> REQUISITO_FUNCIONAL_ABIERTO
+note on link
+rechazarEliminacion()
+end note
+
+@enduml

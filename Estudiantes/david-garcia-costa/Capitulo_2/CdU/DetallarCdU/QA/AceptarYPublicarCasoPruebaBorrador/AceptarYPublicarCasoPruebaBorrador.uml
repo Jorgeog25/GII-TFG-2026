@@ -1,0 +1,53 @@
+@startuml aceptarYPublicarCasoPruebaBorrador
+
+skinparam linetype polyline
+
+state aceptarYPublicarCasoPruebaBorrador as "aceptarYPublicarCasoPruebaBorrador()" {
+
+    state " " as ConsultandoBorrador
+    state " " as AceptandoBorrador
+    state " " as TransformandoCaso
+    state " " as PublicandoEnKiwi
+
+    [*] -[#green]-> ConsultandoBorrador
+    note on link
+    Se consulta el borrador disponible
+    para su revision final
+    end note
+
+    ConsultandoBorrador -[#green]-> AceptandoBorrador
+    note on link
+    <b>Sistema</b> valida el estado del borrador
+    y confirma su aceptacion
+    end note
+
+    AceptandoBorrador -[#green]-> TransformandoCaso
+    note on link
+    <b>Sistema</b> genera el caso de prueba final
+    a partir del borrador aceptado
+    end note
+
+    TransformandoCaso -[#green]-> PublicandoEnKiwi
+    note on link
+    <b>Sistema</b> prepara la informacion
+    y la envia a Kiwi TCMS
+    end note
+
+    PublicandoEnKiwi -[#green]-> [*]
+    note on link
+    <b>Sistema</b> confirma la publicacion
+    del caso de prueba
+    end note
+}
+
+aceptarYPublicarCasoPruebaBorrador -[#green]-> KIWI_TCMS_ABIERTO
+note on link
+completarPublicacion()
+end note
+
+aceptarYPublicarCasoPruebaBorrador -[#red]-> BORRADOR_ABIERTO
+note on link
+rechazarPublicacion()
+end note
+
+@enduml

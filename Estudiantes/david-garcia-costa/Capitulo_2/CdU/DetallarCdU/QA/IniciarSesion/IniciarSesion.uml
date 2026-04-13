@@ -1,0 +1,42 @@
+@startuml iniciarSesion
+
+skinparam linetype polyline
+
+state iniciarSesion as "iniciarSesion()" {
+
+    state " " as SolicitandoCredenciales
+    state " " as ValidandoCredenciales
+    state " " as ConcediendoAcceso
+
+    [*] -[#green]-> SolicitandoCredenciales
+    note on link
+    Se solicita iniciar sesion
+    end note
+
+    SolicitandoCredenciales -[#green]-> ValidandoCredenciales
+    note on link
+    <b>Sistema</b> solicita y recibe credenciales
+    end note
+
+    ValidandoCredenciales -[#green]-> ConcediendoAcceso
+    note on link
+    <b>Sistema</b> valida la informacion
+    end note
+
+    ConcediendoAcceso -[#green]-> [*]
+    note on link
+    <b>Sistema</b> concede acceso al actor
+    end note
+}
+
+iniciarSesion -[#green]-> SISTEMA_ABIERTO
+note on link
+completarInicio()
+end note
+
+iniciarSesion -[#red]-> SISTEMA_CERRADO
+note on link
+rechazarInicio()
+end note
+
+@enduml

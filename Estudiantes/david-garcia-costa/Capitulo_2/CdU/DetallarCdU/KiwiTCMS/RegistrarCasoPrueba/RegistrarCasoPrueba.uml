@@ -1,0 +1,45 @@
+@startuml registrarCasoPrueba
+
+skinparam linetype polyline
+
+state registrarCasoPrueba as "registrarCasoPrueba()" {
+
+    state " " as RecibiendoSolicitud
+    state " " as ValidandoInformacion
+    state " " as AlmacenandoCaso
+
+    [*] -[#green]-> RecibiendoSolicitud
+    note on link
+    Kiwi TCMS recibe la solicitud de registro
+    del caso de prueba
+    end note
+
+    RecibiendoSolicitud -[#green]-> ValidandoInformacion
+    note on link
+    <b>Kiwi TCMS</b> valida la informacion recibida
+    end note
+
+    ValidandoInformacion -[#green]-> AlmacenandoCaso
+    note on link
+    <b>Kiwi TCMS</b> almacena el caso de prueba
+    si la validacion es correcta
+    end note
+
+    AlmacenandoCaso -[#green]-> [*]
+    note on link
+    <b>Kiwi TCMS</b> devuelve la confirmacion
+    del registro realizado
+    end note
+}
+
+registrarCasoPrueba -[#green]-> KIWI_TCMS_ABIERTO
+note on link
+completarRegistro()
+end note
+
+registrarCasoPrueba -[#red]-> KIWI_TCMS_ABIERTO
+note on link
+rechazarRegistro()
+end note
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml listarBorradores
+
+skinparam linetype polyline
+
+state listarBorradores as "listarBorrador()" {
+
+    state " " as RecuperandoBorradores
+    state " " as MostrandoBorradores
+
+    [*] -[#green]-> RecuperandoBorradores
+    note on link
+    Se solicita listar borrador 
+    end note
+
+    RecuperandoBorradores -[#green]-> MostrandoBorradores
+    note on link
+    <b>Sistema</b> recupera los borrador
+    pendiente o disponible
+    end note
+
+    MostrandoBorradores -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra la lista
+  
+    end note
+}
+
+listarBorradores -[#green]-> BORRADORES_ABIERTO
+note on link
+completarConsulta()
+end note
+
+listarBorradores -[#red]-> BORRADORES_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

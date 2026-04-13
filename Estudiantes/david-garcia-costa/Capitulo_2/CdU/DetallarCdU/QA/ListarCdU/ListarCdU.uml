@@ -1,0 +1,38 @@
+@startuml listarCasosUso
+
+skinparam linetype polyline
+
+state listarCasosUso as "listarCasosUso()" {
+
+    state " " as RecuperandoCasosUso
+    state " " as MostrandoCasosUso
+
+    [*] -[#green]-> RecuperandoCasosUso
+    note on link
+    Se solicita listar casos de uso
+    end note
+
+    RecuperandoCasosUso -[#green]-> MostrandoCasosUso
+    note on link
+    <b>Sistema</b> recupera los casos de uso
+    registrados
+    end note
+
+    MostrandoCasosUso -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra la lista
+    de casos de uso
+    end note
+}
+
+listarCasosUso -[#green]-> CASOS_USO_ABIERTO
+note on link
+completarConsulta()
+end note
+
+listarCasosUso -[#red]-> CASOS_USO_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

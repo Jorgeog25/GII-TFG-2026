@@ -1,0 +1,45 @@
+@startuml consultarCasoUso
+
+skinparam linetype polyline
+
+state consultarCasoUso as "consultarCasoUso()" {
+
+    state " " as SeleccionandoCasoUso
+    state " " as RecuperandoDetalle
+    state " " as MostrandoDetalle
+
+    [*] -[#green]-> SeleccionandoCasoUso
+    note on link
+    Se solicita consultar un caso de uso
+    end note
+
+    SeleccionandoCasoUso -[#green]-> RecuperandoDetalle
+    note on link
+    <b>Sistema</b> toma el caso seleccionado
+    y recupera su detalle
+    end note
+
+    RecuperandoDetalle -[#green]-> MostrandoDetalle
+    note on link
+    <b>Sistema</b> prepara la informacion
+    para su visualizacion
+    end note
+
+    MostrandoDetalle -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra el detalle
+    del caso de uso
+    end note
+}
+
+consultarCasoUso -[#green]-> CASO_USO_ABIERTO
+note on link
+completarConsulta()
+end note
+
+consultarCasoUso -[#red]-> CASOS_USO_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

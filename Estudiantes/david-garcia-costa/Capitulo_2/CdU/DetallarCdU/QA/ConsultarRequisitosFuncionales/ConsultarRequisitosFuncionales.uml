@@ -1,0 +1,45 @@
+@startuml consultarRequisitoFuncional
+
+skinparam linetype polyline
+
+state consultarRequisitoFuncional as "consultarRequisitoFuncional()" {
+
+    state " " as SeleccionandoRequisito
+    state " " as RecuperandoDetalle
+    state " " as MostrandoDetalle
+
+    [*] -[#green]-> SeleccionandoRequisito
+    note on link
+    Se solicita consultar un requisito funcional
+    end note
+
+    SeleccionandoRequisito -[#green]-> RecuperandoDetalle
+    note on link
+    <b>Sistema</b> toma el requisito seleccionado
+    y recupera su detalle
+    end note
+
+    RecuperandoDetalle -[#green]-> MostrandoDetalle
+    note on link
+    <b>Sistema</b> prepara la informacion
+    para su visualizacion
+    end note
+
+    MostrandoDetalle -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra el detalle
+    del requisito funcional
+    end note
+}
+
+consultarRequisitoFuncional -[#green]-> REQUISITO_FUNCIONAL_ABIERTO
+note on link
+completarConsulta()
+end note
+
+consultarRequisitoFuncional -[#red]-> REQUISITOS_FUNCIONALES_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

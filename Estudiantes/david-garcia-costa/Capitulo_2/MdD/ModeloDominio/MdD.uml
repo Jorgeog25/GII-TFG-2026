@@ -8,23 +8,26 @@ rectangle "Modelo de Dominio" {
   rectangle Documentacion
   rectangle CasoDeUso
   rectangle RequisitoFuncional
-  rectangle EscenarioPrueba
+  rectangle EscenarioGherkin
+  rectangle Borrador
   rectangle CasoPrueba
+
+  Proyecto o-- Documentacion
 
   Documentacion o-- CasoDeUso
   Documentacion o-- RequisitoFuncional
 
-  CasoDeUso -- RequisitoFuncional : asocia
+  CasoDeUso -- RequisitoFuncional : traza
 
-  EscenarioPrueba --> CasoDeUso : verifica
-  EscenarioPrueba --> RequisitoFuncional : cubre
+  EscenarioGherkin --> CasoDeUso : cubre/traza
+  EscenarioGherkin --> RequisitoFuncional : cubre / traza
 
-  CasoPrueba o-- EscenarioPrueba 
+  Borrador o-- EscenarioGherkin : contiene
+
+  CasoPrueba --> Borrador : deriva de
 }
 
-Proyecto o-- Documentacion 
-
 rectangle "KiwiTCMS\n[sistema externo participante]" as KiwiTCMS
-CasoPrueba --> KiwiTCMS : publicar / sincronizar en
+CasoPrueba --> KiwiTCMS : registrar
 
 @enduml

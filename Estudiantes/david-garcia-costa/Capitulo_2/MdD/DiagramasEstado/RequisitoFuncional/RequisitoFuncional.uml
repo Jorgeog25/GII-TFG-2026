@@ -1,22 +1,18 @@
 @startuml
 title Diagrama de estados - RequisitoFuncional
 
+
 state "RequisitoFuncional" as RequisitoFuncional {
-
-  [*] --> Identificado
-
-  Identificado --> Revisado : validar contenido
-  Revisado --> Modificado : actualizar requisito
-  Modificado --> Revisado : guardar cambios
-  Revisado --> Aprobado : aprobar
-  Modificado --> Aprobado : aprobar
-
-  Identificado --> Eliminado : eliminar
-  Revisado --> Eliminado : eliminar
-  Modificado --> Eliminado : eliminar
-
-  Aprobado --> [*]
-  Eliminado --> [*]
+[*] --> Identificado
+Identificado --> Revisado : revisar()
+Revisado --> Modificado : modificar()
+Modificado --> Revisado : completarRevision()
+Revisado --> Aprobado : aprobar()
+Identificado --> Eliminado : eliminar()
+Revisado --> Eliminado : eliminar()
+Modificado --> Eliminado : eliminar()
+Aprobado --> [*]
+Eliminado --> [*]
 
 }
 

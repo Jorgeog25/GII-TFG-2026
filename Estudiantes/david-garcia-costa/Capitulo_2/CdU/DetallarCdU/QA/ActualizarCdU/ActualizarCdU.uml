@@ -1,0 +1,45 @@
+@startuml actualizarCasoUso
+
+skinparam linetype polyline
+
+state actualizarCasoUso as "actualizarCasoUso()" {
+
+    state " " as RecuperandoCasoUso
+    state " " as EditandoCasoUso
+    state " " as GuardandoCambios
+
+    [*] -[#green]-> RecuperandoCasoUso
+    note on link
+    Se solicita actualizar un caso de uso
+    end note
+
+    RecuperandoCasoUso -[#green]-> EditandoCasoUso
+    note on link
+    <b>Sistema</b> recupera el caso de uso
+    y permite su edicion
+    end note
+
+    EditandoCasoUso -[#green]-> GuardandoCambios
+    note on link
+    <b>Sistema</b> valida los cambios
+    introducidos
+    end note
+
+    GuardandoCambios -[#green]-> [*]
+    note on link
+    <b>Sistema</b> guarda la nueva version
+    del caso de uso
+    end note
+}
+
+actualizarCasoUso -[#green]-> CASO_USO_ABIERTO
+note on link
+completarActualizacion()
+end note
+
+actualizarCasoUso -[#red]-> CASOS_USO_ABIERTO
+note on link
+rechazarActualizacion()
+end note
+
+@enduml

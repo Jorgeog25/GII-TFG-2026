@@ -1,0 +1,43 @@
+@startuml
+
+skinparam linetype polyline
+
+state buscarCasosPruebaKiwi as "buscarCasosPruebaKiwi()" {
+
+    state " " as SolicitandoCriterios
+    state " " as ConsultandoKiwi
+    state " " as MostrandoResultados
+
+    [*] -[#green]-> SolicitandoCriterios
+    note on link
+    Buscar casos de prueba en Kiwi TCMS
+    end note
+
+    SolicitandoCriterios -[#green]-> ConsultandoKiwi
+    note on link
+    Realiza la busqueda en Kiwi TCMS
+    end note
+
+    ConsultandoKiwi -[#green]-> MostrandoResultados
+    note on link
+    <b>Sistema</b> recupera los resultados
+    encontrados en Kiwi TCMS
+    end note
+
+    MostrandoResultados -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra la lista de casos encontrados
+    end note
+}
+
+buscarCasosPruebaKiwi -[#green]-> KIWI_TCMS_ABIERTO
+note on link
+completarConsulta()
+end note
+
+buscarCasosPruebaKiwi -[#red]-> SISTEMA_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

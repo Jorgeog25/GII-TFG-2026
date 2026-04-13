@@ -1,34 +1,204 @@
 @startuml
-actor "Actor" as Actor
-participant "Orchestrator" as ORCH
-participant "Extract UC/RF Agent" as EXTRACT
-participant "Requirements Manager Agent" as REQ
-participant "Gherkin Generator Agent" as GHERKIN
-participant "Review & Publish Agent" as REVIEW
-participant "Kiwi Case Manager Agent" as KIWI_AGENT
-participant "Kiwi TCMS" as KIWI
+actor "QA" as QA
+participant "Sistema" as SISTEMA
+participant "Sistema externo:\nKiwi TCMS" as KIWI
 
-Actor -> ORCH : Enviar documentación de entrada
-ORCH -> EXTRACT : Procesar documentación
-EXTRACT --> ORCH : UC + RF extraídos
+note over QA, KIWI
+QA interactua con el Sistema principal y tambien
+directamente con Kiwi TCMS, que es un sistema externo
+end note
 
-ORCH -> REQ : Guardar / gestionar UC y RF
-REQ --> ORCH : Confirmación / datos persistidos
+QA -> SISTEMA : Introducir documentacion funcional
+note right of SISTEMA
+CU03 - Introducir documentacion funcional
+end note
 
-ORCH -> GHERKIN : Generar escenarios Gherkin
-GHERKIN --> ORCH : EscenarioPrueba (draft)
-
-ORCH -> REVIEW : Revisar escenario / aplicar feedback
-REVIEW --> ORCH : Escenario validado
-
-alt Escenario aceptado
-  ORCH -> KIWI_AGENT : Publicar caso de prueba
-  KIWI_AGENT -> KIWI : Crear / actualizar test case
-  KIWI --> KIWI_AGENT : Resultado publicación
-  KIWI_AGENT --> ORCH : CasoPrueba publicado
-else Escenario rechazado
-  REVIEW --> ORCH : Feedback para regeneración
+alt Documentacion sin proyecto asociado
+  SISTEMA --> QA : Solicitar proyecto asociado
+  QA -> SISTEMA : Asociar documentacion a proyecto
+  note right of SISTEMA
+  CU04 - Asociar documentacion a proyecto
+  end note
 end
 
-ORCH --> Actor : Respuesta final / estado
+SISTEMA -> SISTEMA : Registrar y asociar documentacion
+SISTEMA -> SISTEMA : Extraer casos de uso
+note right of SISTEMA
+CU06 - Extraer casos de uso
+end note
+
+SISTEMA -> SISTEMA : Extraer requisitos funcionales
+note right of SISTEMA
+CU12 - Extraer requisitos funcionales
+end note
+
+SISTEMA -> SISTEMA : Generar escenarios Gherkin
+note right of SISTEMA
+CU18 - Generar escenarios Gherkin
+end note
+
+SISTEMA -> SISTEMA : Crear borrador de caso de prueba
+note right of SISTEMA
+CU20 - Crear borrador de caso de prueba
+end note
+
+SISTEMA -> SISTEMA : Guardar casos de uso
+SISTEMA -> SISTEMA : Guardar requisitos funcionales
+SISTEMA -> SISTEMA : Guardar borrador
+note right of SISTEMA
+CU30 - Guardar resultados
+(casos de uso, requisitos funcionales,
+y borradores)
+end note
+
+SISTEMA --> QA : Mostrar resultados generados ( UC+RF+Escenarios Gherkin)
+
+QA -> SISTEMA : Consultar referencias de documentacion de un proyecto
+SISTEMA --> QA : Mostrar referencias de documentacion
+note right of SISTEMA
+CU05 - Consultar referencias de documentacion de un proyecto
+end note
+
+== Operaciones sobre casos de uso ==
+
+QA -> SISTEMA : Listar casos de uso
+SISTEMA --> QA : Lista de casos de uso
+note right of SISTEMA
+CU07 - Listar casos de uso
+end note
+
+QA -> SISTEMA : Consultar caso de uso
+SISTEMA --> QA : Detalle de caso de uso
+note right of SISTEMA
+CU08 - Consultar caso de uso
+end note
+
+QA -> SISTEMA : Crear caso de uso
+SISTEMA -> SISTEMA : Guardar caso de uso
+SISTEMA --> QA : Caso de uso creado
+note right of SISTEMA
+CU09 - Crear caso de uso
+CU30 - Guardar resultados
+end note
+
+QA -> SISTEMA : Actualizar caso de uso
+SISTEMA -> SISTEMA : Guardar cambios
+SISTEMA --> QA : Caso de uso actualizado
+note right of SISTEMA
+CU10 - Actualizar caso de uso
+CU30 - Guardar resultados
+end note
+
+QA -> SISTEMA : Eliminar caso de uso
+SISTEMA --> QA : Caso de uso eliminado
+note right of SISTEMA
+CU11 - Eliminar caso de uso
+end note
+
+== Operaciones sobre requisitos funcionales ==
+
+QA -> SISTEMA : Listar requisitos funcionales
+SISTEMA --> QA : Lista de requisitos funcionales
+note right of SISTEMA
+CU13 - Listar requisitos funcionales
+end note
+
+QA -> SISTEMA : Consultar requisito funcional
+SISTEMA --> QA : Detalle de requisito funcional
+note right of SISTEMA
+CU14 - Consultar requisito funcional
+end note
+
+QA -> SISTEMA : Crear requisito funcional
+SISTEMA -> SISTEMA : Guardar requisito funcional
+SISTEMA --> QA : Requisito funcional creado
+note right of SISTEMA
+CU15 - Crear requisito funcional
+CU30 - Guardar resultados
+end note
+
+QA -> SISTEMA : Actualizar requisito funcional
+SISTEMA -> SISTEMA : Guardar cambios
+SISTEMA --> QA : Requisito funcional actualizado
+note right of SISTEMA
+CU16 - Actualizar requisito funcional
+CU30 - Guardar resultados
+end note
+
+QA -> SISTEMA : Eliminar requisito funcional
+SISTEMA --> QA : Requisito funcional eliminado
+note right of SISTEMA
+CU17 - Eliminar requisito funcional
+end note
+
+== Operaciones sobre escenarios Gherkin ==
+
+QA -> SISTEMA : Listar escenarios Gherkin
+SISTEMA --> QA : Lista de escenarios Gherkin
+note right of SISTEMA
+CU19 - Listar escenarios Gherkin
+end note
+
+== Operaciones sobre borradores ==
+
+QA -> SISTEMA : Listar borradores
+SISTEMA --> QA : Lista de borradores
+note right of SISTEMA
+CU21 - Listar borradores
+end note
+
+QA -> SISTEMA : Consultar borrador
+SISTEMA --> QA : Mostrar borrador
+note right of SISTEMA
+CU22 - Consultar borrador
+end note
+
+alt Anadir feedback
+  QA -> SISTEMA : Anadir feedback a borrador
+  note right of SISTEMA
+  CU23 - Anadir feedback a borrador
+  end note
+
+  SISTEMA -> SISTEMA : Registrar feedback
+  SISTEMA -> SISTEMA : Generar nueva version del borrador
+  SISTEMA --> QA : Mostrar borrador actualizado
+  note right of SISTEMA
+  CU23 - Anadir feedback a borrador
+  CU30 - Guardar resultados
+  end note
+
+else Borrador rechazado
+  QA -> SISTEMA : Rechazar borrador
+  SISTEMA --> QA : Borrador rechazado
+  note right of SISTEMA
+  CU24 - Rechazar borrador
+  end note
+
+else Borrador aceptado y publicado
+  QA -> SISTEMA : Aceptar y publicar caso de prueba a partir de borrador
+  SISTEMA -> SISTEMA : Generar caso de prueba final
+  SISTEMA -> KIWI : Registrar caso de prueba en Kiwi TCMS
+  KIWI --> SISTEMA : Resultado publicacion
+  SISTEMA --> QA : Caso de prueba publicado
+  note right of SISTEMA
+  CU25 - Aceptar y publicar caso de prueba a partir de borrador
+  CU31 - Registrar caso de prueba en Kiwi TCMS
+  end note
+end
+
+== Consultas en Kiwi TCMS ==
+
+QA -> KIWI : Buscar casos de prueba en Kiwi TCMS
+KIWI --> QA : Lista de resultados
+note right of KIWI
+CU26 - Buscar casos de prueba en Kiwi TCMS
+end note
+
+QA -> KIWI : Ver caso de prueba en Kiwi TCMS
+KIWI --> QA : Detalle de caso
+KIWI --> QA : Resultado final / estado
+note right of KIWI
+CU27 - Ver caso de prueba en Kiwi TCMS
+end note
+
 @enduml

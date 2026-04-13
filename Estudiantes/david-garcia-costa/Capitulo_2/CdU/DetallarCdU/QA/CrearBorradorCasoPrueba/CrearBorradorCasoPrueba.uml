@@ -1,0 +1,45 @@
+@startuml crearBorradorCasoPrueba
+
+skinparam linetype polyline
+
+state crearBorradorCasoPrueba as "crearBorradorCasoPrueba()" {
+
+    state " " as RecuperandoEscenarios
+    state " " as GenerandoBorrador
+    state " " as RegistrandoBorrador
+
+    [*] -[#green]-> RecuperandoEscenarios
+    note on link
+    Se solicita crear un borrador de caso de prueba
+    end note
+
+    RecuperandoEscenarios -[#green]-> GenerandoBorrador
+    note on link
+    <b>Sistema</b> recupera los escenarios Gherkin
+    disponibles y prepara la transformacion
+    end note
+
+    GenerandoBorrador -[#green]-> RegistrandoBorrador
+    note on link
+    <b>Sistema</b> genera el borrador a partir
+    de los escenarios seleccionados
+    end note
+
+    RegistrandoBorrador -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra el borrador
+    y lo deja disponible para revision
+    end note
+}
+
+crearBorradorCasoPrueba -[#green]-> BORRADORES_ABIERTO
+note on link
+completarGeneracion()
+end note
+
+crearBorradorCasoPrueba -[#red]-> ESCENARIOS_GHERKIN_ABIERTO
+note on link
+rechazarGeneracion()
+end note
+
+@enduml

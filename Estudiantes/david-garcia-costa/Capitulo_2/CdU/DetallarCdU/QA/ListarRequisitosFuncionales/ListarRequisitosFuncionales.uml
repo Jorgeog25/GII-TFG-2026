@@ -1,0 +1,38 @@
+@startuml listarRequisitosFuncionales
+
+skinparam linetype polyline
+
+state listarRequisitosFuncionales as "listarRequisitosFuncionales()" {
+
+    state " " as RecuperandoRequisitos
+    state " " as MostrandoRequisitos
+
+    [*] -[#green]-> RecuperandoRequisitos
+    note on link
+    Se solicita listar requisitos funcionales
+    end note
+
+    RecuperandoRequisitos -[#green]-> MostrandoRequisitos
+    note on link
+    <b>Sistema</b> recupera los requisitos
+    funcionales registrados
+    end note
+
+    MostrandoRequisitos -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra la lista
+    de requisitos funcionales
+    end note
+}
+
+listarRequisitosFuncionales -[#green]-> REQUISITOS_FUNCIONALES_ABIERTO
+note on link
+completarConsulta()
+end note
+
+listarRequisitosFuncionales -[#red]-> REQUISITOS_FUNCIONALES_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

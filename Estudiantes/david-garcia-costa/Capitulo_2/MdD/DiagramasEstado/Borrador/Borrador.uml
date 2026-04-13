@@ -1,0 +1,17 @@
+@startuml
+title Diagrama de estados - Borrador
+
+
+state "Borrador" as Borrador {
+[*] --> Generado
+Generado --> PendienteRevision : crearBorrador()
+PendienteRevision --> EnRevision : abrirBorrador()
+EnRevision --> ConFeedback : anadirFeedback()
+ConFeedback --> Regenerado : regenerarVersion()
+Regenerado --> PendienteRevision : nuevaVersionDisponible()
+EnRevision --> Aprobado : aceptarBorrador()
+EnRevision --> Eliminado : rechazarBorrador()
+Aprobado --> [*]
+Eliminado --> [*]
+}
+@enduml

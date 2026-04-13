@@ -1,0 +1,44 @@
+@startuml eliminarCasoUso
+
+skinparam linetype polyline
+
+state eliminarCasoUso as "eliminarCasoUso()" {
+
+    state " " as SeleccionandoCasoUso
+    state " " as ConfirmandoEliminacion
+    state " " as EliminandoCasoUso
+
+    [*] -[#green]-> SeleccionandoCasoUso
+    note on link
+    Se solicita eliminar un caso de uso
+    end note
+
+    SeleccionandoCasoUso -[#green]-> ConfirmandoEliminacion
+    note on link
+    <b>Sistema</b> solicita confirmacion
+    de la operacion
+    end note
+
+    ConfirmandoEliminacion -[#green]-> EliminandoCasoUso
+    note on link
+    <b>Sistema</b> valida la confirmacion
+    y prepara la eliminacion
+    end note
+
+    EliminandoCasoUso -[#green]-> [*]
+    note on link
+    <b>Sistema</b> elimina el caso de uso
+    end note
+}
+
+eliminarCasoUso -[#green]-> CASOS_USO_ABIERTO
+note on link
+completarEliminacion()
+end note
+
+eliminarCasoUso -[#red]-> CASO_USO_ABIERTO
+note on link
+rechazarEliminacion()
+end note
+
+@enduml

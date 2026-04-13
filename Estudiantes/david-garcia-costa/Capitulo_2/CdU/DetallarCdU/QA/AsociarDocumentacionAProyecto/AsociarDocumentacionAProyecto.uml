@@ -1,0 +1,45 @@
+@startuml asociarDocumentacionAProyecto
+
+skinparam linetype polyline
+
+state asociarDocumentacionAProyecto as "asociarDocumentacionAProyecto()" {
+
+    state " " as DetectandoAusenciaProyecto
+    state " " as SolicitandoProyecto
+    state " " as RegistrandoAsociacion
+
+    [*] -[#green]-> DetectandoAusenciaProyecto
+    note on link
+    Se detecta que la documentacion
+    no tiene proyecto asociado
+    end note
+
+    DetectandoAusenciaProyecto -[#green]-> SolicitandoProyecto
+    note on link
+    <b>Sistema</b> solicita el proyecto al actor
+    end note
+
+    SolicitandoProyecto -[#green]-> RegistrandoAsociacion
+    note on link
+    <b>Sistema</b> recibe el proyecto y
+    prepara la asociacion
+    end note
+
+    RegistrandoAsociacion -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra la asociacion
+    documentacion-proyecto
+    end note
+}
+
+asociarDocumentacionAProyecto -[#green]-> DOCUMENTACION_ABIERTA
+note on link
+completarAsociacion()
+end note
+
+asociarDocumentacionAProyecto -[#red]-> DOCUMENTACION_ABIERTA
+note on link
+rechazarAsociacion()
+end note
+
+@enduml

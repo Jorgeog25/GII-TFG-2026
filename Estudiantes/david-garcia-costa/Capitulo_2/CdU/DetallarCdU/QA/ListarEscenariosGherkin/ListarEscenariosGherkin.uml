@@ -1,0 +1,38 @@
+@startuml listarEscenariosGherkin
+
+skinparam linetype polyline
+
+state listarEscenariosGherkin as "listarEscenariosGherkin()" {
+
+    state " " as RecuperandoEscenarios
+    state " " as MostrandoEscenarios
+
+    [*] -[#green]-> RecuperandoEscenarios
+    note on link
+    Se solicita listar escenarios Gherkin
+    end note
+
+    RecuperandoEscenarios -[#green]-> MostrandoEscenarios
+    note on link
+    <b>Sistema</b> recupera los escenarios
+    registrados del borrador y cubriendo y trazando casos de uso.
+    end note
+
+    MostrandoEscenarios -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra la lista
+    de escenarios Gherkin
+    end note
+}
+
+listarEscenariosGherkin -[#green]-> ESCENARIOS_GHERKIN_ABIERTO
+note on link
+completarConsulta()
+end note
+
+listarEscenariosGherkin -[#red]-> ESCENARIOS_GHERKIN_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

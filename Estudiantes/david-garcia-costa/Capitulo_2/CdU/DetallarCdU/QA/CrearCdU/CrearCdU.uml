@@ -1,0 +1,44 @@
+@startuml crearCasoUso
+
+skinparam linetype polyline
+
+state crearCasoUso as "crearCasoUso()" {
+
+    state " " as SolicitandoDatos
+    state " " as ValidandoDatos
+    state " " as RegistrandoCasoUso
+
+    [*] -[#green]-> SolicitandoDatos
+    note on link
+    Se solicita crear un caso de uso
+    end note
+
+    SolicitandoDatos -[#green]-> ValidandoDatos
+    note on link
+    <b>Sistema</b> recibe la informacion
+    introducida por el actor
+    end note
+
+    ValidandoDatos -[#green]-> RegistrandoCasoUso
+    note on link
+    <b>Sistema</b> valida los datos
+    y prepara el registro
+    end note
+
+    RegistrandoCasoUso -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra el caso de uso
+    end note
+}
+
+crearCasoUso -[#green]-> CASOS_USO_ABIERTO
+note on link
+completarCreacion()
+end note
+
+crearCasoUso -[#red]-> CASOS_USO_ABIERTO
+note on link
+rechazarCreacion()
+end note
+
+@enduml

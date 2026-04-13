@@ -1,0 +1,44 @@
+@startuml crearRequisitoFuncional
+
+skinparam linetype polyline
+
+state crearRequisitoFuncional as "crearRequisitoFuncional()" {
+
+    state " " as SolicitandoDatos
+    state " " as ValidandoDatos
+    state " " as RegistrandoRequisito
+
+    [*] -[#green]-> SolicitandoDatos
+    note on link
+    Se solicita crear un requisito funcional
+    end note
+
+    SolicitandoDatos -[#green]-> ValidandoDatos
+    note on link
+    <b>Sistema</b> recibe la informacion
+    introducida por el actor
+    end note
+
+    ValidandoDatos -[#green]-> RegistrandoRequisito
+    note on link
+    <b>Sistema</b> valida los datos
+    y prepara el registro
+    end note
+
+    RegistrandoRequisito -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra el requisito funcional
+    end note
+}
+
+crearRequisitoFuncional -[#green]-> REQUISITOS_FUNCIONALES_ABIERTO
+note on link
+completarCreacion()
+end note
+
+crearRequisitoFuncional -[#red]-> REQUISITOS_FUNCIONALES_ABIERTO
+note on link
+rechazarCreacion()
+end note
+
+@enduml

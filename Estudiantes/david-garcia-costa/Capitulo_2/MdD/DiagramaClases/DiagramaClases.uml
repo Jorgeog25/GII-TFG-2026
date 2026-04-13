@@ -1,58 +1,78 @@
 @startuml
-top to bottom direction
 
-rectangle "Diagrama de Clases" {
-  class Documentacion {
-    +id: UUID
-    +titulo: String
-    +tipo: String
-    +contenido: Text
-    +version: String
-    +project_name: String
-  }
+package "Sistema" {
 
-  class CasoDeUso {
-    +id: String
-    +nombre: String
-    +descripcion: Text
-    +project_name: String
-  }
-
-  class RequisitoFuncional {
-    +id: String
-    +descripcion: Text
-    +citaOrigen: String
-    +project_name: String
-  }
-
-  class EscenarioPrueba {
-    +id: UUID
-    +nombre: String
-    +descripcion: Text
-    +gherkin: Text
-    +estado: String
-    +version: String
-    +feedback: Text
-    +project_name: String
-  }
-
-  class CasoPrueba {
-    +id: UUID
-    +resumen: String
-    +descripcion: Text
-    +estado: String
-    +project_name: String
-  }
+class Documentacion {
+  +idDocumentacion: String
+  +tipoEntrada: String
+  +contenido: Text
+  +referencia: String
+  +fechaRegistro: Date
 }
 
-class KiwiTCMS <<sistema externo participante>>
+class CasoDeUso {
+  +idUC: String
+  +nombre: String
+  +descripcion: Text
+  +trazabilidadLiteral: Text
+  +estado: String
+  +version: Integer
+}
 
-Documentacion o-- CasoDeUso
-Documentacion o-- RequisitoFuncional
-CasoDeUso -- RequisitoFuncional : asocia
-EscenarioPrueba --> CasoDeUso : verifica
-EscenarioPrueba --> RequisitoFuncional : cubre
-CasoPrueba o-- EscenarioPrueba
-CasoPrueba --> KiwiTCMS : publicar / sincronizar en
+class RequisitoFuncional {
+  +idRF: String
+  +descripcion: Text
+  +trazabilidadLiteral: Text
+  +estado: String
+  +version: Integer
+}
+
+class EscenarioGherkin {
+  +idEscenario: String
+  +titulo: String
+  +given: Text
+  +when: Text
+  +then: Text
+}
+
+class Borrador {
+  +idBorrador: String
+  +resumen: String
+  +categoria: String
+  +gherkinText: Text
+  +estado: String
+  +versionActual: Integer
+  +feedback: List
+  +fechaCreacion: Date
+  +fechaActualizacion: Date
+  +projectName: String
+  +sourceDocuments: List
+}
+
+class CasoPrueba {
+  +idCaso: String
+  +summary: String
+  +texto: Text
+  +categoria: String
+  +prioridad: String
+  +estado: String
+}
+
+Documentacion  o-- CasoDeUso : origina
+Documentacion  o--  RequisitoFuncional : origina
+
+CasoDeUso  --  RequisitoFuncional : traza
+
+EscenarioGherkin  -->  CasoDeUso : cubre / traza
+EscenarioGherkin --> RequisitoFuncional : cubre / traza
+
+Borrador  o--  EscenarioGherkin : contiene
+
+CasoPrueba  -->  Borrador : deriva de
+}
+
+class KiwiTCMS <<externo>>
+
+CasoPrueba  --> KiwiTCMS : registrar
 
 @enduml

@@ -1,0 +1,44 @@
+@startuml verCasoPruebaKiwi
+
+skinparam linetype polyline
+
+state verCasoPruebaKiwi as "verCasoPruebaKiwi()" {
+
+    state " " as SeleccionandoCaso
+    state " " as RecuperandoDetalle
+    state " " as MostrandoDetalle
+
+    [*] -[#green]-> SeleccionandoCaso
+    note on link
+    Se solicita ver un caso de prueba en Kiwi TCMS
+    end note
+
+    SeleccionandoCaso -[#green]-> RecuperandoDetalle
+    note on link
+    Se toma el caso seleccionado
+    y solicita su detalle a Kiwi TCMS
+    end note
+
+    RecuperandoDetalle -[#green]-> MostrandoDetalle
+    note on link
+    Se recupera la informacion completa
+    del caso de prueba
+    end note
+
+    MostrandoDetalle -[#green]-> [*]
+    note on link
+    Se muestra el detalle del caso
+    end note
+}
+
+verCasoPruebaKiwi -[#green]-> KIWI_TCMS_ABIERTO
+note on link
+completarConsulta()
+end note
+
+verCasoPruebaKiwi -[#red]-> SISTEMA_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

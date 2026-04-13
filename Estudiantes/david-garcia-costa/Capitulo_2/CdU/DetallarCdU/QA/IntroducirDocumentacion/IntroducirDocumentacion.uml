@@ -1,0 +1,45 @@
+@startuml introducirDocumentacionFuncional
+
+skinparam linetype polyline
+
+state introducirDocumentacionFuncional as "introducirDocumentacionFuncional()" {
+
+    state " " as RecibiendoDocumentacion
+    state " " as ValidandoDocumentacion
+    state " " as RegistrandoDocumentacion
+
+    [*] -[#green]-> RecibiendoDocumentacion
+    note on link
+    Se solicita introducir documentacion funcional
+    end note
+
+    RecibiendoDocumentacion -[#green]-> ValidandoDocumentacion
+    note on link
+    <b>Sistema</b> recibe la documentacion
+    y valida su contenido
+    end note
+
+    ValidandoDocumentacion -[#green]-> RegistrandoDocumentacion
+    note on link
+    <b>Sistema</b> prepara el registro
+    de la documentacion
+    end note
+
+    RegistrandoDocumentacion -[#green]-> [*]
+    note on link
+    <b>Sistema</b> registra la documentacion
+    y la deja disponible para procesamiento
+    end note
+}
+
+introducirDocumentacionFuncional -[#green]-> DOCUMENTACION_ABIERTA
+note on link
+completarRegistro()
+end note
+
+introducirDocumentacionFuncional -[#red]-> SISTEMA_ABIERTO
+note on link
+rechazarRegistro()
+end note
+
+@enduml

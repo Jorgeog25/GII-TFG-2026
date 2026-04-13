@@ -1,0 +1,45 @@
+@startuml consultarBorrador
+
+skinparam linetype polyline
+
+state consultarBorrador as "consultarBorrador()" {
+
+    state " " as SeleccionandoBorrador
+    state " " as RecuperandoDetalle
+    state " " as MostrandoDetalle
+
+    [*] -[#green]-> SeleccionandoBorrador
+    note on link
+    Se solicita consultar un borrador
+    end note
+
+    SeleccionandoBorrador -[#green]-> RecuperandoDetalle
+    note on link
+    <b>Sistema</b> toma el borrador seleccionado
+    y recupera su detalle
+    end note
+
+    RecuperandoDetalle -[#green]-> MostrandoDetalle
+    note on link
+    <b>Sistema</b> prepara la informacion
+    para su visualizacion
+    end note
+
+    MostrandoDetalle -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra el detalle
+    del borrador
+    end note
+}
+
+consultarBorrador -[#green]-> BORRADOR_ABIERTO
+note on link
+completarConsulta()
+end note
+
+consultarBorrador -[#red]-> BORRADORES_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

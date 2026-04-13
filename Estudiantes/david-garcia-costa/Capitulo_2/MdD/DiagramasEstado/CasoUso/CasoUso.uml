@@ -2,22 +2,15 @@
 title Diagrama de estados - CasoDeUso
 
 state "CasoDeUso" as CasoDeUso {
-
-  [*] --> Identificado
-
-  Identificado --> Revisado : validar contenido
-  Revisado --> Modificado : actualizar caso de uso
-  Modificado --> Revisado : guardar cambios
-  Revisado --> Aprobado : aprobar
-  Modificado --> Aprobado : aprobar
-
-  Identificado --> Eliminado : eliminar
-  Revisado --> Eliminado : eliminar
-  Modificado --> Eliminado : eliminar
-
-  Aprobado --> [*]
-  Eliminado --> [*]
-
+[*] --> Identificado
+Identificado --> Revisado : revisar()
+Revisado --> Modificado : modificar()
+Modificado --> Revisado : completarRevision()
+Revisado --> Aprobado : aprobar()
+Identificado --> Eliminado : eliminar()
+Revisado --> Eliminado : eliminar()
+Modificado --> Eliminado : eliminar()
+Aprobado --> [*]
+Eliminado --> [*]
 }
-
 @enduml
