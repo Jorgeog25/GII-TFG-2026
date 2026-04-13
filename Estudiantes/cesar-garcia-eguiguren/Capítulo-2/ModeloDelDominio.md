@@ -83,6 +83,7 @@ Este diagrama permite interpretar correctamente los datos obtenidos de la base d
 | RF-28 | El sistema debe soportar **paginación y ordenación server-side** en todas las listas con `page`, `page_size`, `sort_by` y `sort_order`. | CU-02, CU-08 | Director, Responsable | Alta |
 | RF-29 | El sistema debe presentar las métricas en un **formato visual estandarizado**: tarjeta interactiva con gauge/mini-visualización de preview; al seleccionar, panel de detalle lateral con gráficos y KPIs. Las métricas se agrupan por categoría (proyecto, empleado, generales). | CU-10 a CU-20 | Director, Responsable | Media |
 | RF-30 | El sistema debe permitir **limitar los datos por rango de fechas** mediante `date_from` y `date_to` en los endpoints que lo soporten. Debe validar `date_from ≤ date_to` (HTTP 400 si no). El frontend ofrece atajos rápidos (30d, 3m, 6m, 1a) y selector con calendario. | Varios | Director, Responsable | Alta |
+| RF-31 | El sistema debe proporcionar un **panel de supervisión global del equipo** que muestre la distribución de los empleados por estado de carga (sobrecargado, normal, subcargado, sin tareas), con el ranking de los empleados más cargados, un gráfico de distribución y la posibilidad de listar los empleados de cada estado con paginación y ordenación. Filtrable por departamento. | CU-28 | Director, Responsable | Media |
 
 ---
 

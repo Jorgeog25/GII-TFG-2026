@@ -577,3 +577,28 @@
 1. El actor selecciona la opción de cerrar sesión.
 2. El sistema invalida la sesión activa y elimina las credenciales del navegador.
 3. El sistema redirige al actor a la pantalla de inicio de sesión.
+
+---
+
+### CU-28 – Consultar Distribución de Carga del Equipo
+ 
+| Campo | Valor |
+|---|---|
+| **Actores** | Director, Responsable |
+| **Precondición** | CU-01 completado. |
+| **Postcondición** | El actor conoce el estado de carga global de su equipo y puede navegar al perfil de cualquier empleado. |
+ 
+![Diagrama de flujo](../imagenes/CdU/flujoCU28.png)
+ 
+**Flujo principal:**
+1. El actor accede al panel de supervisión de equipo.
+2. El sistema muestra la distribución del equipo por estado de carga: sobrecargados, en rango normal, subcargados y sin tareas.
+3. El sistema muestra el ranking de los empleados con mayor carga y el gráfico de distribución.
+4. El actor puede filtrar por departamento para acotar el análisis.
+5. El actor puede seleccionar un estado de carga para ver el listado paginado de empleados en esa situación.
+6. El actor puede ordenar el listado y seleccionar un empleado para acceder a su resumen.
+ 
+**Flujos alternativos:**
+- `FA-01`: Sin empleados en el ámbito → indicadores a 0 y tabla vacía.
+ 
+**Relaciones:** Navega a CU-03. Consume los mismos indicadores de carga que CU-05 y CU-13, pero a nivel global de equipo.

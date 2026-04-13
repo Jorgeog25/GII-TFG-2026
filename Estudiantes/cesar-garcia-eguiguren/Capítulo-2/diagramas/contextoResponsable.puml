@@ -76,6 +76,7 @@ package "Métricas Operativas (CU-10 a CU-20)" {
 package "Análisis Visual" {
   usecase "CU-21\nVisualizar Gráficos Analíticos  [scope]" as CU21
   usecase "CU-22\nAnalizar Asistencia vs Imputaciones\n[solo modo Equipo]" as CU22
+  usecase "CU-28\nSupervisar Distribución de Carga del Equipo  [scope]" as CU28
 }
 
 '── Utilidades ─────────────────────────────────
@@ -94,7 +95,7 @@ R --> METRICS : navega a la\npágina de métricas
 R --> CU21 : navega a la\npágina de gráficos
 R --> CU22 : navega a la\npágina de asistencia
 R --> CU26 : navega a la\nbúsqueda global
-
+R --> CU28 : navega al panel de\nsupervisión de carga
 '══ Navegación cruzada entre paquetes ═══════════
 CU05 -right-> CU03 : pulsa sobre un empleado\nde la tabla del departamento
 CU07 -up-> CU03 : pulsa sobre un empleado\ndel equipo del proyecto

@@ -111,6 +111,7 @@ A continuación se presenta la lista completa de los 27 casos de uso identificad
 |---|---|---|---|
 | CU-21 | Visualizar Gráficos Analíticos | Director, Responsable | Gráficos interactivos de evolución de tareas, distribución por estado y horas por cliente (solo Director). |
 | CU-22 | Consultar Asistencia vs Imputaciones | Director, Responsable | Comparativa de horas fichadas frente a horas imputadas en partes, con cobertura individual y serie diaria. |
+| CU-28 | Consultar Carga del Equipo      | Director, Responsable | Panel global de carga del equipo con distribución por estado (sobrecargado, normal, subcargado, sin tareas), ranking de los empleados más cargados y listado filtrable por estado y departamento. |
 
 #### Paquete 8 – Rentabilidad Financiera _(exclusivo para el Director)_
 
@@ -138,8 +139,8 @@ A continuación se presenta la lista completa de los 27 casos de uso identificad
 Ambos actores comparten la mayoría de los casos de uso. El Director tiene acceso exclusivo al módulo de rentabilidad financiera (CU-23, CU-24 y CU-25). El Responsable opera siempre con un filtro automático sobre su ámbito organizativo.
 
 **Resumen rápido:**
-- **Director:** Acceso a los 27 CU sin restricciones de ámbito.
-- **Responsable:** Acceso a CU-01 hasta CU-22 y CU-26/CU-27, con datos filtrados automáticamente a su ámbito; acceso denegado a CU-23, CU-24 y CU-25.
+- **Director:** Acceso a los 28 CU sin restricciones de ámbito.
+- **Responsable:** Acceso a CU-01 hasta CU-22 y CU-26/CU-27/CU-28, con datos filtrados automáticamente a su ámbito; acceso denegado a CU-23, CU-24 y CU-25.
 
 ---
 
@@ -161,13 +162,13 @@ Ambos actores comparten la mayoría de los casos de uso. El Director tiene acces
 | ID | Nombre | Crit. | V.Neg. | Frec. | R.Téc. | **Prioridad** |
 |---|---|:---:|:---:|:---:|:---:|:---:|
 | CU-02 | Listar Empleados | 2 | 3 | 3 | 1 | **Alta** |
-| CU-03 | Resumen Empleado | 2 | 3 | 3 | 2 | **Alta** |
+| CU-03 | Consultar Resumen Empleado | 2 | 3 | 3 | 2 | **Alta** |
 | CU-06 | Listar Proyectos | 2 | 3 | 3 | 1 | **Alta** |
-| CU-07 | Resumen Proyecto | 2 | 3 | 2 | 2 | **Alta** |
+| CU-07 | Consultar Resumen Proyecto | 2 | 3 | 2 | 2 | **Alta** |
 | CU-08 | Listar Tareas | 3 | 3 | 3 | 2 | **Alta** |
-| CU-23 | Rentabilidad Financiera | 3 | 3 | 2 | 3 | **Alta** |
-| CU-24 | Líneas Analíticas Proyecto | 1 | 3 | 1 | 2 | **Alta** |
-| CU-25 | Líneas Analíticas Cliente | 1 | 3 | 1 | 2 | **Alta** |
+| CU-23 | Consultar Rentabilidad Financiera | 3 | 3 | 2 | 3 | **Alta** |
+| CU-24 | Consultar Líneas Analíticas Proyecto | 1 | 3 | 1 | 2 | **Alta** |
+| CU-25 | Consultar Líneas Analíticas Cliente | 1 | 3 | 1 | 2 | **Alta** |
 
 #### Prioridad Media
 
@@ -175,21 +176,22 @@ Ambos actores comparten la mayoría de los casos de uso. El Director tiene acces
 |---|---|:---:|:---:|:---:|:---:|:---:|
 | CU-01 | Autenticarse | 1 | 2 | 3 | 2 | **Media** |
 | CU-04 | Listar Departamentos | 2 | 2 | 2 | 1 | **Media** |
-| CU-05 | Resumen Departamento | 2 | 3 | 2 | 1 | **Media** |
-| CU-09 | Detalle de Tarea | 2 | 2 | 3 | 1 | **Media** |
-| CU-10 | Productividad | 2 | 3 | 2 | 2 | **Media** |
-| CU-11 | Cumplimiento | 2 | 3 | 2 | 1 | **Media** |
-| CU-12 | WIP (Empleado) | 2 | 3 | 2 | 2 | **Media** |
-| CU-13 | Workload (Empleado) | 2 | 3 | 2 | 2 | **Media** |
-| CU-14 | Riesgo Proyecto | 2 | 3 | 2 | 2 | **Media** |
-| CU-15 | Retrabajo | 1 | 2 | 1 | 3 | **Media** |
-| CU-16 | Exactitud Estimación | 1 | 2 | 1 | 2 | **Media** |
-| CU-17 | Lead Time | 2 | 3 | 2 | 2 | **Media** |
-| CU-18 | Tiempo por Estado | 2 | 3 | 2 | 2 | **Media** |
-| CU-21 | Gráficos Analíticos | 2 | 3 | 2 | 2 | **Media** |
-| CU-22 | Asistencia vs Imputaciones | 2 | 3 | 2 | 2 | **Media** |
+| CU-05 | Consultar Resumen Departamento | 2 | 3 | 2 | 1 | **Media** |
+| CU-09 | Consultar Detalle de Tarea | 2 | 2 | 3 | 1 | **Media** |
+| CU-10 | Consultar Productividad | 2 | 3 | 2 | 2 | **Media** |
+| CU-11 | Consultar Cumplimiento | 2 | 3 | 2 | 1 | **Media** |
+| CU-12 | Consultar WIP (Empleado) | 2 | 3 | 2 | 2 | **Media** |
+| CU-13 | Consultar Workload (Empleado) | 2 | 3 | 2 | 2 | **Media** |
+| CU-14 | Consultar Riesgo Proyecto | 2 | 3 | 2 | 2 | **Media** |
+| CU-15 | Consultar Retrabajo | 1 | 2 | 1 | 3 | **Media** |
+| CU-16 | Consultar Exactitud Estimación | 1 | 2 | 1 | 2 | **Media** |
+| CU-17 | Consultar Lead Time | 2 | 3 | 2 | 2 | **Media** |
+| CU-18 | Consultar Tiempo por Estado | 2 | 3 | 2 | 2 | **Media** |
+| CU-21 | Consultar Gráficos Analíticos | 2 | 3 | 2 | 2 | **Media** |
+| CU-22 | Consultar Asistencia vs Imputaciones | 2 | 3 | 2 | 2 | **Media** |
 | CU-26 | Búsqueda Global | 1 | 2 | 3 | 1 | **Media** |
 | CU-27 | Cerrar Sesión | 1 | 1 | 3 | 1 | **Media** |
+| CU-28 | Consultar Carga del Equipo      |   2   |   3    |   2   |   1    | **Media**     |
 
 #### Prioridad Baja
 
@@ -632,14 +634,6 @@ Panel de bienvenida que actúa como punto de entrada al sistema tras completar C
 
 ---
 
-### Pantalla de gestión de equipo
-
-Pantalla orientada a la supervisión de la distribución de carga de trabajo del equipo. Presenta el desglose por estado de los empleados y permite profundizar en cada grupo.
-
-![Pantalla de gestión de equipo](./imagenes/prototipado/vista-Manager.png)
-
----
-
 ### Prototipo CU-01 – Autenticarse
 Formulario de inicio de sesión con campos de usuario y contraseña, indicación de acceso restringido y mensajes de error contextuales.
 
@@ -727,6 +721,14 @@ Panel de desglose accesible desde CU-23 con dos tablas paralelas de ingresos y g
 Página de búsqueda con campo prominente, botones de filtro por tipo de entidad y resultados en forma de tarjetas navegables.
 
 ![Prototipo de búsqueda global](./imagenes/prototipado/CU-25.png)
+
+---
+### Prototipo CU-28 – Consultar Carga del Equipo
+Panel de supervisión con cinco tarjetas numéricas clicables (total, sobrecargado, normal,
+subcargado, sin tareas), gráfico de barras de distribución por estado, panel de empleados
+más cargados y — al hacer click en una tarjeta — listado paginado de empleados filtrados
+por ese estado con su porcentaje de carga y horas pendientes.
+![Prototipo de supervisión de carga](./imagenes/prototipado/CU-28.png)
 
 ---
 
