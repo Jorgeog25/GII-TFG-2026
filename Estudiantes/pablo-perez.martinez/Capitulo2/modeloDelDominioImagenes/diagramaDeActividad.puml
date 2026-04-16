@@ -2,24 +2,17 @@
 
 start
 
-:Responsable de producción abre pestaña Rendimiento;
-:VT comprueba si hay datos de fabricación;
+:Selecciona partición;
 
-if (¿Hay datos teóricos y reales?) then (Sí)
+if (¿Hay información de partición?) then (Sí)
 
 else (No)
-  :VT busca información en su BD;
+  :Esperar información;
 
-  if (¿La encuentra en 45 s?) then (Sí)
-
-  else (No)
-    :Mostrar error;
-    stop
-  endif
 endif
 
-:VT realiza cálculos;
-:VT grafica resultados;
+:Realizar cálculos;
+:Mostrar gráfica;
 
 stop
 @enduml

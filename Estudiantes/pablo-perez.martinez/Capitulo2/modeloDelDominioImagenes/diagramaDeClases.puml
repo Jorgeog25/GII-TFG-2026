@@ -1,43 +1,29 @@
 @startuml
 
-class AssignmentSplit{
-   splitId
-   idPuestoDeTrabajo
-   splitInfoTeorica
-   splitInfoEjecución
+class Particion {
+   id
+   infoParticion
 }
 
-class VisualTracking{
-   splitId
-   infoTeórica
-   infoEjecución
+class InfoIndicador {
+   idParticion
+   tipoIndicador
+   valor
 }
 
-class SplitIndexInfo{
-   splitId
-   infoPiezas
-   infoTiempos
-   infoIndicadores
-   infoCurvaVelocidad
+class TipoIndicador {
+   nombre
 }
 
-class infoIndicadores{
-   disponibilidad
-   rendimiento
-   calidad 
-   OEE
-}
-class Graficas {
-   curvaDeVelocidad
-   barrasDeIndicadores
-   tablaDeIndicadores
+class TipoGrafica {
+   nombre
 }
 
-VisualTracking -- AssignmentSplit: obtiene info de
-VisualTracking -- SplitIndexInfo: calcula
-VisualTracking -- Graficas: genera
 
-infoIndicadores-- SplitIndexInfo
+InfoIndicador -- TipoIndicador: tipado en
+Particion -- InfoIndicador: tiene
+InfoIndicador -- TipoGrafica: se representa en
+
 
 
 @enduml

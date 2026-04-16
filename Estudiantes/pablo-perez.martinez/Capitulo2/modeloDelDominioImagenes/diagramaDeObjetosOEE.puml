@@ -1,0 +1,29 @@
+@startuml
+
+object Particion {
+   id: "78"
+   infoParticion 
+}
+
+object InfoIndicador {
+   idParticion: "78"
+   tipoIndicador: "OEE"
+   valor: 0.6
+}
+
+object TipoIndicador {
+   nombre: "OEE"
+}
+
+object TipoGrafica {
+   nombre: "Barra horizontal"
+}
+
+
+InfoIndicador -- TipoIndicador: tipado en
+Particion -- InfoIndicador: tiene
+InfoIndicador -- TipoGrafica: se representa en
+
+
+
+@enduml

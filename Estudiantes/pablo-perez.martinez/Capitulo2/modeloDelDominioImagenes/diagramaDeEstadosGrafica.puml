@@ -1,0 +1,9 @@
+@startuml
+
+[*] --> GraficaPendiente
+
+GraficaPendiente--> GraficaGenerada
+
+GraficaGenerada--> [*]
+
+@enduml

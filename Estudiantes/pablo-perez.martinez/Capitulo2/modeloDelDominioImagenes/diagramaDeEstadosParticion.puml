@@ -1,0 +1,11 @@
+@startuml
+
+[*] --> InfoPendiente
+
+InfoPendiente--> InfoGenerada
+InfoPendiente--> Error 
+
+InfoGenerada--> [*]
+Error --> [*]
+
+@enduml

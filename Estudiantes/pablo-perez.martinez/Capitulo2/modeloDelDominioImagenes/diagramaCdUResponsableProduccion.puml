@@ -3,13 +3,19 @@ left to right direction
 
 actor ResponsableProducción
 
-package "Frontend" {
-  usecase "CU-05 Filtrado de datos" as CU05
-  usecase "CU-04 Visualización de datos" as CU04
+package "VT" {
+  usecase "CU-04 Selección de partición" as CU04
+  usecase "CU-03 Visualización de datos" as CU03
+  usecase "CU-02 Cálculo del OEE" as CU02
+  usecase "CU-01 Obtención de datos de producción" as CU01
+
 }
 
-ResponsableProducción--> CU04
-ResponsableProducción --> CU05
+
+ResponsableProducción --> CU01
+ResponsableProducción --> CU02
+ResponsableProducción --> CU03
+ResponsableProducción --> CU04
 
 
 @enduml
