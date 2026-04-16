@@ -2,7 +2,7 @@
 [*] --> NoAutenticado
 
 NoAutenticado --> ValidandoToken  : token en localStorage
-NoAutenticado --> Autenticando    : user_id / submit
+NoAutenticado --> Autenticando    : el usuario envió sus credenciales
 
 ValidandoToken --> SesionActiva   : token válido
 ValidandoToken --> NoAutenticado  : token inválido / expirado

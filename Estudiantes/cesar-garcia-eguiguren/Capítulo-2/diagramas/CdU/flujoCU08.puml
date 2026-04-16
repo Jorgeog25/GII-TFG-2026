@@ -1,4 +1,4 @@
-@startuml CU08_ListarProyectos
+@startuml CU08_ListarTareas
 !theme plain
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -7,37 +7,53 @@ skinparam ActivityBorderColor #1E2840
 skinparam ActivityBackgroundColor #141824
 skinparam ActivityDiamondBackgroundColor #0D1018
 skinparam ActivityDiamondBorderColor #38BDF8
-
-title CU-08 · Listar Proyectos
+skinparam NoteBackgroundColor #141824
+skinparam NoteBorderColor #38BDF8
+title CU-08 · Listar Tareas
 
 start
+:El actor accede al listado de tareas;
 
-:CU-01 (JWT válido);
-:Actor navega a **/proyectos**;
+note right
+  El caso de uso se puede invocar desde:
+  · La sección global de tareas
+  · El panel de un proyecto (CU-07)
+  · El panel de un empleado (CU-03)
+  En los dos últimos casos, algunos filtros
+  pueden llegar preseleccionados.
+end note
 
-:GET /projects/;
+:El sistema muestra el listado de tareas
+disponibles según el rol del actor;
 
-if (¿Responsable?) then (SÍ)
-  :Filtra: Project.id IN (project_ids del JWT);
-else (Director)
-  :Sin filtro adicional;
-endif
+:El actor puede combinar filtros:
+· Estado (pendiente / completada / vencida)
+· Etapa exacta del flujo Kanban
+· Proyecto o empleado concreto
+· Rango de fechas
+· Solo tareas principales (sin subtareas);
 
-if (¿Sin proyectos?) then (SÍ)
-  :EmptyState "Sin proyectos";
+:El sistema actualiza el listado
+según los filtros aplicados;
+
+if (¿Se encontraron tareas?) then (NO)
+  :El sistema muestra un estado vacío;
+  stop
+else (SÍ)
+  :El sistema muestra el listado paginado con
+  nombre, etapa, horas estimadas, fecha límite
+  y estado de cada tarea;
+
+  if (¿El actor selecciona una tarea?) then (SÍ)
+    :Navega a CU-09 Detalle de Tarea;
+  endif
   stop
 endif
 
-:Cuadrícula de tarjetas:
-· Nombre del proyecto
-· Nombre del cliente (partner_name)
-· Código (code)
-· Badge ID;
-
-if (¿Click en tarjeta?) then (SÍ)
-  :Navega a CU-09 /proyectos/{id};
-endif
-
-stop
+note right
+  FA-01: Sin resultados con los filtros → estado vacío
+  FA-02: Proyecto o empleado fuera del ámbito
+         → acceso denegado
+end note
 
 @enduml

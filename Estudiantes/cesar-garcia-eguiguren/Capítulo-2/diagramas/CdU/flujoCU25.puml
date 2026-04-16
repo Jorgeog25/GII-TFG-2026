@@ -1,4 +1,4 @@
-@startuml CU25_BusquedaGlobal
+@startuml CU25_LineasCliente
 !theme plain
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -7,53 +7,40 @@ skinparam ActivityBorderColor #1E2840
 skinparam ActivityBackgroundColor #141824
 skinparam ActivityDiamondBackgroundColor #0D1018
 skinparam ActivityDiamondBorderColor #38BDF8
-
-title CU-25 · Realizar Búsqueda Global
+skinparam NoteBackgroundColor #141824
+skinparam NoteBorderColor #38BDF8
+title CU-25 · Consultar Líneas Analíticas de Cliente (Director exclusivo)
 
 start
+:El Director solicita el detalle
+de un cliente desde CU-23;
 
-:CU-01 (JWT válido);
-:Actor navega a **/buscar**
-(o atajo en la barra lateral);
+:El sistema recupera todas las líneas
+de partes analíticos de todos los
+proyectos asociados al cliente
+en el período indicado;
 
-:Actor escribe en el campo de búsqueda;
+:El sistema clasifica las líneas en:
+· Ingresos (importes positivos)
+· Gastos (importes negativos);
 
-if (¿Menos de 2 caracteres?) then (SÍ)
-  :EmptyState "Escribe al menos 2 caracteres";
+if (¿Existen líneas en el período?) then (NO)
+  :El sistema muestra las tablas vacías;
+  stop
+else (SÍ)
+  :El sistema muestra dos tablas paralelas:
+  · Tabla de Ingresos: fecha, descripción,
+    importe, horas y proyecto de cada línea
+  · Tabla de Gastos: mismos campos;
   stop
 endif
 
-:Debounce 350ms;
-
-:GET /search/?q=texto&entity=all
- [?entity = tasks|projects|employees];
-
-if (¿Responsable?) then (SÍ)
-  :Filtra por project_ids, employee_ids del JWT
-   (lógica en backend);
-endif
-
-:Resultados agrupados (máx 10 por tipo):
- · Tareas (por nombre o código)
- · Proyectos (por nombre JSONB o código)
- · Empleados (por nombre);
-
-if (¿Total == 0?) then (SÍ)
-  :EmptyState "Sin resultados para ...";
-  stop
-endif
-
-:Actor puede filtrar por tipo de entidad
- [Todos][Tareas][Proyectos][Empleados];
-
-if (¿Click en resultado?) then (Tarea)
-  :Navega a CU-11 /tareas/{id};
-else if (¿Click en resultado?) then (Proyecto)
-  :Navega a CU-09 /proyectos/{id};
-else (Empleado)
-  :Navega a CU-05 /empleados/{id};
-endif
-
-stop
+note right
+  Este caso de uso solo es accesible
+  desde CU-23 (relación <<extend>>).
+  Requiere rol Director.
+  A diferencia de CU-24, agrega líneas
+  de múltiples proyectos del mismo cliente.
+end note
 
 @enduml

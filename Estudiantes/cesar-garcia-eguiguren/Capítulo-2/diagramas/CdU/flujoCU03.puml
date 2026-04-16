@@ -1,4 +1,4 @@
-@startuml CU03_Manager
+@startuml CU03_ResumenEmpleado
 !theme plain
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -7,77 +7,46 @@ skinparam ActivityBorderColor #1E2840
 skinparam ActivityBackgroundColor #141824
 skinparam ActivityDiamondBackgroundColor #0D1018
 skinparam ActivityDiamondBorderColor #38BDF8
-skinparam NoteFontColor #07090F
-title CU-03 · Consultar Panel Manager
+skinparam NoteBackgroundColor #141824
+skinparam NoteBorderColor #38BDF8
+
+title CU-03 · Consultar Resumen de Empleado
 
 start
+:El actor selecciona un empleado;
+:El sistema verifica que el empleado
+pertenece al ámbito del actor;
 
-:CU-01 (JWT válido);
-:Actor navega a **/manager**;
+if (¿Empleado en el ámbito?) then (NO)
+  :El sistema deniega el acceso;
+  stop
+else (SÍ)
+  :El sistema muestra el perfil del empleado:
+  · Datos personales y profesionales
+  · Indicadores de carga de trabajo
+  · WIP (tareas en paralelo)
+  · Productividad reciente;
 
-:Actor puede filtrar por **departamento** (select);
+  :El actor visualiza las tareas del empleado
+  organizadas por pestañas:
+  · Pendientes
+  · Completadas
+  · Asignadas
+  · Como responsable;
 
-:GET /dashboards/summary/manager [?department_id];
+  :El actor puede aplicar filtros
+  de rango de fechas sobre las tareas;
 
-note right
-  Parámetros posibles:
-  department_id, page, page_size,
-  sort_by, sort_order, status
-end note
-
-if (¿Responsable?) then (SÍ)
-  :Filtra automáticamente por
-   employee_ids y department_ids del JWT;
-else (Director)
-  :Datos globales;
-endif
-
-:Extrae team_summary:
-· total_employees
-· overloaded_count
-· underloaded_count
-· without_tasks_count;
-
-:Renderiza **5 botones de estado clicables**
- con contador por categoría:
- Total · Sobrecargado · Normal · Subcargado · Sin tareas;
-
-:Card "Empleados más cargados":
- top_overloaded (top 5 por workload%)
- → enlace a CU-05 por empleado;
-
-:Card "Distribución por estados":
- BarChart horizontal (Recharts) con
- estados vs count — barras clicables;
-
-if (¿Actor hace clic en botón/barra de estado?) then (SÍ)
-  :Determina estado seleccionado
-   (all | sobrecargado | normal | subcargado | without_tasks);
-
-  :GET /dashboards/summary/manager
-   ?status=<estado>&page=<n>
-   &page_size=12&sort_by=<col>&sort_order=<dir>;
-
-  :Despliega **tabla de carga paginada**
-   (12 por página, ordenable):
-   Empleado | Departamento | Tareas pend.
-   H. pend. | Barra carga% | Badge estado;
-
-  :Paginación server-side ← /team_workload_pages;
-
-  if (¿Click en fila de empleado?) then (SÍ)
-    :Navega a CU-05 /empleados/{employee_id};
+  if (¿El actor selecciona una tarea?) then (SÍ)
+    :Navega a CU-09 Detalle de Tarea;
   endif
-
-  :Botón "Ocultar lista" → colapsa la tabla;
+  stop
 endif
 
-stop
-
 note right
-  ⚠ No existe radar ni pestañas Ejecutivo/Equipo.
-  La UI usa botones de estado + BarChart
-  + tabla condicional.
+  FA-01: Empleado fuera del ámbito → acceso denegado
+  FA-02: Empleado sin usuario vinculado
+         → métricas a 0, tareas vacías
 end note
 
 @enduml

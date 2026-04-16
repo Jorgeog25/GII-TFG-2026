@@ -1,4 +1,4 @@
-@startuml CU23_Asistencia
+@startuml CU23_Rentabilidad
 !theme plain
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -7,60 +7,66 @@ skinparam ActivityBorderColor #1E2840
 skinparam ActivityBackgroundColor #141824
 skinparam ActivityDiamondBackgroundColor #0D1018
 skinparam ActivityDiamondBorderColor #38BDF8
-
-title CU-23 · Consultar Asistencia vs Imputaciones
+skinparam NoteBackgroundColor #141824
+skinparam NoteBorderColor #38BDF8
+title CU-23 · Consultar Rentabilidad Financiera (Director exclusivo)
 
 start
+:El actor intenta acceder a la
+página de rentabilidad;
 
-:CU-01 (JWT válido);
-:Actor navega a **/asistencia**;
+if (¿El actor es Director?) then (NO)
+  :El sistema muestra una pantalla
+  de acceso restringido;
+  stop
+else (SÍ)
+  :El actor configura los filtros:
+  · Rango de fechas
+  · Modo de análisis (Global / Por proyecto
+    / Por responsable);
 
-:Rango por defecto: mes actual;
+  :El sistema muestra el resumen financiero:
+  · Ingresos totales
+  · Gastos totales
+  · Resultado neto
+  · Rentabilidad porcentual
+  · Gráfico comparativo por proyecto
+  · Distribución de estados (ganancia/neutro/pérdida);
 
-:Actor configura filtros:
- · Rango de fechas (shortcuts: Este mes / 30d / 3m)
- · Modo: [Equipo global] | [Por responsable] (solo Director);
+  :El actor selecciona una pestaña de desglose;
 
-if (Modo == Equipo global) then (SÍ)
-  :GET /employees/attendance/comparison
-   ?date_from&date_to [&department_id];
-else (Por responsable)
-  :Actor selecciona manager del select
-   (GET /employees/managers/list);
-  if (¿Manager seleccionado?) then (NO)
-    :Mensaje "Selecciona un responsable";
-    stop
+  if (Pestaña seleccionada) then (Por proyecto)
+    :El sistema muestra la tabla de rentabilidad
+    desglosada por proyecto;
+
+    if (¿El actor solicita el detalle de un proyecto?) then (SÍ)
+      :<<extend>> CU-24
+      El sistema muestra las líneas analíticas
+      individuales del proyecto;
+    endif
+
+  else (Por cliente)
+    :El sistema muestra la tabla de rentabilidad
+    agregada por cliente;
+
+    if (¿El actor solicita el detalle de un cliente?) then (SÍ)
+      :<<extend>> CU-25
+      El sistema muestra las líneas analíticas
+      del cliente agrupando todos sus proyectos;
+    endif
   endif
-  :GET /employees/attendance/manager/{id}
-   ?date_from&date_to;
+
+  if (Modo == Por responsable AND responsable seleccionado) then (SÍ)
+    :El sistema muestra el panel de rentabilidad
+    del responsable seleccionado con sus proyectos;
+  endif
+
+  stop
 endif
 
-:Calcular por empleado:
- attendance_hours (hr_attendance)
- timesheet_hours (account_analytic_line)
- diff = timesheet - attendance
- coverage_pct = (timesheet / attendance) × 100;
-
-:4 KPIs (si hay datos):
-· Horas fichadas · Horas imputadas
-· Diferencia total · Empleados con alerta;
-
-:Gráfico de barras agrupadas: fichadas vs imputadas
- (top 15 empleados por horas fichadas);
-
-:Tabla: Empleado | Depto | Fichadas | Imputadas
- | Diferencia | Cobertura% | Badge;
-
-:Badge cobertura:
- ≥ 95% OK (verde) · ≥ 80% Revisar · < 80% Alerta (rojo);
-
-if (¿Click en empleado de la tabla?) then (SÍ)
-  :GET /employees/attendance/{id}/daily
-   ?date_from&date_to
-   → Gráfico de barras y línea de diferencia
-   en panel expandido al pie de la página;
-endif
-
-stop
+note right
+  FA-01: Sin partes analíticos → indicadores a 0
+  FA-02: Actor sin rol Director → pantalla restringida
+end note
 
 @enduml
