@@ -241,11 +241,7 @@ Esta sección especifica el flujo detallado de los casos de uso más representat
 
 # 7. Diseño de Clases
 
-Con 13 modelos ORM, 11 repositorios base, 16 repositorios de métricas, 14 servicios
-de métricas, 11 servicios de dominio, 9 routers y 12 páginas del frontend, intentar
-representar todas las dependencias en un único diagrama produce un resultado
-ilegible. La estrategia seguida aquí es **presentar la arquitectura en ocho
-diagramas pequeños, cada uno respondiendo a una pregunta concreta**.
+Con 13 modelos ORM, 11 repositorios base, 16 repositorios de métricas, 16 servicios de métricas, 9 servicios de dominio, 9 routers y 12 páginas del frontend, intentar representar todas las dependencias en un único diagrama produce un resultado ilegible. La estrategia seguida aquí es **presentar la arquitectura en ocho diagramas pequeños, cada uno respondiendo a una pregunta concreta**.
 
 En aquellos diagramas donde varias clases-fuente emiten flechas que se cruzan, se
 aplica un **código cromático consistente**: cada clase-fuente recibe un color
@@ -268,7 +264,7 @@ la dirección del flujo de dependencias (siempre hacia abajo).
 
 Este diagrama cubre los **11 repositorios base**, es decir, los que viven
 directamente en `app/repositories/` sin entrar en el subpaquete `metrics/`.
-Son los proveedores de datos transversales del sistema: CRUD sobre las
+Son los proveedores de datos transversales del sistema: READ sobre las
 entidades de negocio (tareas, empleados, proyectos, departamentos,
 timesheets), autenticación, control de alcance (RBAC), búsqueda global,
 agregación para dashboards, gráficos y trazabilidad de cambios de Odoo.
@@ -283,7 +279,7 @@ salientes: basta seguir el color para reconstruir de qué modelos depende.
 - `auth.py` es un repositorio minúsculo y tiene una única razón para cambiar: la
   política de autenticación contra Odoo (tabla `res_users`). Su aislamiento respeta
   el SRP.
-- `task.py` y `timesheet.py` no solo exponen CRUD; también publican las subqueries
+- `task.py` y `timesheet.py` no solo exponen consultas READ; también publican las subqueries
   reutilizables que comparten con la capa de métricas (§7.3). Esto justifica que
   sean los únicos repositorios base con doble rol.
 - `scope.py` concentra toda la lógica de resolución RBAC (director / responsable /
