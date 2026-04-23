@@ -225,36 +225,10 @@ Esta sección especifica el flujo detallado de los casos de uso más representat
 
 ![Diagrama de secuencia detallado de CU-08](./imagenes/CdU/CU-08.png)
 
----
-
-### 6.5 CU-10 — Consultar Workload en modo equipo
-
-**Actor:** Director o Responsable
-**Precondición:** el actor está autenticado.
-
-Este flujo ilustra la variante del caso de uso **CU-10 Consultar Métrica Operativa** en modo agregado de equipo, antes separada como "Panel Manager". La misma métrica `Workload` se invoca sin proporcionar `employee_id` y opcionalmente con un `department_id`, lo que produce una distribución de la carga del equipo en lugar de los KPIs de un único empleado.
-
-| Paso | Capa | Clase / Función | Acción |
-|---|---|---|---|
-| 1 | Frontend | `Manager.jsx` → `useApi` | Envía `GET /dashboards/summary/manager` con filtros opcionales: `department_id`, `status`, `page`, `sort_by`, `sort_order` |
-| 2 | Routes | `dashboards.router` → `require_manager_or_above` | Decodifica el JWT y rechaza con 403 si el rol es `empleado`. Inyecta `CurrentUser`. Delega al servicio sin aplicar scope |
-| 3 | Services | `DashboardService.get_manager_overview(cu, ...)` | Si se proporciona `department_id`, llama a `verify_department_scope(cu, department_id)` → 403 si el responsable no gestiona ese departamento (**Capa 2**) |
-| 4 | Services | | Determina la lista de empleados a mostrar: si hay `department_id` validado usa `get_employees_by_department_query()`; si el actor es responsable usa `get_filtered_employees_query(employee_ids=cu.employee_ids)`; si es director usa `get_all_employees_query()` (**Capa 3**) |
-| 5 | Repositories | `metrics/workload.py → get_pending_hours_per_employee()` | Una única query agrupada con JOIN `hr_employee → res_users → project_task_user_rel → project_task → account_analytic_line`. Devuelve `pending_hours` y `pending_tasks` para todos los empleados activos. Es la misma primitiva que consume el modo individual de `WorkloadService` |
-| 6 | Services | | Cruza la lista filtrada de empleados con el `pending_map` del repositorio. Para cada empleado calcula `workload_pct = pending_hours / 40 × 100` y clasifica el estado: `sobrecargado`, `normal`, `subcargado` o `without_tasks` |
-| 7 | Services | | Extrae `top_overloaded` (top 5 por porcentaje). Si se filtra por `status`, restringe el listado al estado solicitado. Aplica `sort_dicts` + `paginate_list` para la tabla paginada |
-| 8 | Routes | `dashboards.router` | Devuelve `200 OK` + `ManagerOverviewResponse` |
-| 9 | Frontend | `Manager.jsx` | Renderiza las tarjetas de estado (total/sobrecargado/normal/subcargado/sin tareas), el panel de top sobrecargados, el gráfico de distribución y la tabla paginada cuando se selecciona un estado |
-
-**Datos de salida:** `{ team_summary, top_overloaded, team_workload (paginado), team_workload_total, team_workload_pages, overloaded_employees, underloaded_employees, employees_without_tasks }`
-
-**Decisión de diseño clave:** el modo individual y el modo agregado de `WorkloadService` comparten la primitiva de repositorio `get_pending_hours_per_employee()`. El cambio de modo se resuelve exclusivamente en la capa de servicio según la presencia de `employee_id`. Este acoplamiento compartido justifica la consolidación en CU-10 documentada en el Capítulo 2.
-
-![Diagrama de secuencia detallado de CU-10 en modo equipo](./imagenes/CdU/CU-10-equipo.png)
 
 ---
 
-### 6.6 CU-13 — Consultar rentabilidad financiera
+### 6.5 CU-13 — Consultar rentabilidad financiera
 
 **Actor:** Director
 **Precondición:** el actor está autenticado con rol `director`.
@@ -279,7 +253,7 @@ Al pulsar "Ver detalles" sobre una fila de la tabla por proyecto o por cliente, 
 
 ---
 
-### 6.7 CU-17 — Guardar snapshot (upsert diario)
+### 6.6 CU-17 — Guardar snapshot (upsert diario)
 
 **Actor:** Director o Responsable
 **Precondición:** el actor está en una vista calculada del frontend principal con un resultado ya mostrado en pantalla (métrica, gráfico, rentabilidad o ficha de entidad).
@@ -309,7 +283,7 @@ Este caso de uso absorbe también la semántica de actualización: si ya existe 
 
 ---
 
-### 6.8 CU-19 — Consultar detalle de snapshot
+### 6.7 CU-19 — Consultar detalle de snapshot
 
 **Actor:** Director o Responsable
 **Precondición:** el actor está autenticado en el visor (frontend2) y ha seleccionado una snapshot concreta desde CU-18 o desde la home del visor.
@@ -429,7 +403,9 @@ Diagrama "simétrico" al 7.4 pero para la capa de dominio. Aquí la corresponden
 
 ---
 
-## 7.7 Subsistema de snapshots: SnapshotService ↔ SnapshotRepository ↔ MongoDB
+## 7.7 Subsistema de snapshots: Frontend ↔ Routes ↔ Services ↔ Repositories ↔ MongoDB
+
+![Diagrama del subsistema de snapshots](./imagenes/diseño/subsistemaSnapshots.png)
 
 Este diagrama aísla el subsistema de snapshots, que por su naturaleza (persistencia documental en lugar de relacional) merece una vista dedicada. `SnapshotService` concentra todas las responsabilidades transversales al subsistema: normalización de parámetros, cálculo de `params_hash` mediante SHA-256, construcción del `SnapshotActor` a partir de los claims del JWT, fijación de `snapshot_date` y la decisión de upsert (insert si la clave compuesta no existe, update si ya existe).
 
