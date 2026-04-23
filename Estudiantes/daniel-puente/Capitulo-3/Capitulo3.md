@@ -32,7 +32,7 @@ Los diagramas entidad-relación muestran cómo estas entidades se relacionan ent
 
 ## CONTROLADORES
 
-![Modelos](/Estudiantes/daniel-puente/Capitulo-3/imagenes/controladores.svg)
+![Controladores](/Estudiantes/daniel-puente/Capitulo-3/imagenes/controladores.svg)
 
 Los controladores definen la lógica de negocio que conecta los modelos con las vistas. Cada controlador responde a una serie de endpoints definidos en la API REST, cumpliendo funciones como:
 
@@ -54,7 +54,9 @@ CartaController: Permite al Administrador gestionar los platos disponibles en la
 
 El uso de controladores desacoplados mejora la mantenibilidad y estabilidad del sistema, y está alineado con las buenas prácticas de desarrollo backend en Node.js con Express.
 
-## VISTAS (Falta Diagrama)
+## VISTAS
+
+![Vistas](/Estudiantes/daniel-puente/Capitulo-3/imagenes/vistas.svg)
 
 Las vistas representan la capa de presentación del sistema y se adaptan al rol autenticado en cada acceso. La aplicación se desarrolla como una PWA pensada para tablet, de modo que cada usuario visualiza únicamente las opciones correspondientes a sus permisos.
 
@@ -63,3 +65,90 @@ En este sentido, existen vistas compartidas entre Camarero y Administrador, como
 Por otro lado, la vista del Cocinero corresponde al módulo KDS, donde se muestran en tiempo real las comandas pendientes y en preparación, junto con alérgenos y observaciones destacadas. Desde esta pantalla puede actualizar estados y provocar el envío de notificaciones automáticas al camarero.
 
 Finalmente, el Administrador dispone de vistas exclusivas para la gestión de reservas, usuarios y roles, carta, menú del día, caja y auditoría. Todas las vistas se comunican con los controladores mediante la API REST y WebSocket, garantizando que la información se mantenga sincronizada durante el servicio.
+
+
+### CU-04 Abrir mesa
+
+Permite al Camarero o al Administrador cambiar el estado de una mesa libre a ocupada cuando llegan nuevos clientes al restaurante. Este caso deuso constituye el inicio del flujo operativo en sala, ya que una vez abierta la mesa queda habilitada para asociar una comanda activa y continuar con el servicio.
+
+**Modelos implicados**
+
+El modelo principal implicado es `Mesa`, ya que almacena el identificador de la mesa, la zona a la que pertenece y su estado actual dentro del plano del restaurante. También participa `Zona`, que permite contextualizar la mesa dentro de un área física concreta del establecimiento, y `LogAuditoria`, utilizado para registrar la apertura de la mesa con el usuario responsable y la marca temporal correspondiente.
+
+**Controladores implicados**
+
+La lógica de este caso de uso recae sobre `MesaController`, responsable de comprobar que la mesa se encuentra en estado libre antes de permitir la operación. Una vez validada la acción, el controlador actualiza el estado de la mesa a ocupada, registra el evento en el log de auditoría y propaga el cambio al resto de clientes conectados para mantener la vista de sala sincronizada en tiempo real. 
+
+**Rutas propuestas**
+
+Para soportar este caso de uso, el diseño de la API REST contempla una ruta específica de actualización de estado sobre el recurso mesa. Dicha ruta deberá exigir autenticación previa mediante JWT y restringir la operación a los roles autorizados para operar en sala.
+
+| Método | Ruta | Descripción | Roles permitidos |
+|---|---|---|---|
+| PATCH | /api/mesas/:mesaId/abrir | Cambia el estado de una mesa libre a ocupada | Camarero, Administrador |
+
+**Vista implicada**
+
+La interacción se realiza desde `MesasView`, que constituye la pantalla principal de sala para Camarero y Administrador. Desde esta vista, el usuario selecciona una mesa libre en el plano agrupado por zonas, confirma la acción y visualiza inmediatamente el cambio de estado a ocupada. 
+
+**Diagrama propuesto**
+![AbrirMesa](/Estudiantes/daniel-puente/Capitulo-3/imagenes/abrirMesa.svg)
+
+
+### CU-06 Tomar comanda
+
+Permite registrar digitalmente los platos solicitados por una mesa ocupada, incluyendo cantidades, observaciones y alérgenos obligatorios. Se trata de una de las funcionalidades claves del nuevo sistema, ya que sustituye a la comanda en papel, conecta directamente sala con cocina y garantiza que la información crítica quede registrada incluso ante fallos puntuales de conectividad gracias al enfoque local-first planteado para la solución.
+
+**Modelos implicados**
+
+Este caso de uso implica los modelos `Mesa`, `Comanda`, `LineaComanda`, `Plato` y `TarifaMenu`. `Mesa` identifica la mesa ocupada sobre la que se realiza la toma del pedido; `Comanda` representa el pedido global; `LineaComanda` almacena cada plato concreto con cantidad, observaciones, alérgenos y estado; `Plato` proporciona la información disponible de carta; y `TarifaMenu` permite aplicar la lógica del menú del día cuando corresponda. Además, `LogAuditoria` puede emplearse para conservar trazabilidad sobre la creación de la comanda.
+
+**Controladores implicados**
+
+La responsabilidad principal recae en `ComandaController`, que valida los datos introducidos, comprueba que la mesa se encuentra ocupada y verifica que todas las líneas incluyan la información obligatoria de alérgenos. También se coordina con `KDSController`, ya que una vez registrada la comanda esta debe quedar disponible en la pantalla de cocina en tiempo real. Si la conectividad falla, el diseño contempla almacenar temporalmente la operación en el dispositivo y sincronizarla posteriormente, en línea con los requisitos de arquitectura local-first del sistema. 
+
+**Rutas propuestas**
+
+Para este caso de uso, la API debe contemplar endpoints que permitan consultar los platos disponibles y registrar una nueva comanda asociada a una mesa ocupada. Todas estas rutas deberán estar protegidas mediante autenticación JWT y limitar su acceso a los roles que pueden operar en sala. 
+
+| Método | Ruta | Descripción | Roles permitidos |
+|---|---|---|---|
+| GET | /api/platos | Recupera la carta y los platos disponibles para tomar una comanda | Camarero, Administrador |
+| GET | /api/tarifas-menu/actual | Obtiene la tarifa vigente del menú del día | Camarero, Administrador |
+| POST | /api/comandas | Crea una nueva comanda asociada a una mesa ocupada | Camarero, Administrador |
+
+**Vista implicada**
+
+La funcionalidad se ejecuta desde `ComandaView`, que permite al usuario seleccionar platos de carta o menú del día, indicar cantidades, registrar observaciones y completar de forma obligatoria la información relativa a alérgenos antes de confirmar el envío. Tras la confirmación, la vista debe reflejar si la comanda ha sido enviada correctamente a cocina o si ha quedado pendiente de sincronización local por pérdida temporal de red. 
+
+**Diagrama propuesto**
+![tomarComanda](/Estudiantes/daniel-puente/Capitulo-3/imagenes/tomarComanda.svg)
+
+### CU-08 Editar comanda
+
+Permite modificar una comanda activa de una mesa ocupada mientras existan líneas que todavía no hayan entrado en preparación en cocina. Este caso de uso es esencial para adaptarse a la operativa real del restaurante, donde durante el servicio pueden producirse cambios de última hora por parte de los comensales, siempre que no comprometan platos ya iniciados o finalizados en cocina. 
+
+**Modelos implicados**
+
+Intervienen `Comanda`, `LineaComanda`, `Mesa`, `Plato` y `LogAuditoria`. `Comanda` representa el pedido en curso asociado a una mesa; `LineaComanda` permite identificar qué elementos concretos pueden ser modificados; `Mesa` vincula la operación con la mesa activa; `Plato` proporciona la referencia de carta para nuevas incorporaciones o sustituciones; y `LogAuditoria` registra la edición realizada, incluyendo usuario y marca temporal, para asegurar trazabilidad.
+
+**Controladores implicados**
+
+El caso de uso se apoya en `ComandaController`, que recupera la comanda activa, valida los cambios solicitados y comprueba el estado de cada línea antes de permitir su modificación. Si existen líneas en preparación o ya listas, estas deben quedar bloqueadas, tal y como se recoge en el caso de uso negativo asociado a la edición de líneas en cocina. Una vez aplicados los cambios válidos, el controlador actualiza la comanda, registra la operación en auditoría y comunica la modificación al `KDSController` para mantener la pantalla de cocina sincronizada en tiempo real.
+
+**Rutas propuestas**
+
+El diseño de la API contempla una ruta de consulta de la comanda activa de una mesa y otra ruta de actualización para reflejar los cambios autorizados. Ambas operaciones deben exigir autenticación y verificar que el rol del usuario corresponde a un perfil con permisos de sala. 
+
+| Método | Ruta | Descripción | Roles permitidos |
+|---|---|---|---|
+| GET | /api/comandas/mesa/:mesaId/activa | Recupera la comanda activa asociada a una mesa | Camarero, Administrador |
+| PATCH | /api/comandas/:comandaId | Actualiza una comanda activa permitiendo añadir, modificar o eliminar líneas en estado pendiente | Camarero, Administrador |
+
+**Vista implicada**
+
+La edición se realiza desde `ComandaView`, reutilizando la misma vista de toma de comandas pero en modo de actualización. Desde esta pantalla, el usuario puede consultar el detalle del pedido actual, modificar cantidades, añadir nuevos platos o eliminar líneas pendientes, visualizando de forma diferenciada aquellas líneas que ya no son editables por encontrarse en preparación o listas.
+
+**Diagrama propuesto**
+
+![editarComanda](/Estudiantes/daniel-puente/Capitulo-3/imagenes/editarComanda.svg)
