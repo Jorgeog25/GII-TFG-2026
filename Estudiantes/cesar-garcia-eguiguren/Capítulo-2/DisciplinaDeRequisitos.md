@@ -50,82 +50,61 @@ Los CU de resumen son el panel analítico de cada entidad: agregan indicadores, 
 
 ---
 
-### 1.3 Identificación de Casos de Uso
-
-A continuación se presenta la lista completa de los 27 casos de uso identificados, organizados en 9 paquetes.
-
-#### Paquete 1 – Autenticación
-
-| ID | Nombre | Actor(es) |
-|---|---|---|
-| CU-01 | Autenticarse en el Sistema | Director, Responsable |
-| CU-27 | Cerrar Sesión | Director, Responsable |
-
-#### Paquete 2 – Entidad: Empleado
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-02 | Listar y Buscar Empleados | Director, Responsable | Listado paginado con búsqueda y filtros. El Responsable solo ve los empleados de su ámbito. |
-| CU-03 | Consultar Resumen de Empleado | Director, Responsable | Panel individual con indicadores de carga, WIP, productividad y tareas agrupadas por estado. |
-
-#### Paquete 3 – Entidad: Departamento
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-04 | Listar Departamentos | Director, Responsable | Cuadrícula de departamentos activos con nombre y responsable. |
-| CU-05 | Consultar Resumen de Departamento | Director, Responsable | Panel de departamento con indicadores de carga del equipo, tabla de workload por empleado y listado de miembros. |
-
-#### Paquete 4 – Entidad: Proyecto
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-06 | Listar Proyectos | Director, Responsable | Cuadrícula de proyectos activos con cliente y código. |
-| CU-07 | Consultar Resumen de Proyecto | Director, Responsable | Panel de proyecto con indicadores de eficiencia, riesgo y rentabilidad; comparativa de horas; listado de tareas y equipo. |
-
-#### Paquete 5 – Entidad: Tarea
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-08 | Listar Tareas | Director, Responsable | Acceso único a tareas con filtros combinables. Invocable desde el contexto global, desde un proyecto o desde un empleado. |
-| CU-09 | Consultar Detalle de Tarea | Director, Responsable | Ficha de tarea con información general, personas, horas y subtareas. |
-
-#### Paquete 6 – Métricas Operativas
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-10 | Consultar Productividad | Director, Responsable | Ratio de horas estimadas frente a reales en tareas cerradas, con ranking y promedio. |
-| CU-11 | Consultar Cumplimiento de Plazos | Director, Responsable | Porcentaje de tareas cerradas dentro de la fecha límite establecida. |
-| CU-12 | Consultar WIP de Empleado | Director, Responsable | Número de tareas en paralelo del empleado, con umbral de referencia y recomendación. Requiere empleado. |
-| CU-13 | Consultar Carga de Trabajo de Empleado | Director, Responsable | Horas de trabajo pendientes respecto a la jornada de referencia, con estado de carga. Requiere empleado. |
-| CU-14 | Consultar Riesgo de Proyecto | Director, Responsable | Porcentaje de tareas abiertas vencidas o con el plazo muy consumido. Requiere proyecto. |
-| CU-15 | Consultar Tasa de Retrabajo | Director, Responsable | Porcentaje de tareas que fueron cerradas y posteriormente reabiertas. |
-| CU-16 | Consultar Exactitud de Estimación | Director, Responsable | Comparación entre horas estimadas y reales del responsable, con sesgo de estimación. Requiere empleado. |
-| CU-17 | Consultar Lead Time | Director, Responsable | Días medios entre la asignación y el cierre de las tareas completadas. |
-| CU-18 | Consultar Tiempo por Estado | Director, Responsable | Tiempo medio de permanencia de las tareas en cada etapa del flujo de trabajo. |
-| CU-19 | Consultar Tareas Canceladas | Director, Responsable | Porcentaje de tareas cuya etapa corresponde a una cancelación. |
-| CU-20 | Consultar Tiempo por Prioridad | Director, Responsable | Horas medias invertidas por nivel de prioridad (Normal / Urgente). |
-
-#### Paquete 7 – Análisis Visual
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-21 | Visualizar Gráficos Analíticos | Director, Responsable | Gráficos interactivos de evolución de tareas, distribución por estado y horas por cliente (solo Director). |
-| CU-22 | Consultar Asistencia vs Imputaciones | Director, Responsable | Comparativa de horas fichadas frente a horas imputadas en partes, con cobertura individual y serie diaria. |
-| CU-28 | Consultar Carga del Equipo      | Director, Responsable | Panel global de carga del equipo con distribución por estado (sobrecargado, normal, subcargado, sin tareas), ranking de los empleados más cargados y listado filtrable por estado y departamento. |
-
-#### Paquete 8 – Rentabilidad Financiera _(exclusivo para el Director)_
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-23 | Consultar Rentabilidad Financiera | Director | Análisis financiero basado en partes analíticos: resumen global, desglose por proyecto, por cliente y por responsable. |
-| CU-24 | Consultar Líneas Analíticas de Proyecto | Director | Detalle de ingresos y gastos individuales de un proyecto. Accesible desde CU-23. |
-| CU-25 | Consultar Líneas Analíticas de Cliente | Director | Detalle de ingresos y gastos de todos los proyectos de un cliente. Accesible desde CU-23. |
-
-#### Paquete 9 – Utilidades
-
-| ID | Nombre | Actor(es) | Descripción resumida |
-|---|---|---|---|
-| CU-26 | Realizar Búsqueda Global | Director, Responsable | Búsqueda en tiempo real de tareas, proyectos y empleados por nombre o código, con navegación directa al detalle. |
+### 1.3 Lista de casos de uso
+ 
+El sistema se organiza en **10 paquetes funcionales** que agrupan los
+**20 casos de uso** identificados. Los CUs marcados con ★ son
+exclusivos del rol *Director*; el resto están disponibles para ambos
+actores (*Director* y *Responsable*) con el filtrado de ámbito que
+corresponda a cada uno.
+ 
+| Paquete | CU | Nombre | Director | Responsable |
+|---|---|---|---|---|
+| **P1 · Autenticación** | CU-01 | Autenticarse en el sistema | ✅ | ✅ |
+|                        | CU-16 | Cerrar sesión | ✅ | ✅ |
+| **P2 · Empleados**     | CU-02 | Listar y buscar empleados | ✅ | ✅ [scope] |
+|                        | CU-03 | Visualizar resumen de empleado | ✅ | ✅ [scope] |
+| **P3 · Departamentos** | CU-04 | Listar departamentos | ✅ | ✅ [scope] |
+|                        | CU-05 | Visualizar resumen de departamento | ✅ | ✅ [scope] |
+| **P4 · Proyectos**     | CU-06 | Listar proyectos | ✅ | ✅ [scope] |
+|                        | CU-07 | Visualizar resumen de proyecto | ✅ | ✅ [scope] |
+| **P5 · Tareas**        | CU-08 | Listar y filtrar tareas | ✅ | ✅ [scope] |
+|                        | CU-09 | Consultar detalle de tarea | ✅ | ✅ [scope] |
+| **P6 · Métricas**      | CU-10 | Consultar métrica operativa *(parametrizada)* | ✅ | ✅ [scope] |
+| **P7 · Análisis visual** | CU-11 | Visualizar gráficos analíticos | ✅ | ✅ [scope] |
+|                          | CU-12 | Consultar asistencia vs imputaciones | ✅ | ✅ [modo equipo] |
+| **P8 · Rentabilidad ★** | CU-13 | Analizar rentabilidad financiera ★ | ✅ | ❌ |
+|                         | CU-14 | Consultar líneas analíticas *(scope: proyecto &#124; cliente)* ★ | ✅ | ❌ |
+| **P9 · Utilidades**    | CU-15 | Realizar búsqueda global | ✅ | ✅ [scope] |
+| **P10 · Snapshots**    | CU-17 | Guardar snapshot *(upsert diario)* | ✅ | ✅ |
+|                        | CU-18 | Listar snapshots | ✅ | ✅ |
+|                        | CU-19 | Consultar detalle de snapshot | ✅ | ✅ |
+|                        | CU-20 | Eliminar snapshot | ✅ | ❌ |
+ 
+**Totales:** Director → 20 CU · Responsable → 17 CU (excluidos CU-13 y CU-14).
+ 
+#### Observaciones sobre la consolidación de CUs
+ 
+Durante la identificación se han aplicado tres consolidaciones alineadas
+con los principios de RUP (mismo actor, misma precondición, misma
+postcondición, mismo flujo principal; solo difiere un parámetro):
+ 
+- **CU-10 Consultar Métrica Operativa** es un caso de uso único que
+  sirve a 15 servicios de métrica (productividad, WIP, workload, riesgo,
+  compliance, lead time, estimation, cancelled tasks, client distribution,
+  stage time, rework, project efficiency, rentability, etc.). La elección
+  de la métrica se modela como parámetro del CU, no como CUs separados.
+  Este CU absorbe además "Supervisar Carga de Equipo".
+- **CU-14 Consultar Líneas Analíticas** unifica en un único CU el
+  drill-down de líneas analíticas por proyecto y por cliente que antes
+  eran dos CUs separados. El scope (`proyecto | cliente`) se modela como
+  parámetro.
+- **Guardar/Actualizar Snapshot** se modela como un único CU-17
+  con semántica *upsert diario*. Dado que existe como máximo una
+  snapshot por (tipo, parámetros, día), volver a guardar el mismo día
+  sobrescribe la anterior. No existe CU separado de "Actualizar
+  Snapshot"; la actualización queda embebida como flujo alternativo
+  FA-01 de CU-17.
 
 ---
 
@@ -136,11 +115,11 @@ A continuación se presenta la lista completa de los 27 casos de uso identificad
 |![Diagrama de casos de uso - Director](./imagenes/actor_director.png)|![Diagrama de casos de uso - Responsable](./imagenes/actor_responsable.png)|
 |[Ver código](./diagramas/actorDirector.puml)|[Ver código](./diagramas/actorResponsable.puml)|
 
-Ambos actores comparten la mayoría de los casos de uso. El Director tiene acceso exclusivo al módulo de rentabilidad financiera (CU-23, CU-24 y CU-25). El Responsable opera siempre con un filtro automático sobre su ámbito organizativo.
+Ambos actores comparten la mayoría de los casos de uso. El Director tiene acceso exclusivo al módulo de rentabilidad financiera (CU-13, CU-14). El Responsable opera siempre con un filtro automático sobre su ámbito organizativo.
 
 **Resumen rápido:**
-- **Director:** Acceso a los 28 CU sin restricciones de ámbito.
-- **Responsable:** Acceso a CU-01 hasta CU-22 y CU-26/CU-27/CU-28, con datos filtrados automáticamente a su ámbito; acceso denegado a CU-23, CU-24 y CU-25.
+- **Director:** Acceso a los 20 CU sin restricciones de ámbito.
+- **Responsable:** Acceso a 17 CU con filtro de ámbito (excluidos CU-13, CU-14 y CU-20).
 
 ---
 
@@ -155,54 +134,40 @@ Ambos actores comparten la mayoría de los casos de uso. El Director tiene acces
 | **Frecuencia de uso** | ¿Se ejecuta en cada sesión o esporádicamente? | 1–3 |
 | **Riesgo técnico** | ¿Implica lógica compleja o integración crítica con el ERP? | 1–3 |
 
-### 2.2 Tabla de Priorización
-
-#### Prioridad Alta
-
-| ID | Nombre | Crit. | V.Neg. | Frec. | R.Téc. | **Prioridad** |
-|---|---|:---:|:---:|:---:|:---:|:---:|
-| CU-02 | Listar Empleados | 2 | 3 | 3 | 1 | **Alta** |
-| CU-03 | Consultar Resumen Empleado | 2 | 3 | 3 | 2 | **Alta** |
-| CU-06 | Listar Proyectos | 2 | 3 | 3 | 1 | **Alta** |
-| CU-07 | Consultar Resumen Proyecto | 2 | 3 | 2 | 2 | **Alta** |
-| CU-08 | Listar Tareas | 3 | 3 | 3 | 2 | **Alta** |
-| CU-23 | Consultar Rentabilidad Financiera | 3 | 3 | 2 | 3 | **Alta** |
-| CU-24 | Consultar Líneas Analíticas Proyecto | 1 | 3 | 1 | 2 | **Alta** |
-| CU-25 | Consultar Líneas Analíticas Cliente | 1 | 3 | 1 | 2 | **Alta** |
-
-#### Prioridad Media
-
-| ID | Nombre | Crit. | V.Neg. | Frec. | R.Téc. | **Prioridad** |
-|---|---|:---:|:---:|:---:|:---:|:---:|
-| CU-01 | Autenticarse | 1 | 2 | 3 | 2 | **Media** |
-| CU-04 | Listar Departamentos | 2 | 2 | 2 | 1 | **Media** |
-| CU-05 | Consultar Resumen Departamento | 2 | 3 | 2 | 1 | **Media** |
-| CU-09 | Consultar Detalle de Tarea | 2 | 2 | 3 | 1 | **Media** |
-| CU-10 | Consultar Productividad | 2 | 3 | 2 | 2 | **Media** |
-| CU-11 | Consultar Cumplimiento | 2 | 3 | 2 | 1 | **Media** |
-| CU-12 | Consultar WIP (Empleado) | 2 | 3 | 2 | 2 | **Media** |
-| CU-13 | Consultar Workload (Empleado) | 2 | 3 | 2 | 2 | **Media** |
-| CU-14 | Consultar Riesgo Proyecto | 2 | 3 | 2 | 2 | **Media** |
-| CU-15 | Consultar Retrabajo | 1 | 2 | 1 | 3 | **Media** |
-| CU-16 | Consultar Exactitud Estimación | 1 | 2 | 1 | 2 | **Media** |
-| CU-17 | Consultar Lead Time | 2 | 3 | 2 | 2 | **Media** |
-| CU-18 | Consultar Tiempo por Estado | 2 | 3 | 2 | 2 | **Media** |
-| CU-21 | Consultar Gráficos Analíticos | 2 | 3 | 2 | 2 | **Media** |
-| CU-22 | Consultar Asistencia vs Imputaciones | 2 | 3 | 2 | 2 | **Media** |
-| CU-26 | Búsqueda Global | 1 | 2 | 3 | 1 | **Media** |
-| CU-27 | Cerrar Sesión | 1 | 1 | 3 | 1 | **Media** |
-| CU-28 | Consultar Carga del Equipo      |   2   |   3    |   2   |   1    | **Media**     |
-
-#### Prioridad Baja
-
-| ID | Nombre | Crit. | V.Neg. | Frec. | R.Téc. | **Prioridad** |
-|---|---|:---:|:---:|:---:|:---:|:---:|
-| CU-19 | Tareas Canceladas | 1 | 2 | 1 | 2 | **Baja** |
-| CU-20 | Tiempo por Prioridad | 1 | 2 | 1 | 2 | **Baja** |
-
-> **Nota estratégica:** CU-23 tiene alta prioridad aunque sea de uso menos frecuente, por su relevancia para la toma de decisiones del Director. CU-24 y CU-25 se integran como extensiones directas de CU-23.
->
-> **Riesgo técnico:** CU-15 a CU-18 dependen del historial de cambios de estado del ERP, lo que requiere integración cuidadosa con los registros de seguimiento de Odoo.
+#### Prioridad Alta (A) — MVP imprescindible
+ 
+| CU | Nombre | Justificación |
+|---|---|---|
+| CU-01 | Autenticarse | Sin autenticación no hay sistema. Puerta de entrada. |
+| CU-02 | Listar empleados | Dato base para todos los paneles de empleado. |
+| CU-03 | Resumen de empleado | Vista canónica de consulta operativa diaria. |
+| CU-06 | Listar proyectos | Dato base para paneles de proyecto y rentabilidad. |
+| CU-07 | Resumen de proyecto | Vista canónica sobre el estado de un proyecto. |
+| CU-08 | Listar tareas | Consulta operativa de alta frecuencia. |
+| CU-10 | Consultar métrica operativa | KPIs que guían la decisión diaria (15 métricas). |
+| CU-13 | Rentabilidad financiera ★ | KPI económico global del Director. |
+| CU-17 | Guardar snapshot | Permite persistir el estado para seguimiento histórico. |
+ 
+#### Prioridad Media (M) — complementarios
+ 
+| CU | Nombre | Justificación |
+|---|---|---|
+| CU-04 | Listar departamentos | Exploración por estructura organizativa. |
+| CU-05 | Resumen de departamento | Soporte al análisis de carga agregada. |
+| CU-09 | Detalle de tarea | Profundización puntual sobre una tarea. |
+| CU-11 | Gráficos analíticos | Análisis visual complementario. |
+| CU-12 | Asistencia vs imputaciones | Control de coherencia horaria. |
+| CU-14 | Líneas analíticas ★ | Drill-down contextual sobre rentabilidad (scope: proyecto &#124; cliente). |
+| CU-18 | Listar snapshots | Consumo del histórico persistido. |
+| CU-19 | Detalle de snapshot | Reconstrucción de vistas guardadas. |
+ 
+#### Prioridad Baja (B) — opcionales
+ 
+| CU | Nombre | Justificación |
+|---|---|---|
+| CU-15 | Búsqueda global | Atajo de navegación; no imprescindible. |
+| CU-16 | Cerrar sesión | Deseable pero no bloqueante (expiración JWT). |
+| CU-20 | Eliminar snapshot | Operación excepcional; uso puntual. |
 
 ---
 
@@ -433,188 +398,335 @@ Todos los casos de uso están documentados en detalle en: [Disciplina de Requisi
 
 ---
 
-### CU-10 – Consultar Productividad
-
+## CU-10 · Consultar Métrica Operativa
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01. |
-| **Postcondición** | El actor conoce la eficiencia de ejecución frente a la estimación. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU10.png)
-
-**Flujo principal:**
-1. El actor accede a la página de métricas y selecciona la métrica de Productividad.
-2. El actor puede filtrar por empleado, proyecto y rango de fechas.
-3. El sistema calcula el ratio de horas estimadas frente a reales para las tareas cerradas.
-4. El sistema muestra el promedio de productividad y el ranking de tareas.
-
-**Relaciones:** Accesible desde la página de métricas.
+| **Actor** | Director, Responsable |
+| **Precondición** | Actor autenticado. Si se proporcionan parámetros `employee_id`, `project_id` o `department_id`, deben estar dentro del ámbito del actor. |
+| **Postcondición** | El actor ha consultado el valor de una métrica concreta con los filtros que ha configurado. |
+| **Disparador** | El actor accede a la página de métricas y selecciona una métrica de la cuadrícula. |
+ 
+**Descripción.** Caso de uso único que sirve a los 15 servicios de
+métrica operativa del backend. El tipo de métrica (`metric_name`) y sus
+parámetros se modelan como entrada del propio CU, lo que permite que
+una única definición cubra de forma polimórfica todo el subsistema de
+análisis métrico.
+ 
+### Flujo principal
+ 
+1. El actor accede a la página de métricas.
+2. El sistema muestra las métricas disponibles agrupadas por categoría
+   (Proyecto · Empleado · Equipo · Generales).
+3. El actor selecciona una métrica.
+4. El sistema muestra los parámetros contextuales requeridos por esa
+   métrica (empleado, proyecto, departamento, rango de fechas,
+   `root_only`, etc.).
+5. El actor configura los parámetros y confirma.
+6. El sistema verifica que los parámetros están dentro del ámbito del
+   actor y delega en el servicio concreto.
+7. El sistema muestra el panel de detalle con KPIs, gauge y los
+   gráficos específicos de la métrica.
+### Flujos alternativos
+ 
+- **FA-01** — Parámetro obligatorio faltante: el sistema muestra un
+  estado vacío indicando qué parámetro es necesario.
+- **FA-02** — Parámetros fuera del ámbito del actor: HTTP 403.
+- **FA-03** — Sin datos para los filtros: el sistema muestra un panel
+  vacío con mensaje informativo.
+- **FA-04** — El actor pulsa "Guardar snapshot": se dispara CU-17 con
+  los datos ya calculados.
 
 ---
-
-### CU-11 a CU-20 – Métricas restantes
-
-> Los CU-11 (Cumplimiento), CU-12 (WIP), CU-13 (Workload), CU-14 (Riesgo), CU-15 (Retrabajo), CU-16 (Exactitud Estimación), CU-17 (Lead Time), CU-18 (Tiempo por Estado), CU-19 (Tareas Canceladas) y CU-20 (Tiempo por Prioridad) se documentan con el mismo nivel de detalle en [Casos de Uso Detallados](./docs/CasosDeUsoDetallados.md). Todos comparten el patrón de acceso a través de la página de métricas, presentándose como tarjetas interactivas con panel de detalle.
-
----
-
-### CU-21 – Visualizar Gráficos Analíticos
-
+ 
+## CU-11 · Visualizar Gráficos Analíticos
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01. |
-| **Postcondición** | El actor analiza tendencias y distribuciones de forma visual. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU21.png)
-
-**Flujo principal:**
+| **Actor** | Director, Responsable |
+| **Precondición** | Actor autenticado. |
+| **Postcondición** | El actor ha visualizado los gráficos filtrados por su ámbito y configuración. |
+ 
+### Flujo principal
+ 
 1. El actor accede a la página de gráficos.
-2. El actor configura el rango de fechas, la agrupación temporal y la entidad de análisis.
-3. El sistema genera los gráficos disponibles para el rol del actor: evolución temporal de tareas, distribución por estado y — solo para el Director — distribución de horas por cliente.
-4. Al cambiar los filtros, el sistema recalcula y actualiza los gráficos.
-
-**Flujos alternativos:**
-- `FA-01`: Sin datos en el período → mensaje de sin datos por gráfico.
-- `FA-02`: El Responsable no visualiza la distribución por cliente ni datos fuera de su ámbito.
-
-**Relaciones:** `<<include>>` CU-02, CU-04 y CU-06 para los selectores de filtro.
-
+2. Configura rango de fechas, agrupación temporal (semana/mes) y
+   entidad de análisis (empresa / empleado / departamento / proyecto).
+3. El sistema genera los gráficos disponibles: evolución temporal de
+   tareas y distribución por estado actual.
+4. Si el actor es Director, se añade la distribución de horas por
+   cliente.
+### Flujos alternativos
+ 
+- **FA-01** — Sin datos en el período: mensaje "sin datos" por gráfico.
+- **FA-02** — Responsable: no visualiza la distribución por cliente.
+- **FA-03** — El actor pulsa "Guardar snapshot" sobre un gráfico
+  concreto: se dispara CU-17 con `chart_name` + parámetros.
 ---
-
-### CU-22 – Consultar Asistencia vs Imputaciones
-
+ 
+## CU-12 · Consultar Asistencia vs Imputaciones
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01. |
-| **Postcondición** | El actor detecta discrepancias entre la presencia registrada y las horas imputadas. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU22.png)
-
-**Flujo principal:**
+| **Actor** | Director, Responsable (solo modo equipo global) |
+| **Precondición** | Actor autenticado. |
+| **Postcondición** | El actor conoce la cobertura horaria del período. |
+ 
+### Flujo principal
+ 
 1. El actor accede a la página de asistencia.
-2. El actor configura el rango de fechas y, si es Director, el modo de visualización (equipo global o por responsable).
-3. El sistema compara las horas fichadas con las horas imputadas por empleado.
-4. El sistema muestra indicadores globales, gráfico comparativo y tabla con el estado de cobertura individual.
-5. El actor puede expandir el detalle de un empleado para ver su evolución diaria.
-
-**Flujos alternativos:**
-- `FA-01`: Sin datos en el período → indicadores a 0 y tabla vacía.
-- `FA-02`: El Responsable no dispone del modo de visualización por responsable.
-
-**Relaciones:** `<<include>>` CU-02 y CU-04 para los selectores de filtro.
-
+2. Configura rango de fechas y (opcional) departamento.
+3. Si es Director, puede elegir modo: *Equipo global* o *Por
+   responsable*.
+4. El sistema compara horas fichadas con horas imputadas en partes de
+   horas para cada empleado del ámbito.
+5. Muestra indicadores globales, gráfico comparativo y tabla con
+   cobertura individual + semáforo.
+6. Al seleccionar un empleado, se muestra su serie diaria
+   fichadas/imputadas.
+### Flujos alternativos
+ 
+- **FA-01** — Sin datos: indicadores a 0 y tabla vacía.
+- **FA-02** — Responsable: solo puede usar modo equipo global.
 ---
-
-### CU-23 – Consultar Rentabilidad Financiera
-
+ 
+## CU-13 · Analizar Rentabilidad Financiera ★
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | **Director** (exclusivo) |
-| **Precondición** | CU-01 con rol de Director. |
-| **Postcondición** | El Director conoce la rentabilidad real por proyecto, cliente y responsable. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU23.png)
-
-**Flujo principal:**
-1. El actor accede a la página de rentabilidad.
-2. El sistema verifica que el actor tiene rol de Director.
-3. El actor selecciona el rango de fechas y el modo de análisis (global, por proyecto o por responsable).
-4. El sistema muestra el resumen financiero con ingresos, gastos, resultado neto y rentabilidad.
-5. El actor puede desglosar por proyecto o por cliente mediante pestañas.
-6. Desde cualquier fila de proyecto o cliente, el actor puede solicitar el detalle de líneas analíticas.
-
-**Flujos alternativos:**
-- `FA-01`: Sin partes analíticos registrados → todos los valores a 0.
-- `FA-02`: Actor sin rol Director → pantalla de acceso restringido.
-
-**Relaciones:** `<<extend>>` por CU-24 (líneas por proyecto) y CU-25 (líneas por cliente).
-
+| **Actor** | Director (exclusivo) |
+| **Precondición** | Actor autenticado con rol Director. |
+| **Postcondición** | El Director ha consultado ingresos, gastos y rentabilidad del período. |
+ 
+### Flujo principal
+ 
+1. El Director accede a `/rentabilidad`; el backend valida el rol con
+   `require_director`.
+2. Configura rango de fechas y modo (Global / Por proyecto / Por
+   responsable).
+3. El sistema muestra resumen financiero (ingresos, gastos, resultado
+   neto, rentabilidad %) y distribución ganancia/neutro/pérdida.
+4. Selecciona pestaña de desglose (Por proyecto o Por cliente).
+### Flujos alternativos
+ 
+- **FA-01** — Sin partes analíticos: indicadores a 0.
+- **FA-02** — Actor sin rol Director: HTTP 403 + pantalla restringida.
+- **FA-03** — "Ver detalles" sobre una fila: extiende a CU-14.
+- **FA-04** — "Guardar snapshot": extiende a CU-17.
 ---
-
-### CU-24 – Consultar Líneas Analíticas de Proyecto
-
+ 
+## CU-14 · Consultar Líneas Analíticas ★
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | **Director** (exclusivo) |
-| **Precondición** | CU-01 con rol de Director. Proyecto seleccionado en CU-23. |
-| **Postcondición** | El Director conoce el desglose de ingresos y gastos individuales del proyecto. |
+| **Actor** | Director (exclusivo) |
+| **Precondición** | El Director está en CU-13 con un resultado de rentabilidad mostrado y pulsa "Ver detalles" sobre una fila. |
+| **Postcondición** | El Director ha visto el desglose de líneas analíticas (ingresos + gastos) del ámbito elegido. |
+| **Parámetros** | `scope ∈ { proyecto, cliente }`, `target_id`, `date_from`, `date_to` |
+ 
+**Descripción.** Caso de uso único que unifica el drill-down
+por proyecto y por cliente. Se invoca exclusivamente vía `<<extend>>`
+desde CU-13: la pestaña de origen determina el `scope` (proyecto si el
+drill-down nace de la tabla "Por proyecto"; cliente si nace de la tabla
+"Por cliente").
+ 
+### Flujo principal
+ 
+1. Se invoca desde CU-13 con `scope` y `target_id` determinados por la
+   pestaña de origen.
+2. El sistema recupera las líneas analíticas:
+   - Si `scope = proyecto` → líneas del proyecto `target_id`.
+   - Si `scope = cliente` → líneas agregadas de todos los proyectos
+     del cliente `target_id`.
+3. El sistema clasifica las líneas en Ingresos (importes positivos) y
+   Gastos (importes negativos).
+4. Muestra dos tablas paralelas con los campos fecha, descripción,
+   importe, horas y (si aplica) proyecto de origen.
+### Flujo alternativo
+ 
+- **FA-01** — Sin líneas en el período: tablas vacías con mensaje.
 
-![Diagrama de flujo](./imagenes/CdU/flujoCU24.png)
-
-**Flujo principal:**
-1. Desde CU-23, el actor solicita el detalle de un proyecto.
-2. El sistema recupera y muestra las líneas de partes analíticos separadas en ingresos y gastos, con fecha, descripción, importe y horas de cada línea.
-
-**Flujos alternativos:**
-- `FA-01`: Sin líneas en el período → tablas vacías.
-
-**Relaciones:** `<<extend>>` desde CU-23.
-
+ 
 ---
-
-### CU-25 – Consultar Líneas Analíticas de Cliente
-
+ 
+## CU-15 · Realizar Búsqueda Global
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | **Director** (exclusivo) |
-| **Precondición** | CU-01 con rol de Director. Cliente seleccionado en CU-23. |
-| **Postcondición** | El Director conoce el desglose de ingresos y gastos de todos los proyectos del cliente. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU25.png)
-
-**Flujo principal:**
-1. Desde CU-23, el actor solicita el detalle de un cliente.
-2. El sistema recupera y muestra las líneas de todos los proyectos del cliente, separadas en ingresos y gastos, con la referencia al proyecto de cada línea.
-
-**Flujos alternativos:**
-- `FA-01`: Sin líneas → tablas vacías.
-
-**Relaciones:** `<<extend>>` desde CU-23.
-
+| **Actor** | Director, Responsable |
+| **Precondición** | Actor autenticado. |
+| **Postcondición** | El actor ha encontrado una entidad y ha navegado a su vista detalle. |
+ 
+### Flujo principal
+ 
+1. El actor abre la búsqueda global e introduce al menos 2 caracteres.
+2. El sistema busca coincidencias en tareas, proyectos y empleados,
+   aplicando el ámbito del actor.
+3. Muestra resultados agrupados por tipo; el actor puede filtrar por
+   tipo.
+4. Al seleccionar un resultado, navega a CU-03 / CU-07 / CU-09 según
+   corresponda.
+### Flujos alternativos
+ 
+- **FA-01** — Texto de menos de 2 caracteres: el sistema solicita más.
+- **FA-02** — Sin resultados: estado vacío.
 ---
-
-### CU-26 – Realizar Búsqueda Global
-
+ 
+## CU-16 · Cerrar Sesión
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01. Mínimo 2 caracteres introducidos. |
-| **Postcondición** | El actor localiza el recurso y navega a su detalle. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU26.png)
-
-**Flujo principal:**
-1. El actor accede a la búsqueda global e introduce un texto de búsqueda.
-2. El sistema busca coincidencias en tareas, proyectos y empleados dentro del ámbito del actor.
-3. El sistema muestra los resultados agrupados por tipo de entidad.
-4. El actor puede filtrar por tipo de entidad y seleccionar un resultado para navegar a su detalle.
-
-**Flujos alternativos:**
-- `FA-01`: Sin resultados → estado vacío con mensaje.
-
-**Relaciones:** Navega a CU-03, CU-07, CU-09.
-
+| **Actor** | Director, Responsable |
+| **Precondición** | Existe una sesión activa. |
+| **Postcondición** | La sesión ha sido invalidada y se han eliminado las credenciales locales. |
+ 
+### Flujo principal
+ 
+1. El actor pulsa "Cerrar sesión".
+2. El sistema invalida el token y elimina los datos almacenados en el
+   navegador.
+3. Redirige a la pantalla de login.
+> **Nota.** Invocable tanto desde el frontend principal como desde el
+> visor de snapshots. La sesión también puede cerrarse
+> automáticamente por expiración del JWT (FA-04 de CU-01).
+ 
 ---
-
-### CU-27 – Cerrar Sesión
-
+ 
+## CU-17 · Guardar Snapshot
+ 
 | Campo | Valor |
 |---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01. Usuario autenticado. |
-| **Postcondición** | Sesión eliminada. El usuario es redirigido a la pantalla de inicio de sesión. |
-
-![Diagrama de flujo](./imagenes/CdU/flujoCU27.png)
-
-**Flujo principal:**
-1. El actor selecciona la opción de cerrar sesión.
-2. El sistema invalida la sesión activa y elimina las credenciales almacenadas en el navegador.
-3. El sistema redirige al actor a la pantalla de inicio de sesión.
-
-**Relaciones:** Ninguna.
+| **Actor** | Director, Responsable |
+| **Precondición** | El actor está en una vista calculada del frontend principal (métrica, gráfico, rentabilidad o ficha de entidad) con un resultado ya mostrado. |
+| **Postcondición** | Existe en MongoDB una snapshot con los datos calculados asociada al actor y fecha actual. |
+ 
+### Flujo principal
+ 
+1. El actor pulsa "Guardar snapshot" desde la vista calculada actual.
+2. El frontend determina el tipo (métrica / gráfico / entidad) y
+   construye el payload con `tipo`, `params`, `data`.
+3. Envía `POST /snapshots/{metrics|charts|entities}` con Bearer JWT.
+4. El backend:
+   1. Valida el token con `require_manager_or_above`.
+   2. Normaliza los `params` y calcula `params_hash = SHA-256(...)`.
+   3. Fija `snapshot_date = hoy (UTC)`.
+   4. Construye `SnapshotActor` desde los *claims* del JWT.
+   5. Busca una snapshot existente por la clave compuesta
+      `(tipo, params_hash, snapshot_date)`.
+5. El backend devuelve `{id, created: true|false}` según haya creado
+   o actualizado la snapshot.
+6. El frontend muestra una notificación de confirmación.
+### Flujo alternativo
+ 
+- **FA-01 Upsert diario.** Si ya existe una snapshot con la misma clave
+  compuesta, el sistema sobrescribe `data`, `updated_at` y
+  `updated_by` en lugar de crear un nuevo documento. Devuelve
+  `{id, created: false}`. Esta es la razón por la que no existe un CU
+  separado de "Actualizar Snapshot": la actualización es
+  conceptualmente el mismo gesto de usuario, solo que aplicado un
+  segundo (o n-ésimo) vez en el mismo día.
+### Restricciones
+ 
+- Como máximo **una** snapshot por combinación (tipo, parámetros, día).
+- Endpoint protegido por `require_manager_or_above`.
+- La identidad del actor queda registrada en `created_by` y
+  `updated_by` como `SnapshotActor { user_id, employee_id,
+  employee_name, role }`.
+---
+ 
+## CU-18 · Listar Snapshots
+ 
+| Campo | Valor |
+|---|---|
+| **Actor** | Director, Responsable |
+| **Precondición** | Actor autenticado en el visor de snapshots (frontend2). |
+| **Postcondición** | El actor ha visto la tabla paginada de snapshots de la colección elegida. |
+ 
+### Flujo principal
+ 
+1. El actor accede al visor de snapshots y se autentica.
+2. El visor carga la home con el resumen global (total por colección,
+   guardadas hoy).
+3. El actor selecciona una colección (métricas, gráficos o entidades).
+4. El sistema muestra la tabla paginada server-side con columnas tipo,
+   fecha, parámetros resumidos, última actualización y actor.
+5. El actor puede aplicar filtros (tipo, rango de fechas) y cambiar
+   página / tamaño de página.
+### Flujos alternativos
+ 
+- **FA-01** — Sin resultados: estado vacío.
+- **FA-02** — Selección de una fila: extiende a CU-19.
+### Limitación consciente
+ 
+El listado **no** aplica filtrado por scope: un Responsable puede ver
+snapshots generadas por otros usuarios. Esta decisión se toma porque
+las snapshots son lecturas inmutables de momentos pasados y no
+exponen información distinta a la que ya es visible en la capa
+operativa mediante los CUs filtrados por scope.
+ 
+---
+ 
+## CU-19 · Consultar Detalle de Snapshot
+ 
+| Campo | Valor |
+|---|---|
+| **Actor** | Director, Responsable |
+| **Precondición** | Existe una snapshot accesible desde CU-18. |
+| **Postcondición** | El actor ha visualizado la ficha de la snapshot reconstruida a partir del JSON guardado. |
+ 
+### Flujo principal
+ 
+1. El actor selecciona una snapshot desde el listado (CU-18) o desde
+   la home del visor.
+2. El backend recupera la snapshot por su `ObjectId` en la colección
+   correspondiente.
+3. El frontend elige el renderer según el subtipo:
+   - **Métrica** → gauge + gráfico + KPIs específicos de `metric_name`.
+   - **Gráfico** → chart interactivo del mismo tipo que se guardó.
+   - **Entidad** → ficha con avatar, campos y barra de progreso.
+4. El actor puede expandir "Ver JSON completo" para inspeccionar los
+   datos originales.
+### Flujos alternativos
+ 
+- **FA-01** — Snapshot no encontrada (404): mensaje de error con
+  opción de volver al listado.
+- **FA-02** — El actor pulsa "Eliminar": extiende a CU-20.
+### Decisión clave de diseño
+ 
+El visor reconstruye la visualización *como si fuera en vivo* a partir
+del JSON guardado. No se recalcula nada contra PostgreSQL: el estado
+del día en que se guardó la snapshot se preserva íntegramente en
+MongoDB.
+ 
+---
+ 
+## CU-20 · Eliminar Snapshot
+ 
+| Campo | Valor |
+|---|---|
+| **Actor** | Director, Responsable |
+| **Precondición** | Existe una snapshot seleccionada desde CU-18 o CU-19. |
+| **Postcondición** | La snapshot ha sido eliminada de MongoDB (hard delete). |
+ 
+### Flujo principal
+ 
+1. El actor pulsa "Eliminar".
+2. El sistema muestra un diálogo de confirmación.
+3. Tras confirmar, el backend ejecuta `DELETE` sobre la colección
+   correspondiente.
+4. El visor recarga la tabla (si el origen es CU-18) o navega de vuelta
+   al listado (si el origen es CU-19).
+### Flujos alternativos
+ 
+- **FA-01** — El actor cancela el diálogo: no ocurre ningún cambio.
+- **FA-02** — Error en la operación: mensaje de error sin modificar la
+  vista.
+### Semántica de borrado
+ 
+Operación directa (hard delete) sobre MongoDB. No existe papelera ni
+versiones previas; la snapshot se pierde de forma definitiva. Tras el
+borrado, volver a guardar el mismo día con los mismos parámetros
+creará una snapshot nueva vía CU-17, con `created_at` actual.
 
 ---
 
@@ -750,22 +862,37 @@ El Responsable tiene acceso a la mayoría de los casos de uso, pero con datos fi
 
 ---
 
-### 5.3 Relaciones Include / Extend del Modelo
-
-Para la correcta interpretación del modelo se definen dos tipos de relaciones:
-
+### 5.3 Relaciones include / extend
+ 
 #### 1. Relaciones de Inclusión `<<include>>`
-Representan comportamientos **obligatorios y reutilizados** que se insertan en el flujo de un caso de uso base.
-
-- **Nota sobre autenticación:** CU-01 se trata como precondición transversal de todos los casos de uso y no se modela como `<<include>>` explícito para no sobrecargar el diagrama.
-- **Ejemplos reales:**
-  - CU-21 y CU-22 incluyen CU-02, CU-04 y CU-06 para poblar los selectores de filtro con empleados, departamentos y proyectos disponibles.
-
+ 
+Todos los casos de uso del sistema (excepto CU-01 Autenticarse)
+requieren sesión autenticada activa. La relación `<<include>>` hacia
+CU-01 se considera implícita en toda la arquitectura y **no se
+representa individualmente** en los diagramas para evitar sobrecarga
+visual. En el middleware se materializa mediante los guards
+`require_manager_or_above` y `require_director`.
+ 
 #### 2. Relaciones de Extensión `<<extend>>`
-Representan funcionalidades **opcionales o condicionales** activadas desde un caso de uso base bajo una condición específica.
-
-| Caso de Uso Base | Caso de Uso Extendido (`<<extend>>`) | Condición de Extensión |
-| :--- | :--- | :--- |
-| **CU-03** (Resumen Empleado) | **CU-08** (Listar Tareas) | Cuando el actor accede a una pestaña o tarjeta de tareas del empleado. |
-| **CU-23** (Rentabilidad) | **CU-24** (Líneas por Proyecto) | Cuando el actor solicita el desglose de líneas analíticas de un proyecto. |
-| **CU-23** (Rentabilidad) | **CU-25** (Líneas por Cliente) | Cuando el actor solicita el desglose de líneas analíticas de un cliente. |
+ 
+| Extensión | Desde → Hacia | Condición |
+|---|---|---|
+| Drill-down de rentabilidad | CU-13 → CU-14 | Actor pulsa "Ver detalles" sobre una fila de la tabla por proyecto (scope=proyecto) o por cliente (scope=cliente). |
+| Guardar snapshot de métrica | CU-10 → CU-17 | Actor pulsa "Guardar snapshot" desde una vista calculada de métrica. |
+| Guardar snapshot de gráfico | CU-11 → CU-17 | Actor pulsa "Guardar snapshot" sobre un gráfico concreto. |
+| Guardar snapshot de rentabilidad ★ | CU-13 → CU-17 | Director pulsa "Guardar snapshot" sobre el resumen financiero. |
+| Guardar snapshot de entidad | CU-03, CU-05, CU-07, CU-09 → CU-17 | Actor pulsa "Guardar snapshot" desde la ficha de una entidad. |
+| Detalle de snapshot listada | CU-18 → CU-19 | Actor selecciona una fila en la tabla del visor. |
+| Eliminación de snapshot | CU-19 → CU-20 | Actor pulsa "Eliminar" sobre la ficha abierta. |
+ 
+#### Notas
+ 
+- **CU-14** es el único CU cuya activación ocurre **exclusivamente** a
+  través de `<<extend>>` (desde CU-13). No tiene ruta de entrada propia
+  desde el menú principal.
+- **CU-17** actúa como *extension point* universal para cualquier vista
+  calculada. Su FA-01 (upsert) absorbe la semántica de actualización sin
+  necesidad de un CU separado.
+- La navegación lateral entre entidades (p. ej. CU-09 → CU-07) no es
+  una relación `<<extend>>`: son transiciones de navegación declaradas
+  en el diagrama de contexto, no dependencias funcionales entre CUs.
