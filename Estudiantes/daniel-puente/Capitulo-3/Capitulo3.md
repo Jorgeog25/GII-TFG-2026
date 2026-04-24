@@ -268,3 +268,21 @@ La operación puede realizarse desde `CajaView` como consecuencia del cobro o de
 **Diagrama propuesto**
 
 ![cerrarMesa](/Estudiantes/daniel-puente/Capitulo-3/imagenes/cerrarMesa.svg)
+
+
+## Diagrama Entidad Relacion (Pendiente)
+
+## Diagrama General del Sistema
+
+![diagramaGeneral](/Estudiantes/daniel-puente/Capitulo-3/imagenes/diagramaGeneral.svg)
+
+El diagrama anterior muestra la arquitectura general del sistema de gestión del Restaurante La Unión. El sistema se estructura en cuatro capas principales:
+
+- **Frontend (cliente):** Dos interfaces PWA desarrolladas en React con TypeScript, adaptadas al rol del usuario autenticado. La vista de Camarero y Administrador permite gestionar mesas, comandas, tickets y reservas; la vista de Cocinero presenta el módulo KDS con las comandas activas en cocina.
+
+- **Backend API:** Servidor Express con TypeScript organizado en controladores por dominio, protegidos por un middleware de autenticación JWT y control de rol. Los controladores acceden a los datos a través de los modelos Mongoose definidos 
+sobre MongoDB.
+
+- **Tiempo real:** La comunicación entre cocina y sala se gestiona mediante Socket.io, que emite eventos como PLATO_LISTO, ACTUALIZAR_KDS o AVISO_RESERVA.
+
+- **Soporte offline:** Un Service Worker intercepta las peticiones de red y, ante una pérdida de conectividad, almacena las operaciones pendientes en IndexedDB. Cuando la red se recupera, el Background Sync API sincroniza automáticamente los datos con el servidor sin intervención del usuario.
