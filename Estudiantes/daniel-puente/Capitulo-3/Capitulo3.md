@@ -28,7 +28,7 @@ Reserva: Recoge la ocupación futura de una mesa, indicando nombre del cliente, 
 
 LogAuditoria: Registro inmutable de todas las acciones relevantes del sistema: envíos y ediciones de tickets, cambios de estado en las comandas y cobros en caja. Cada entrada guarda el usuario y el timestamp exacto de la acción.
 
-Los diagramas entidad-relación muestran cómo estas entidades se relacionan entre sí en casos de uso como "Tomar comanda", "Enviar ticket a caja" o "Gestionar reservas". Esto permite una visión estructurada de la base de datos y su diseño orientado a la integridad referencial y la trazabilidad de las operaciones.
+
 
 ## CONTROLADORES
 
@@ -92,6 +92,7 @@ Para soportar este caso de uso, el diseño de la API REST contempla una ruta esp
 La interacción se realiza desde `MesasView`, que constituye la pantalla principal de sala para Camarero y Administrador. Desde esta vista, el usuario selecciona una mesa libre en el plano agrupado por zonas, confirma la acción y visualiza inmediatamente el cambio de estado a ocupada. 
 
 **Diagrama propuesto**
+
 ![AbrirMesa](/Estudiantes/daniel-puente/Capitulo-3/imagenes/abrirMesa.svg)
 
 
@@ -122,6 +123,7 @@ Para este caso de uso, la API debe contemplar endpoints que permitan consultar l
 La funcionalidad se ejecuta desde `ComandaView`, que permite al usuario seleccionar platos de carta o menú del día, indicar cantidades, registrar observaciones y completar de forma obligatoria la información relativa a alérgenos antes de confirmar el envío. Tras la confirmación, la vista debe reflejar si la comanda ha sido enviada correctamente a cocina o si ha quedado pendiente de sincronización local por pérdida temporal de red. 
 
 **Diagrama propuesto**
+
 ![tomarComanda](/Estudiantes/daniel-puente/Capitulo-3/imagenes/tomarComanda.svg)
 
 ### CU-08 Editar comanda
