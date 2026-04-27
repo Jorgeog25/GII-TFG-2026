@@ -105,8 +105,7 @@ Permite registrar los platos solicitados por una mesa ocupada, incluyendo cantid
 
 En este flujo intervienen `Mesa`, `Comanda`, `LineaComanda`, `Plato` y `TarifaMenu`, con apoyo de `LogAuditoria`. La lógica principal se concentra en `ComandaController`, que valida la mesa, la disponibilidad de la carta y la información obligatoria de cada línea. Las rutas propuestas son `GET /api/platos`, `GET /api/tarifas-menu/actual` y `POST /api/comandas`. La vista implicada es `ComandaView`.
 
-<<<<<<< HEAD
-=======
+
 | Método | Ruta | Descripción | Roles permitidos |
 |---|---|---|---|
 | PATCH | /api/mesas/:mesaId/abrir | Cambia el estado de una mesa libre a ocupada | Camarero, Administrador |
@@ -148,7 +147,6 @@ La funcionalidad se ejecuta desde `ComandaView`, que permite al usuario seleccio
 
 **Diagrama propuesto**
 
->>>>>>> 824a3eaa3d2620e5681744d180d2b2105ff0f3a5
 ![tomarComanda](/Estudiantes/daniel-puente/Capitulo-3/imagenes/tomarComanda.svg)
 
 #### CU-08 Editar comanda
@@ -189,7 +187,7 @@ Permite liberar una mesa ocupada una vez que el ticket asociado ha sido cobrado 
 
 Los modelos implicados son `Mesa`, `Ticket`, `Zona` y `LogAuditoria`. `MesaController` verifica que el ticket esté cobrado y actualiza la mesa a estado libre. La ruta propuesta es `PATCH /api/mesas/:mesaId/cerrar`, exclusiva del rol Administrador. La operación puede reflejarse tanto en `CajaView` como en `MesasView`.
 
-![cerrarMesa](/Estudiantes/daniel-puente/Capitulo-3/imagenes/cerrarMesaa.svg)
+![cerrarMesa](/Estudiantes/daniel-puente/Capitulo-3/imagenes/cerrarMesa.svg)
 
 # DISEÑO
 
@@ -247,7 +245,6 @@ El sistema se estructura en cuatro capas principales: frontend, backend API, tie
 
 ## Modelos MongoDB
 
-<<<<<<< HEAD
 Los modelos de persistencia se implementan mediante Mongoose sobre MongoDB, definiendo esquemas con referencias entre documentos. Esta elección permite trasladar el diseño lógico a una estructura documental flexible sin perder validaciones ni coherencia funcional.
 
 | Modelo | Campos principales | Relaciones |
@@ -333,6 +330,3 @@ frontend/
 ```
 
 ## Wireframes
-=======
-- **Soporte offline:** Un Service Worker intercepta las peticiones de red y, ante una pérdida de conectividad, almacena las operaciones pendientes en IndexedDB. Cuando la red se recupera, el Background Sync API sincroniza automáticamente los datos con el servidor sin intervención del usuario.
->>>>>>> 824a3eaa3d2620e5681744d180d2b2105ff0f3a5
