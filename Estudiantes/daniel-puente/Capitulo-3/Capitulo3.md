@@ -29,51 +29,7 @@ Los modelos representan las entidades centrales del sistema y su estructura en l
 
 Los diagramas entidad-relación reflejan cómo estas entidades se relacionan entre sí en flujos como la toma de comanda, el envío del ticket a caja y la gestión de reservas. Esta estructura permite mantener integridad lógica, trazabilidad y coherencia funcional en todo el sistema.
 
-<<<<<<< HEAD
 ### Vistas
-=======
-Comanda: Registro digital de los pedidos de una mesa. Se construye línea a línea y cuando llega el momento del cobro genera automáticamente el ticket correspondiente.
-
-LineaComanda: Representa cada plato concreto dentro de una comanda, con su nombre, cantidad, alérgenos, observaciones y estado (pendiente, en preparación o listo). Si el plato forma parte del menú del día, incluye también la modalidad elegida.
-
-Plato: Cada ítem disponible en la carta del restaurante, con nombre, precio y categoría (primero, segundo, postre, bebida o café), e indicación de si puede pedirse como parte del menú del día.
-
-TarifaMenu: Define los precios fijos del menú del día según el tipo de jornada: entre semana o festivo/fin de semana, en modalidad de un plato o dos platos.
-
-Ticket: Resumen económico del servicio de una mesa. Recoge los platos consumidos, precios y total. Solo el Administrador puede cobrarlo, momento en el que la mesa queda liberada para el siguiente servicio.
-
-Reserva: Recoge la ocupación futura de una mesa, indicando nombre del cliente, número de comensales, fecha y hora. Siempre está vinculada a una mesa y zona concretas.
-
-LogAuditoria: Registro inmutable de todas las acciones relevantes del sistema: envíos y ediciones de tickets, cambios de estado en las comandas y cobros en caja. Cada entrada guarda el usuario y el timestamp exacto de la acción.
-
-
-
-## CONTROLADORES
-
-![Controladores](/Estudiantes/daniel-puente/Capitulo-3/imagenes/controladores.svg)
-
-Los controladores definen la lógica de negocio que conecta los modelos con las vistas. Cada controlador responde a una serie de endpoints definidos en la API REST, cumpliendo funciones como:
-
-AuthController: Maneja la autenticación de usuarios, la generación y renovación de tokens JWT y el bloqueo de cuentas por intentos fallidos.
-
-MesaController: Gestiona el estado en tiempo real de las mesas por zona, incluyendo la apertura y el cierre tras el cobro del ticket.
-
-ComandaController: Controla la creación, edición y consulta de comandas activas, validando alérgenos y bloqueando la modificación de líneas ya en preparación.
-
-TicketController: Gestiona el envío, edición, reclamación y cobro de tickets, registrando cada acción en el log de auditoría con usuario y timestamp.
-
-KDSController: Recibe las comandas pendientes en cocina y gestiona los cambios de estado de cada línea (pendiente, en preparación, listo), emitiendo notificaciones en tiempo real vía WebSocket al camarero.
-
-ReservaController: Permite crear, editar y cancelar reservas, validando conflictos de horario y emitiendo avisos automáticos cuando queden menos de 5 minutos para la próxima reserva de una mesa ocupada.
-
-UsuarioController: Gestiona el alta, edición y eliminación de usuarios del sistema, con control de acceso restringido al rol Administrador.
-
-CartaController: Permite al Administrador gestionar los platos disponibles en la carta y configurar las tarifas del menú del día.
-
-El uso de controladores desacoplados mejora la mantenibilidad y estabilidad del sistema, y está alineado con las buenas prácticas de desarrollo backend en Node.js con Express.
-
-## VISTAS
->>>>>>> 824a3eaa3d2620e5681744d180d2b2105ff0f3a5
 
 ![Vistas](/Estudiantes/daniel-puente/Capitulo-3/imagenes/vistas.svg)
 
