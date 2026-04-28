@@ -1,0 +1,12 @@
+@startuml CdU_Forms
+left to right direction
+
+actor "Microsoft Forms" as Forms
+
+    
+    usecase "Recibir formulario" as RecibirDetalle
+
+
+Forms --> RecibirDetalle
+
+@enduml

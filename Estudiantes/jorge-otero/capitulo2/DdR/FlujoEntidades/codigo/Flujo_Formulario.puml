@@ -2,18 +2,17 @@
 
 top to bottom direction
 
-[*] --> Formulario : Cliente decide detallar solicitud
+[*] --> Recibido : CA2 Recibir formulario
 
-Formulario --> Completado : CA5 Completar formulario
+Recibido --> Evaluar_Documentacion : Sistema analiza campo de documentación
 
-Completado --> Formulario_Pendiente : Sistema procesa formulario
+Evaluar_Documentacion --> Enviar_Instrucciones : Opción documentación marcada
+Evaluar_Documentacion --> Procesar_Datos : No marcada
 
-Formulario_Pendiente --> Vista_Formularios : CA3 Ver solicitudes pendientes
+Enviar_Instrucciones --> Procesar_Datos : Sistema envía correo con instrucciones
 
-Vista_Formularios --> En_Resolución : Tecnico procede a gestionar
+Procesar_Datos --> Guardado_BBDD : Sistema procesa y guarda datos
 
-En_Resolución --> Resolucion_Formulario : CA4 Actualizar estado
-
-Resolucion_Formulario --> [*]
+Guardado_BBDD --> [*]
 
 @enduml

@@ -4,24 +4,28 @@
 |----------|---------------|
 |![Actores](./Actores/imagen/Actores.png)|[Ver Código de Actores](./Actores/codigo/Actores.puml)
 
-El diagrama de actores representa los dos roles principales que interactúan con el sistema: el Cliente y el Técnico. El Cliente es el encargado de iniciar el proceso, generando solicitudes cuando detecta una necesidad y recibiendo posteriormente las respuestas proporcionadas por el sistema. Por otro lado, el Técnico desempeña un papel interno, siendo responsable de gestionar dichas solicitudes, visualizar los formularios pendientes y llevar a cabo su resolución. De este modo, el diagrama refleja de forma clara la relación entre ambos actores y cómo se distribuyen las responsabilidades dentro del sistema.
+El Técnico constituye el único actor humano del sistema, ya que es quien accede a la información procesada, consulta los formularios pendientes y realiza la actualización del estado de las solicitudes. Su interacción es directa y necesaria para la gestión operativa del sistema.
+
+Por otro lado, se consideran actores externos los servicios que generan los eventos que desencadenan la ejecución de los flujos automatizados. En este sentido, el servicio de correo Exchange Online actúa como origen de eventos cuando se recibe un nuevo mensaje, activando el flujo principal del sistema.
+
+De forma análoga, Microsoft Forms se identifica como actor externo al generar eventos cuando un formulario es completado, lo que da lugar a la ejecución de flujos secundarios.
 
 ## Casos De Uso Por Actor
 
-| Cliente | Técnico |
+| Diagrama  | Código |
 |---------|---------|
-|![CdU_Cliente](./CdU/CdU_Cliente/imagen/CdU_Cliente.png)|![CdU_Tecnico](./CdU/CdU_Tecnico/imagen/CdU_Tecnico.png)|
-|[Ver código](./CdU/CdU_Cliente/codigo/CdU_Cliente.puml)|[Ver código](./CdU/CdU_Tecnico/codigo/CdU_Tecnico.puml)|
+|![CdU_ExchangeOnline](./CdU/imagen/CdU_Exchange.png)|[Ver código](./CdU/codigo/CdU_Exchange.puml)|
+|![CdU_Forms](./CdU/imagen/CdU_Forms.png)|[Ver código](./CdU/codigo/CdU_Forms.puml)|
+|![CdU_Técnico](./CdU/imagen/CdU_Tecnico.png)|[Ver código](./CdU/codigo/CdU_Tecnico.puml)|
 
 ## Relación Casos de Uso con Requisitos Funcionales
 
-| Caso de Uso                    | Requisitos Funcionales relacionados                                                               |
-| ------------------------------ | ------------------------------------------------------------------------------------------------- |
-| CA1 Enviar solicitud           | RF1 Enviar solicitud, RF4 Registrar solicitudes                                                   |
-| CA2 Recibir respuesta          | RF2 Recibir respuesta, RF8 Procesar solicitudes, RF9 Identificar intención, RF10 Enviar respuesta |
-| CA3 Ver solicitudes pendientes | RF5 Ver solicitudes pendientes                                                                    |
-| CA4 Actualizar estado          | RF6 Actualizar estado, RF7 Validar existencia de formulario                                       |
-| CA5 Completar formulario       | RF3 Completar formulario, RF11 Solicitar información adicional                                    |
+| Caso de Uso           | Requisitos Funcionales relacionados                                                                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CA1 Recibir solicitud | RF1 Integrarse con el buzón de correo corporativo, RF2 Recibir solicitud, RF3 Procesar solicitud recibida, RF4 Generar respuesta automática, RF5 Enviar respuesta |
+| CA2 Recibir formulario   | RF6 Incorporar sistema de ampliación de detalle, RF7 Integrarse con sistema de formularios, RF8 Recibir detalle                                                   |
+| CA3 Ver solicitudes   | RF9 Registrar información recibida, RF10 Ver solicitudes, RF11 Actualizar estado                                                                                  |
+
 
 ## Flujo de Procesos por Entidad
 
@@ -31,9 +35,17 @@ El diagrama de actores representa los dos roles principales que interactúan con
 |---------|---------|
 |![Flujo](./FlujoEntidades/imagen/Flujo_Solicitud.png)|[Ver código](./FlujoEntidades/codigo/Flujo_Solicitud.puml)|
 
-El proceso se inicia cuando el cliente envía una solicitud, pasando esta al estado Enviada. A continuación, el sistema actúa de forma automática, realizando consultas a las bases de datos y procesando la información necesaria, lo que sitúa la solicitud en el estado En proceso.
+El flujo de la entidad Solicitud comienza con la recepción de un correo electrónico en el buzón corporativo, gestionado mediante Exchange Online. Este evento activa el sistema de automatización, que inicia el procesamiento de la solicitud.
 
-Una vez finalizado este tratamiento, se genera la respuesta y la solicitud pasa al estado Respondida, momento en el que el cliente recibe la contestación. Tras ello, el flujo finaliza al haberse completado la gestión de la solicitud.
+En primer lugar, el sistema analiza el asunto del correo con el objetivo de clasificar la solicitud según una serie de reglas predefinidas. En función del contenido del asunto, se contemplan cuatro posibles escenarios. Si el asunto indica que un formulario ha sido resuelto (“TE:FORMRESUELTO”), el sistema procede a actualizar el estado del formulario correspondiente. Si el correo corresponde al envío de documentación de acuerdo o desacuerdo, el sistema clasifica el mensaje y lo mueve automáticamente a la carpeta correspondiente para su gestión documental.
+
+En caso de que el asunto no coincida con ninguno de los escenarios anteriores, la solicitud pasa a una fase de análisis más detallado. En esta etapa, el sistema identifica la intención del mensaje, clasificándola en categorías como consulta, reclamación o situaciones de posible riesgo asociadas a un identificador numérico.
+
+Si la intención identificada es válida, el sistema realiza una consulta a las bases de datos disponibles para obtener la información necesaria. A partir de los datos recuperados, se lleva a cabo el procesamiento de la solicitud y se genera una respuesta automática adaptada al contexto. Posteriormente, el sistema registra la información relevante de la solicitud, incluyendo los datos procesados y el responsable asignado, y finalmente envía la respuesta al remitente.
+
+Por el contrario, si la intención de la solicitud no se corresponde con ninguno de los casos contemplados, el sistema responde mediante el envío de un correo basado en una plantilla predefinida, garantizando así una respuesta consistente.
+
+De este modo, el flujo de la entidad Solicitud combina una lógica basada en reglas para el tratamiento inicial con un procesamiento más avanzado en los casos necesarios, asegurando una gestión automatizada, estructurada y completa de todas las solicitudes recibidas.
 
 ### Formulario
 
@@ -41,11 +53,15 @@ Una vez finalizado este tratamiento, se genera la respuesta y la solicitud pasa 
 |---------|---------|
 |![Flujo](./FlujoEntidades/imagen/Flujo_Formulario.png)|[Ver código](./FlujoEntidades/codigo/Flujo_Formulario.puml)
 
-El proceso comienza cuando el cliente decide aportar información adicional, lo que da lugar a la creación del formulario. A continuación, el cliente completa los campos requeridos, pasando el formulario al estado Completado.
+El flujo de la entidad Formulario se inicia con la ejecución del caso de uso CA2 Recibir formulario, momento en el cual el sistema recibe la información introducida por el usuario a través del formulario.
 
-Posteriormente, el sistema procesa la información recibida y el formulario queda en estado Formulario pendiente, quedando disponible para su gestión. En este punto, el técnico puede visualizarlo a través de la vista de formularios pendientes.
+Una vez recibidos los datos, el sistema realiza una evaluación específica para determinar si se ha seleccionado alguna opción relacionada con el envío de documentación. En caso afirmativo, se desencadena una acción adicional consistente en el envío automático de un correo electrónico con las instrucciones necesarias para remitir dicha documentación.
 
-Una vez revisado, el técnico inicia su gestión, llevando el formulario al estado En resolución. Finalmente, tras realizar las acciones necesarias, el técnico actualiza su estado, quedando el formulario como resuelto y finalizando el proceso.
+Es importante destacar que esta acción no altera el flujo principal del proceso. Independientemente de si se ha solicitado el envío de documentación o no, el sistema continúa con el procesamiento de los datos del formulario. En esta fase, se tratan las respuestas proporcionadas y se prepara la información para su almacenamiento.
+
+Finalmente, el sistema registra todos los datos del formulario en la base de datos, garantizando su disponibilidad para consultas posteriores y su integración en la gestión global de solicitudes.
+
+De este modo, el flujo de la entidad Formulario combina un procesamiento uniforme de la información con la ejecución de acciones adicionales condicionadas, asegurando una gestión eficiente y estructurada de los datos recibidos.
 
 ## Diagramas de Contexto  
 
