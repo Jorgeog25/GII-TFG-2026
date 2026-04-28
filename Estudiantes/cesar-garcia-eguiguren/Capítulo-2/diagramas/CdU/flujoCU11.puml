@@ -13,7 +13,7 @@ skinparam NoteBorderColor #38BDF8
 title CU-11 · Visualizar Gráficos Analíticos
 
 start
-:El actor accede a la página de gráficos;
+:El actor solicita acceder a la página de gráficos;
 :El sistema carga los selectores de filtro
 (empleados, departamentos, proyectos)
 según el ámbito del actor;

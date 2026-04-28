@@ -13,7 +13,7 @@ skinparam NoteBorderColor #38BDF8
 title CU-12 · Consultar Asistencia vs Imputaciones
 
 start
-:El actor accede a la página de asistencia;
+:El actor solicita acceder a la página de asistencia;
 :El sistema carga los datos del período actual
 por defecto;
 
@@ -35,7 +35,7 @@ if (¿Director?) then (SÍ)
   endif
 endif
 
-:Compara horas fichadas vs horas imputadas
+:El sistema muestra la comparación de horas fichadas vs horas imputadas
 en partes de horas por empleado del ámbito;
 
 if (¿Datos en el período?) then (NO)
