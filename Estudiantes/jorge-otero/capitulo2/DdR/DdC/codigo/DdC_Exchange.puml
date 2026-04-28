@@ -1,0 +1,10 @@
+@startuml DdC_Exchange
+
+top to bottom direction
+
+rectangle "Exchange Online" as Exchange
+rectangle "Sistema de Automatización" as Sistema
+
+Exchange --> Sistema : Recibir solicitud
+
+@enduml

@@ -69,15 +69,25 @@ De este modo, el flujo de la entidad Formulario combina un procesamiento uniform
 |---------|---------|
 |![Diagrama de Contexto](./DdC/imagen/DdC_Tecnico.png)|[Ver código](./DdC/codigo/DdC_Tecnico.puml)|
 
-El técnico interactúa con el sistema para llevar a cabo la gestión de las solicitudes. Por un lado, puede actualizar el estado de las mismas a través del sistema, reflejando así su resolución o avance en el proceso. Por otro lado, dispone de una vista de datos externa al sistema principal que le permite consultar las solicitudes pendientes, facilitando su organización y priorización. De este modo, el técnico combina acciones de consulta y gestión para asegurar el correcto tratamiento de las solicitudes.
+El presente diagrama muestra la interacción entre el Técnico y la Vista Power BI, que actúa como interfaz de consulta de la información procesada por el sistema.
+
+El técnico no interactúa directamente con el sistema de automatización, sino que accede a los datos a través de una vista desarrollada en Power BI, donde se presentan las solicitudes registradas y su estado.
+
+Esta vista permite al técnico consultar de forma estructurada la información almacenada, facilitando el seguimiento y análisis de las solicitudes gestionadas. De este modo, Power BI actúa como una capa intermedia de visualización, desacoplando la gestión de datos del acceso por parte del usuario.
+
+En consecuencia, la interacción del técnico se limita a la consulta de información, sin intervenir directamente en los procesos automatizados del sistema.
 
 | Diagrama | Código |
 |---------|---------|
-|![Diagrama de Contexto](./DdC/imagen/DdC_Cliente.png)|[Ver código](./DdC/codigo/DdC_Cliente.puml)|
+|![Diagrama de Contexto](./DdC/imagen/DdC_Exchange.png)|[Ver código](./DdC/codigo/DdC_Exchange.puml)|
 
-El cliente interactúa con el sistema iniciando el proceso mediante el envío de una solicitud, a través de la cual comunica una necesidad o incidencia. El sistema recibe dicha solicitud y, tras su procesamiento, devuelve una respuesta al cliente, manteniendo así el flujo de comunicación.
+Este diagrama representa la interacción entre Exchange Online y el sistema de automatización. Exchange Online actúa como servicio externo de correo corporativo y es el origen del evento que inicia el flujo principal. Cuando se recibe un nuevo correo en el buzón configurado, el sistema detecta la solicitud y comienza su procesamiento automático.
 
-Además, en aquellos casos en los que se requiere información adicional, el cliente puede interactuar con el formulario, completándolo para aportar datos complementarios que permitan una mejor gestión de la solicitud. De este modo, el cliente participa tanto en la generación inicial de la solicitud como en su posible ampliación mediante información adicional.
+| Diagrama | Código |
+|---------|---------|
+|![Diagrama de Contexto](./DdC/imagen/DdC_Forms.png)|[Ver código](./DdC/codigo/DdC_Forms.puml)|
+
+Este diagrama muestra la relación entre Microsoft Forms y el sistema. Microsoft Forms actúa como servicio externo encargado de recoger información adicional mediante formularios. Cuando un formulario es completado, el sistema recibe los datos introducidos y continúa con su procesamiento y registro en la base de datos.
 
 ## Priorizar Casos de Uso 
 

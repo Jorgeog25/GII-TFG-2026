@@ -2,17 +2,9 @@
 
 top to bottom direction
 
-package "Proyecto" {
-
 rectangle Tecnico
-rectangle Sistema
+rectangle "Vista PowerBI" as Sistema
 
-Tecnico --> Sistema : Actualizar estado
-
-}
-
-rectangle Vista_Datos
-
-Tecnico --> Vista_Datos : Ver solicitudes pendientes
+Tecnico --> Sistema : Ver solicitudes
 
 @enduml
