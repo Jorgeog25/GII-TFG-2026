@@ -52,14 +52,14 @@ La única excepción a esta restricción es el subsistema de capturas, que persi
 
 Esta sección describe qué sucede en cada caso de uso desde el punto de vista del actor. Para cada CU se indica el actor que lo inicia, los datos de entrada que proporciona y la información que el sistema devuelve. Siguiendo el principio RUP de trazabilidad entre disciplinas, en esta fase se profundiza en el flujo principal del caso de uso, preparando el terreno para el diseño detallado que se abordará en el capítulo siguiente.
 
-Tras la aplicación de los principios de consolidación RUP documentados en el Capítulo 2, el sistema cuenta con **21 casos de uso** organizados en 9 paquetes funcionales.
+Tras la aplicación de los principios de consolidación RUP documentados en el Capítulo 2, el sistema cuenta con **32 casos de uso** organizados en 10 paquetes funcionales.
 
 ### 2.1 Actores
 
 | Actor | CUs disponibles | Descripción |
 |---|---|---|
-| **Director** | 21 | Acceso total. Ve datos de toda la organización: todos los empleados, proyectos, departamentos y métricas financieras. |
-| **Responsable** | 18 | Acceso restringido a su ámbito (empleados de su equipo, proyectos que gestiona, departamentos a su cargo). No puede eliminar snapshots ni acceder a los casos de uso exclusivos de Rentabilidad Financiera (CU-13 y CU-14). |
+| **Director** | 32 | Acceso total. Ve datos de toda la organización: todos los empleados, proyectos, departamentos y métricas financieras. |
+| **Responsable** | 29 | Acceso restringido a su ámbito (empleados de su equipo, proyectos que gestiona, departamentos a su cargo). No puede eliminar snapshots ni acceder a los casos de uso exclusivos del Director (CU-13, CU-14 y CU-20). |
 
 ### 2.2 Casos de uso del sistema
 
@@ -108,10 +108,10 @@ Tras la aplicación de los principios de consolidación RUP documentados en el C
 - Entrada: identificador de la tarea
 - Salida: toda la información de la tarea (fechas, horas, etapa, responsable, empleados asignados, subtareas, progreso de horas y productividad).
 
-**CU-10 — Consultar métrica operativa**
+**CU-10 — Mostrar catálogo de métricas**
 - Actor: Director, Responsable
-- Entrada: nombre de la métrica (productividad, cumplimiento, WIP, carga de trabajo individual, riesgo, retrabajo, estimación, lead time, tiempo por estado, tareas canceladas, tiempo por prioridad, eficiencia de proyecto, distribución por cliente…) y los parámetros contextuales que esa métrica requiera (empleado, proyecto, departamento, rango de fechas, modo solo tareas raíz)
-- Salida: indicador calculado con su representación y gráficos de apoyo específicos de la métrica seleccionada. El sistema verifica el ámbito del actor sobre los parámetros antes de calcular.
+- Entrada: ninguna
+- Salida: cuadrícula de las métricas operativas disponibles (CU-22 a CU-32), agrupadas por categoría (empleado, proyecto y generales). Al seleccionar una métrica, el sistema invoca el caso de uso correspondiente del paquete P10 vía `<<extend>>` y muestra el panel de parámetros y resultado.
 
 **CU-11 — Consultar gráficos analíticos**
 - Actor: Director, Responsable
@@ -158,8 +158,8 @@ Tras la aplicación de los principios de consolidación RUP documentados en el C
 - Entrada: identificador de la captura y tipo de colección
 - Salida: ficha completa con metadatos (fecha, autor de creación y última actualización), parámetros usados y la vista reconstruida por el renderizador correspondiente al subtipo de la captura.
 
-**CU-20 — Eliminar snapshot**
-- Actor: Director, Responsable
+**CU-20 — Eliminar snapshot ★**
+- Actor: Director (exclusivo)
 - Entrada: identificador de la captura y tipo de colección
 - Salida: confirmación de eliminación permanente del documento.
 
@@ -168,7 +168,25 @@ Tras la aplicación de los principios de consolidación RUP documentados en el C
 - Entrada: filtros opcionales (departamento, estado de carga, página, ordenación)
 - Salida: cinco contadores de estado clicables (total, sobrecargado, normal, subcargado, sin tareas), ranking de los cinco empleados más cargados, gráfico de barras de distribución por estado y, al seleccionar un estado, listado paginado de empleados en ese estado con su porcentaje de carga, horas pendientes y número de tareas pendientes. El ámbito del JWT determina qué empleados son visibles: el Responsable ve únicamente los empleados de su equipo; el Director ve todos. El cálculo delega en `GET /dashboards/summary/manager` con paginación server-side.
 
-> **Nota sobre consolidaciones.** CU-10 absorbe las métricas operativas individuales; su endpoint es `/metrics/<nombre>` y opera siempre sobre un empleado o proyecto concreto. El panel de supervisión de equipo se modela como CU-21, con su propia página (`/manager`) y su propio endpoint (`/dashboards/summary/manager`), porque su función es distinta: ofrece una vista agregada y navegable del estado del equipo, con acceso directo a los perfiles de empleado, no un cálculo parametrizado de una métrica individual. CU-14 unifica la consulta de líneas de proyecto y líneas de cliente; y CU-17 unifica la semántica de actualización y creación mediante un máximo de 1 snapshot diaria.
+**P10 — Métricas Operativas (CU-22 a CU-32)**
+
+Los once casos de uso del paquete P10 son accesibles exclusivamente desde el catálogo de métricas (CU-10) vía `<<extend>>`. Todos comparten los mismos actores (Director y Responsable), la misma precondición esencial (sesión activa y parámetros dentro del ámbito) y la misma postcondición (el actor ha consultado el valor calculado de una métrica). Lo que distingue a cada uno es el objeto sobre el que opera, los parámetros de entrada, la fórmula de cálculo y los umbrales de interpretación. El detalle completo de cada caso de uso se recoge en [Casos de Uso de Métricas Operativas](./docs/CasosDeUsoMetricas.md).
+
+| CU | Nombre | Objeto principal | Parámetros de entrada |
+|---|---|---|---|
+| CU-22 | Consultar productividad | Tareas cerradas | empleado (opt.), proyecto (opt.), rango de fechas |
+| CU-23 | Consultar cumplimiento de plazos | Tareas cerradas con fecha límite | empleado (opt.), proyecto (opt.) |
+| CU-24 | Consultar WIP de empleado | Tareas abiertas asignadas | empleado (obligatorio) |
+| CU-25 | Consultar carga de trabajo de empleado | Tareas abiertas asignadas | empleado (obligatorio) |
+| CU-26 | Consultar riesgo de proyecto | Tareas abiertas con fecha límite | proyecto (obligatorio) |
+| CU-27 | Consultar tasa de retrabajo | Historial de cambios de etapa | proyecto (opt.), empleado (opt.) |
+| CU-28 | Consultar exactitud de estimación | Tareas cerradas con horas | empleado como responsable (obligatorio) |
+| CU-29 | Consultar lead time | Tareas cerradas con fecha de asignación | empleado (opt.), proyecto (opt.) |
+| CU-30 | Consultar tiempo por estado | Historial de cambios de etapa | proyecto (opt.), empleado (opt.) |
+| CU-31 | Consultar tareas canceladas | Tareas en etapa de cancelación | proyecto (opt.), rango de fechas |
+| CU-32 | Consultar tiempo invertido por prioridad | Tareas cerradas con horas | empleado (opt.), proyecto (opt.) |
+
+> **Nota sobre consolidaciones.** CU-10 actúa exclusivamente como catálogo y punto de entrada; no contiene lógica de cálculo. Cada métrica concreta es un caso de uso independiente del paquete P10 (CU-22 a CU-32) que extiende CU-10 cuando el actor selecciona esa métrica. El panel de supervisión de equipo se modela como CU-21, con su propia página (`/manager`) y su propio endpoint (`/dashboards/summary/manager`), porque su función es distinta: ofrece una vista agregada y navegable del estado del equipo, con acceso directo a los perfiles de empleado. El cálculo de carga subyacente es el mismo que CU-25 (Consultar Carga de Trabajo de Empleado), pero aplicado sobre todos los empleados del ámbito simultáneamente. CU-14 unifica la consulta de líneas de proyecto y líneas de cliente; y CU-17 unifica la semántica de actualización y creación mediante un máximo de 1 snapshot diaria.
 
 ---
 
@@ -232,7 +250,7 @@ Siguiendo la metodología RUP, las clases se clasifican en tres estereotipos:
 | Principal | `Departments` / `DepartmentDetail` | Ambos | CU-04, CU-05 |
 | Principal | `Projects` / `ProjectDetail` | Ambos | CU-06, CU-07 |
 | Principal | `Tasks` / `TaskDetail` | Ambos | CU-08, CU-09 |
-| Principal | `Metrics` / `MetricDetail` | Ambos | CU-10 |
+| Principal | `Metrics` / `MetricDetail` | Ambos | CU-10, CU-22 a CU-32 |
 | Principal | `Manager` | Ambos | CU-21 |
 | Principal | `Attendance` | Ambos | CU-12 |
 | Principal | `Rentability` | Director | CU-13, CU-14 |
@@ -254,8 +272,8 @@ Siguiendo la metodología RUP, las clases se clasifican en tres estereotipos:
 | `department.router` | CU-04, CU-05 | Servicio de departamentos |
 | `project.router` | CU-06, CU-07 | Servicio de proyectos |
 | `task.router` | CU-08, CU-09 | Servicio de tareas |
-| `metrics.router` | CU-10, CU-12, CU-13 y CU-14 | Servicios de métricas, asistencia, rentabilidad |
-| `dashboards.router` | CU-03, CU-05, CU-07, CU-21| Servicio de dashboards|
+| `metrics.router` | CU-10, CU-22 a CU-32, CU-12, CU-13, CU-14 | Servicios de métricas, asistencia, rentabilidad |
+| `dashboards.router` | CU-03, CU-05, CU-07, CU-21 | Servicio de dashboards |
 | `charts.router` | CU-11 | Servicio de gráficos |
 | `search.router` | CU-15 | Servicio de búsqueda |
 | `snapshots.router` | CU-17, CU-18, CU-19, CU-20 | Servicio de capturas |
@@ -308,7 +326,7 @@ app/
 │   ├── snapshot.py      → Acceso a las tres colecciones documentales
 │   └── metrics/         → Sub-paquete: una función por métrica operativa
 ├── services/
-│   ├── metric/          → Implementaciones por métrica
+│   ├── metric/          → Implementaciones por métrica (CU-22 a CU-32)
 │   ├── dashboard.py     → Composición para los resúmenes de entidad
 │   ├── chart.py         → Datos para los gráficos analíticos
 │   ├── search.py        → Búsqueda global
@@ -317,7 +335,7 @@ app/
 ├── routes/
 │   ├── auth.py
 │   ├── resources/       → Endpoints de las entidades operativas
-│   ├── metrics/         → Endpoints de las métricas operativas
+│   ├── metrics/         → Endpoints de las métricas operativas (CU-10, CU-22 a CU-32)
 │   ├── charts/          → Endpoints de los gráficos analíticos
 │   ├── dashboards/      → Endpoints de los resúmenes y de rentabilidad
 │   └── snapshots.py     → Endpoints para guardar, listar, consultar y eliminar capturas
@@ -330,11 +348,11 @@ app/
 
 **`models/`** contiene exclusivamente el mapeo sobre el dominio operativo del ERP. Ningún modelo ejecuta lógica; solo declara columnas y relaciones. No se añaden modelos para el subsistema de capturas porque la base documental no requiere tal mapeo: la serialización se delega a la capa de esquemas.
 
-**`repositories/`** encapsula cada consulta como una función pura que recibe una sesión y devuelve datos crudos. El sub-paquete `repositories/metrics/` extiende esta idea con un submódulo por métrica, evitando que un único fichero acumule consultas heterogéneas. El repositorio de capturas es el único que no opera sobre la base relacional: ejecuta directamente operaciones de inserción, lectura, actualización, listado paginado y borrado sobre las tres colecciones documentales a través del cliente de infraestructura.
+**`repositories/`** encapsula cada consulta como una función pura que recibe una sesión y devuelve datos crudos. El sub-paquete `repositories/metrics/` extiende esta idea con un submódulo por métrica (uno por cada CU del paquete P10), evitando que un único fichero acumule consultas heterogéneas. El repositorio de capturas es el único que no opera sobre la base relacional: ejecuta directamente operaciones de inserción, lectura, actualización, listado paginado y borrado sobre las tres colecciones documentales a través del cliente de infraestructura.
 
 **`services/`** aplica las reglas de negocio sobre los datos recuperados por los repositorios. El sub-paquete `services/metrics/` sigue la misma granularidad que `repositories/metrics/`: una clase, una métrica, una razón de cambio. El servicio de capturas añade responsabilidades propias del subsistema: normalizar parámetros, calcular el resumen único que identifica a la captura, construir el autor a partir de la sesión del usuario, fijar la fecha y decidir entre insertar o actualizar (semántica de actualización diaria) según la existencia previa.
 
-**`routes/`** actúa como capa de entrada HTTP. Las rutas no contienen lógica de negocio: validan parámetros, comprueban la autenticación y delegan en el servicio correspondiente. La ruta de capturas sigue esta norma y expone tres familias de endpoints homogéneas (una por colección) sobre la misma estructura de operaciones.
+**`routes/`** actúa como capa de entrada HTTP. Las rutas no contienen lógica de negocio: validan parámetros, comprueban la autenticación y delegan en el servicio correspondiente. El sub-paquete `routes/metrics/` expone un endpoint por cada métrica operativa (CU-22 a CU-32) más el endpoint del catálogo (CU-10), siguiendo el principio OCP: añadir una nueva métrica implica añadir un único fichero nuevo sin modificar los existentes.
 
 **`utils/`** recoge funciones reutilizables que no pertenecen a ningún dominio: paginación, extracción de nombres multilingües, ordenación de diccionarios y validaciones de rango de fechas.
 

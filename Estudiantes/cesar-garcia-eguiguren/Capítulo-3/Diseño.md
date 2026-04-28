@@ -85,13 +85,14 @@ Hay tres capas distintas donde el scope del JWT actúa:
 | CU-06 Listar proyectos | `require_manager_or_above` | — | `[p for p in projects if p.id in cu.project_ids]` en `ProjectService.list_projects` |
 | CU-07 Ver detalle proyecto | `require_manager_or_above` | `verify_project_scope(cu, id)` en `ProjectService` | — |
 | CU-08 Listar tareas | `require_manager_or_above` | `verify_employee_scope` si se filtra por empleado; `verify_project_scope` si se filtra por proyecto | `effective_project_ids = cu.project_ids if cu.is_responsable` en `TaskService.filter_tasks` |
-| CU-10 Consultar métrica operativa | `require_manager_or_above` | `verify_employee_scope` / `verify_project_scope` / `verify_department_scope` según el parámetro presente | Modo Workload de equipo: `get_filtered_employees_query(employee_ids=cu.employee_ids)` en `DashboardService` |
+| CU-10 Mostrar catálogo de métricas | `require_manager_or_above` | — | Aplica filtrado por scope si el actor es responsable|
+| CU-22 a CU-32 Métricas operativas (P10) | `require_manager_or_above` | `verify_employee_scope` / `verify_project_scope` / `verify_department_scope` según la métrica y el parámetro presente | — |
 | CU-13 Consultar rentabilidad financiera ★ | `require_director` | — | — (dato global exclusivo del Director) |
 | CU-14 Consultar líneas analíticas ★ | `require_director` | — | — (drill-down desde CU-13 sobre datos ya autorizados por rol) |
 | CU-17 Guardar snapshot | `require_manager_or_above` | — | No aplica filtrado por scope: la snapshot captura el resultado ya mostrado en pantalla, que ya pasó los controles de scope de su CU de origen |
 | CU-18 Listar snapshots | `require_manager_or_above` | — | **Decisión consciente:** el listado no aplica filtrado por scope (véase justificación más abajo) |
 | CU-19 Detalle de snapshot | `require_manager_or_above` | — | Mismo criterio que CU-18 |
-| CU-20 Eliminar snapshot | `require_manager_or_above` | — | Mismo criterio que CU-18 |
+| CU-20 Eliminar snapshot | `require_director` | — | Mismo criterio que CU-18 |
 
 **Justificación de la ausencia de filtrado por scope en los CU de snapshot (CU-18/19/20).** Las snapshots son lecturas inmutables de momentos pasados y no exponen información distinta a la que ya es visible en la capa operativa filtrada por scope. Además, las snapshots de rentabilidad (CU-13, CU-14) solo pueden ser generadas por el Director (Capa 1), por lo que un Responsable nunca podrá consultarlas en detalle salvo que hayan sido previamente creadas por un Director dentro de la misma organización. El sistema acepta esta exposición limitada como compromiso razonable frente a la complejidad de aplicar scope retroactivamente sobre documentos almacenados.
 
@@ -343,7 +344,7 @@ Cada repositorio recibe un color único que se hereda por sus flechas salientes:
 
 ### 7.2b Repositorios de métricas (dentro de `/metrics`) ↔ Modelos
 
-Este segundo diagrama cubre los **16 repositorios especializados** de `app/repositories/metrics/`. Cada uno implementa el acceso a datos necesario para calcular una métrica concreta (productividad, cumplimiento, WIP, lead time, rentabilidad, etc.).
+Este segundo diagrama cubre los **16 repositorios especializados** de `app/repositories/metrics/`. Cada uno implementa el acceso a datos necesario para calcular una métrica concreta, correspondiente a su caso de uso del paquete P10 (CU-22 a CU-32) más los repositorios de asistencia, rentabilidad, distribución por cliente y eficiencia de proyecto.
 
 La mayoría de estos repositorios tienen una **huella estrecha sobre el modelo ORM**: acceden solo a 1–3 tablas directamente. El resto de la información la obtienen **reutilizando las subqueries publicadas por `task.py` y `timesheet.py`** (§7.3), lo que evita duplicar la lógica de "etapas abiertas/cerradas" y "horas imputadas" en cada métrica.
 
@@ -378,7 +379,7 @@ Este diagrama muestra que los repositorios de métricas no vuelven a escribir ca
 
 ### 7.4 Servicios de métricas ↔ Repositorios de métricas (correspondencia 1:1)
 
-Una vez establecido el patrón anterior, la capa de servicios de métricas es trivialmente regular: **cada servicio consume exactamente un repositorio de métricas**. Aquí no se aplican colores: la correspondencia 1:1 hace que las flechas vayan en paralelo sin cruzarse, y añadir 14 colores distintos sería decorativo más que informativo.
+Una vez establecido el patrón anterior, la capa de servicios de métricas es trivialmente regular: **cada servicio consume exactamente un repositorio de métricas**. Aquí no se aplican colores: la correspondencia 1:1 hace que las flechas vayan en paralelo sin cruzarse, y añadir 16 colores distintos sería decorativo más que informativo.
 
 ![Diagrama de servicios de métricas y repositorios de métricas](./imagenes/diseño/serviciosMetricas-repositorios.png)
 
@@ -386,9 +387,9 @@ Una vez establecido el patrón anterior, la capa de servicios de métricas es tr
 
 ### 7.5 DashboardService: orquestación por composición
 
-El `DashboardService` no duplica lógica de métricas; las **compone**. Este diagrama hace visible la relación "consumer-of-services" que permite que un endpoint de dashboard (CU-03, CU-05, CU-07, CU-10 en modo equipo) devuelva en una sola llamada lo equivalente a invocar seis endpoints de métricas distintos. Las flechas desde `DashboardService` van en cian (es el protagonista) y las de `DepartmentService` en naranja para distinguir sus respectivas dependencias sobre `WorkloadService`.
+El `DashboardService` no duplica lógica de métricas; las **compone**. Este diagrama hace visible la relación "consumer-of-services" que permite que un endpoint de dashboard (CU-03, CU-05, CU-07, CU-21) devuelva en una sola llamada lo equivalente a invocar seis endpoints de métricas distintos. Las flechas desde `DashboardService` van en cian (es el protagonista) y las de `DepartmentService` en naranja para distinguir sus respectivas dependencias sobre `WorkloadService`.
 
-En particular, `DashboardService.get_manager_overview()` representa la variante del caso de uso CU-10 en modo agregado de equipo, y `WorkloadService` soporta tanto el modo individual (`employee_id` presente) como el modo equipo (sin `employee_id`) compartiendo la primitiva `get_pending_hours_per_employee()` del repositorio. Esta reutilización justifica la consolidación documentada en el Capítulo 2.
+En particular, `DashboardService.get_manager_overview()` soporta el caso de uso CU-21 (Consultar distribución de carga del equipo), y `WorkloadService` soporta tanto el modo individual — CU-25 Consultar Carga de Trabajo de Empleado (`employee_id` presente) — como el modo equipo — CU-21 (sin `employee_id`) — compartiendo la primitiva `get_pending_hours_per_employee()` del repositorio. Esta reutilización de la lógica de carga entre el modo individual (P10) y el modo agregado (CU-21) justifica la separación en dos casos de uso distintos documentada en el Capítulo 2.
 
 ![Diagrama de DashboardService y su composición de servicios de métricas](./imagenes/diseño/dashboardService.png)
 
@@ -434,7 +435,7 @@ Las dependencias entre paquetes son exclusivamente descendentes. Ningún import 
 
 **SRP — Una responsabilidad por módulo**
 
-Cada fichero de `repositories/metrics/` tiene una única razón para cambiar: la estructura de la tabla Odoo relevante para esa métrica. Cada fichero de `services/metrics/` tiene también una única razón: la fórmula de cálculo de esa métrica. `SnapshotService` tiene una única razón para cambiar: las reglas de persistencia (normalización, hash, upsert). El añadir una nueva métrica implica crear exactamente dos ficheros nuevos y un endpoint, sin tocar ningún módulo existente; añadir un nuevo subtipo de snapshot implica una nueva colección, un nuevo schema Pydantic y un nuevo renderer en el visor.
+Cada fichero de `repositories/metrics/` tiene una única razón para cambiar: la estructura de la tabla Odoo relevante para esa métrica. Cada fichero de `services/metrics/` tiene también una única razón: la fórmula de cálculo de esa métrica, correspondiente al caso de uso del paquete P10 que implementa. `SnapshotService` tiene una única razón para cambiar: las reglas de persistencia (normalización, hash, upsert). El añadir una nueva métrica implica crear exactamente dos ficheros nuevos y un endpoint, sin tocar ningún módulo existente; añadir un nuevo subtipo de snapshot implica una nueva colección, un nuevo schema Pydantic y un nuevo renderer en el visor.
 
 **OCP — Abierto para extensión**
 
@@ -576,16 +577,16 @@ Ficha de tarea con secciones de información general, personas asignadas, horas 
  
 ---
  
-### Prototipo CU-10 – Consultar Métrica Operativa
+### Prototipo CU-10 – Mostrar Catálogo de Métricas
  
-Página de métricas con cuadrícula de tarjetas a la izquierda con gauge de preview. Al seleccionar una tarjeta, el panel derecho muestra el detalle completo con gráficos y KPIs. Panel de filtros expandible en la parte superior.
+Página de métricas con cuadrícula de tarjetas agrupadas por categoría. Al seleccionar una tarjeta, el sistema invoca el caso de uso correspondiente del paquete P10 (CU-22 a CU-32) y muestra el panel de detalle con parámetros, gráficos y KPIs específicos de esa métrica. Panel de filtros expandible en la parte superior del detalle.
  
 ![Prototipo de métricas](../Capítulo-2/imagenes/prototipado/CU-P7.png)
  
 **Decisiones de diseño implementadas:**
 - Las métricas que requieren parámetros (empleado, proyecto) muestran un estado vacío hasta que se rellenan.
 - El panel de detalle es sticky para no perder de vista los KPIs al hacer scroll en la cuadrícula.
-- Todas las vistas de detalle incluyen el botón "Guardar snapshot" que dispara CU-17.
+- Todas las vistas de detalle de métrica incluyen el botón "Guardar snapshot" que dispara CU-17.
 ---
  
 ### Prototipo CU-11 – Gráficos Analíticos
@@ -638,8 +639,8 @@ Aplicación independiente en el puerto 3001 compuesta por cuatro vistas principa
 - **Home del visor:** resumen global con contadores por colección (métricas, gráficos, entidades) y acceso rápido a las últimas snapshots guardadas.
 - **Listado por colección:** tabla paginada con filtros por tipo y rango de fechas (CU-18).
 - **Detalle de snapshot:** ficha con metadatos, vista reconstruida por el renderer específico y panel JSON expandible (CU-19).
-- **Diálogo de eliminación:** confirmación previa a un hard delete sobre MongoDB (CU-20).
+- **Diálogo de eliminación:** confirmación previa a un hard delete sobre MongoDB (CU-20, exclusivo del Director).
+
 **Decisiones de diseño implementadas:**
 - El visor reutiliza el mismo `AuthContext` y esquema de login que el frontend principal; el token JWT es intercambiable entre ambas aplicaciones.
 - Los renderers del visor (`MetricView`, `ChartView`, `EntityView`) operan exclusivamente sobre el JSON persistido en MongoDB y nunca llaman al backend para recalcular.
- 
