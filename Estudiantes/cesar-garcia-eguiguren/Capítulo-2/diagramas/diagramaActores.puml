@@ -17,25 +17,23 @@ skinparam rectangle {
   FontColor #E2E8F5
 }
 
-actor "Director\nDatos globales sin filtro\n\n20 CU disponibles" as Director #4B3FA6
+actor "Director\nDatos globales sin filtro\n\n21 CU disponibles" as Director #4B3FA6
 
-actor "Responsable\nScope inyectado en JWT:\nemployee_ids\ndepartment_ids\nproject_ids\n\n17 CU disponibles" as Responsable #1F7A63
+actor "Responsable\nScope inyectado en JWT:\nemployee_ids\ndepartment_ids\nproject_ids\n\n18 CU disponibles" as Responsable #1F7A63
 
 rectangle "Netkia Analytics\nMódulo externo sobre Odoo v16" as System #141824 {
 
-  rectangle "CU-01 · Iniciar Sesión" as CU01 #BB3A29
+  rectangle "P1 · Iniciar Sesión · Cerrar Sesion" as P1 #BB3A29
 
   rectangle "P2–P5 · Entidades operativas (CU-02..CU-09)\nEmpleados · Departamentos · Proyectos · Tareas" as P2 #927410
 
-  rectangle "P6 · Métricas (CU-10)\nCU único parametrizado sobre 15 servicios\n(productividad · WIP · workload indiv./equipo\nriesgo · compliance · lead time · ...)" as P6 #927410
+  rectangle "P6 · Análisis (CU-10, CU-11, CU-12, CU-21)\nMétricas · Gráficos analíticos\nAsistencia vs imputaciones · Carga de trabajo de equipo" as P7 #927410
 
-  rectangle "P7 · Análisis visual (CU-11, CU-12)\nGráficos analíticos · Asistencia vs imputaciones" as P7 #927410
+  rectangle "P7 · Rentabilidad (CU-13, CU-14)\n★ Exclusivo Director · 403 para Responsable\nCU-14 unifica líneas de proyecto y de cliente" as P8 #4B3FA6
 
-  rectangle "P8 · Rentabilidad (CU-13, CU-14)\n★ Exclusivo Director · 403 para Responsable\nCU-14 unifica líneas de proyecto y de cliente" as P8 #4B3FA6
+  rectangle "P8 · Utilidades (CU-15)\nBúsqueda global" as P9 #927410
 
-  rectangle "P9 · Utilidades (CU-15, CU-16)\nBúsqueda global" as P9 #927410
-
-  rectangle "P10 · Snapshots (CU-17..CU-20)\nGuardar (upsert diario) · Listar\nDetalle · Eliminar" as P10 #3A6A8A
+  rectangle "P9 · Snapshots (CU-17..CU-20)\nGuardar (upsert diario) · Listar\nDetalle · Eliminar" as P10 #3A6A8A
 
 }
 
@@ -43,27 +41,23 @@ actor "Odoo v16 ERP\n(PostgreSQL · solo lectura)\n\nhr_employee · res_users\np
 
 actor "MongoDB\n(lectura/escritura)\n\nmetric_snapshots\nchart_snapshots\nentity_snapshots\n\n1 snapshot por\n(tipo, params, día)" as Mongo #2F6F3F
 
-Director --> CU01
-Responsable --> CU01
+Director --> P1
+Responsable --> P1
 
-CU01 --> P2
-CU01 --> P6
-CU01 --> P7
-CU01 --> P8
-CU01 --> P9
-CU01 --> P10
+P1 --> P2
+P1 --> P8
+P1 --> P9
+P1 --> P10
 
 P2 --> Odoo
-P6 --> Odoo
 P7 --> Odoo
 P8 --> Odoo
 P9 --> Odoo
 
 P10 --> Mongo
-P6 ..> P10 : datos calculados →\n"Guardar snapshot"
-P7 ..> P10 : datos calculados →\n"Guardar snapshot"
-P8 ..> P10 : datos calculados →\n"Guardar snapshot"
-P2 ..> P10 : datos entidad →\n"Guardar snapshot"
+P7 ..> P10 : "Guardar snapshot"
+P8 ..> P10 : "Guardar snapshot"
+P2 ..> P10 : "Guardar snapshot"
 
 
 note right of System

@@ -501,3 +501,33 @@
 **Observación:** El borrado es definitivo, sin papelera ni versiones previas. Tras el borrado, volver a guardar el mismo día con los mismos parámetros crea una snapshot nueva a través de CU-17.
 
 **Relaciones:** Ninguna.
+
+---
+
+## CU-21 – Consultar Distribución de Carga del Equipo
+
+| Campo | Valor |
+|---|---|
+| **Actores** | Director, Responsable |
+| **Precondición** | CU-01 completado. |
+| **Postcondición** | El actor conoce la distribución de carga de su equipo y puede navegar al perfil de cualquier empleado. |
+
+![Diagrama de flujo](../imagenes/CdU/flujoCU21.png)
+
+**Flujo principal:**
+1. El actor accede al panel de gestión de equipo.
+2. El sistema calcula la distribución del equipo según el ámbito del actor y clasifica a cada empleado en una de cuatro categorías: sobrecargado, normal, subcargado o sin tareas asignadas.
+3. El sistema muestra cinco tarjetas numéricas clicables: total de empleados, sobrecargados, en carga normal, subcargados y sin tareas.
+4. El sistema muestra el ranking de los cinco empleados con mayor porcentaje de carga y un gráfico de barras horizontal con la distribución por estado.
+5. El actor puede filtrar por departamento para acotar el análisis a un área concreta.
+6. El actor selecciona una tarjeta de estado y el sistema despliega el listado paginado de empleados en ese estado, con su porcentaje de carga, horas pendientes y número de tareas pendientes.
+7. El actor puede ordenar el listado por cualquier columna y navegar por las páginas de resultados.
+8. El actor selecciona un empleado del listado para acceder a su resumen detallado.
+
+**Flujos alternativos:**
+- `FA-01`: No existen empleados en el estado seleccionado → estado vacío con mensaje informativo.
+- `FA-02`: Filtro de departamento activo → el sistema recalcula toda la distribución limitándola a los empleados del departamento elegido.
+
+**Observación:** Este caso de uso tiene su propia página dedicada (`/manager`) y actúa como punto de entrada a la supervisión de equipo. Se diferencia de CU-10 (Consultar Métrica Operativa) en que no forma parte del catálogo de métricas parametrizadas, sino que ofrece una vista de gestión agregada y navegable del estado del equipo, con paginación server-side. El cálculo de carga que subyace es el mismo que CU-10.4 (Workload individual), pero aplicado sobre todos los empleados del ámbito simultáneamente.
+
+**Relaciones:** Navega a CU-03 (al seleccionar un empleado del listado).

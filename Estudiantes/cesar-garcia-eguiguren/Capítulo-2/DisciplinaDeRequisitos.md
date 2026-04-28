@@ -52,7 +52,7 @@ Los CU de resumen son el panel analítico de cada entidad: agregan indicadores, 
 
 ### 1.3 Lista de casos de uso
 
-El sistema se organiza en **10 paquetes funcionales** que agrupan los **21 casos de uso** identificados. Los CUs marcados con ★ son exclusivos del rol *Director*; el resto están disponibles para ambos actores (*Director* y *Responsable*) con el filtrado de ámbito que corresponda a cada uno.
+El sistema se organiza en **9 paquetes funcionales** que agrupan los **21 casos de uso** identificados. Los CUs marcados con ★ son exclusivos del rol *Director*; el resto están disponibles para ambos actores (*Director* y *Responsable*) con el filtrado de ámbito que corresponda a cada uno.
 
 | Paquete | CU | Nombre | Director | Responsable |
 |---|---|---|---|---|
@@ -118,39 +118,39 @@ Ambos actores comparten la mayoría de los casos de uso. El Director tiene acces
 
 #### Prioridad Alta (A) — MVP imprescindible
 
-| CU | Nombre | Justificación |
-|---|---|---|
-| CU-01 | Autenticarse | Sin autenticación no hay sistema. Puerta de entrada. |
-| CU-02 | Listar empleados | Dato base para todos los paneles de empleado. |
-| CU-03 | Resumen de empleado | Vista canónica de consulta operativa diaria. |
-| CU-06 | Listar proyectos | Dato base para paneles de proyecto y rentabilidad. |
-| CU-07 | Resumen de proyecto | Vista canónica sobre el estado de un proyecto. |
-| CU-08 | Listar tareas | Consulta operativa de alta frecuencia. |
-| CU-10 | Consultar métrica operativa | Indicadores que guían la decisión diaria. |
-| CU-13 | Rentabilidad financiera ★ | Indicador económico global del Director. |
-| CU-17 | Guardar snapshot | Permite persistir el estado para seguimiento histórico. |
+| CU | Nombre | Criticidad | Valor de negocio | Frecuencia | Riesgo técnico | Justificación |
+|---|---|:---:|:---:|:---:|:---:|---|
+| CU-01 | Autenticarse | 3 | 3 | 3 | 2 | Sin autenticación no hay sistema. Puerta de entrada. |
+| CU-02 | Listar empleados | 3 | 2 | 3 | 1 | Dato base para todos los paneles de empleado. |
+| CU-03 | Resumen de empleado | 2 | 3 | 3 | 2 | Vista canónica de consulta operativa diaria. |
+| CU-06 | Listar proyectos | 3 | 2 | 3 | 1 | Dato base para paneles de proyecto y rentabilidad. |
+| CU-07 | Resumen de proyecto | 2 | 3 | 3 | 2 | Vista canónica sobre el estado de un proyecto. |
+| CU-08 | Listar tareas | 2 | 3 | 3 | 2 | Consulta operativa de alta frecuencia. |
+| CU-10 | Consultar métrica operativa | 2 | 3 | 3 | 3 | Indicadores que guían la decisión diaria. |
+| CU-13 | Rentabilidad financiera ★ | 2 | 3 | 2 | 3 | Indicador económico global del Director. |
+| CU-21 | Consultar carga de trabajo de equipo | 2 | 3 | 2 | 2 | Control de la carga de trabajo de los empleados. |
+| CU-17 | Guardar snapshot | 1 | 3 | 2 | 2 | Permite persistir el estado para seguimiento histórico. |
 
 #### Prioridad Media (M) — complementarios
 
-| CU | Nombre | Justificación |
-|---|---|---|
-| CU-04 | Listar departamentos | Exploración por estructura organizativa. |
-| CU-05 | Resumen de departamento | Soporte al análisis de carga agregada. |
-| CU-09 | Detalle de tarea | Profundización puntual sobre una tarea. |
-| CU-11 | Gráficos analíticos | Análisis visual complementario. |
-| CU-21 | Consultar carga de trabajo de equipo | Control de la carga de trabajo de los empleados |
-| CU-12 | Asistencia vs imputaciones | Control de coherencia horaria. |
-| CU-14 | Líneas analíticas ★ | Desglose contextual sobre rentabilidad. |
-| CU-18 | Listar snapshots | Consumo del histórico persistido. |
-| CU-19 | Detalle de snapshot | Reconstrucción de vistas guardadas. |
+| CU | Nombre | Criticidad | Valor de negocio | Frecuencia | Riesgo técnico | Justificación |
+|---|---|:---:|:---:|:---:|:---:|---|
+| CU-04 | Listar departamentos | 2 | 2 | 2 | 1 | Exploración por estructura organizativa. |
+| CU-05 | Resumen de departamento | 2 | 2 | 2 | 2 | Soporte al análisis de carga agregada. |
+| CU-09 | Detalle de tarea | 1 | 2 | 2 | 1 | Profundización puntual sobre una tarea. |
+| CU-11 | Gráficos analíticos | 1 | 2 | 2 | 2 | Análisis visual complementario. |
+| CU-12 | Asistencia vs imputaciones | 1 | 2 | 2 | 2 | Control de coherencia horaria. |
+| CU-14 | Líneas analíticas ★ | 1 | 2 | 1 | 1 | Desglose contextual sobre rentabilidad. |
+| CU-18 | Listar snapshots | 1 | 2 | 1 | 1 | Consumo del histórico persistido. |
+| CU-19 | Detalle de snapshot | 1 | 2 | 1 | 1 | Reconstrucción de vistas guardadas. |
 
 #### Prioridad Baja (B) — opcionales
 
-| CU | Nombre | Justificación |
-|---|---|---|
-| CU-15 | Búsqueda global | Atajo de navegación; no imprescindible. |
-| CU-16 | Cerrar sesión | Deseable pero no bloqueante. |
-| CU-20 | Eliminar snapshot | Operación excepcional; uso puntual. |
+| CU | Nombre | Criticidad | Valor de negocio | Frecuencia | Riesgo técnico | Justificación |
+|---|---|:---:|:---:|:---:|:---:|---|
+| CU-15 | Búsqueda global | 1 | 1 | 2 | 1 | Atajo de navegación; no imprescindible. |
+| CU-16 | Cerrar sesión | 1 | 1 | 1 | 1 | Deseable pero no bloqueante. |
+| CU-20 | Eliminar snapshot | 1 | 1 | 1 | 1 | Operación excepcional; uso puntual. |
 
 ---
 
@@ -662,8 +662,33 @@ Todos los casos de uso están documentados en detalle en: [Disciplina de Requisi
 
 ---
 
-### CU-21 - Consultar Carga de Trabajo del Equipo
+### CU-21 – Consultar Distribución de Carga del Equipo
 
+| Campo | Valor |
+|---|---|
+| **Actores** | Director, Responsable |
+| **Precondición** | CU-01 completado. |
+| **Postcondición** | El actor conoce la distribución de carga de su equipo y puede navegar al perfil de cualquier empleado. |
+
+![Diagrama de flujo](./imagenes/CdU/flujoCU21.png)
+
+**Flujo principal:**
+1. El actor accede al panel de gestión de equipo.
+2. El sistema calcula la distribución del equipo según el ámbito del actor y clasifica a cada empleado en una de cuatro categorías: sobrecargado, normal, subcargado o sin tareas asignadas.
+3. El sistema muestra cinco tarjetas numéricas clicables: total de empleados, sobrecargados, en carga normal, subcargados y sin tareas.
+4. El sistema muestra el ranking de los cinco empleados con mayor porcentaje de carga y un gráfico de barras horizontal con la distribución por estado.
+5. El actor puede filtrar por departamento para acotar el análisis a un área concreta.
+6. El actor selecciona una tarjeta de estado y el sistema despliega el listado paginado de empleados en ese estado, con su porcentaje de carga, horas pendientes y número de tareas pendientes.
+7. El actor puede ordenar el listado por cualquier columna y navegar por las páginas de resultados.
+8. El actor selecciona un empleado del listado para acceder a su resumen detallado.
+
+**Flujos alternativos:**
+- `FA-01`: No existen empleados en el estado seleccionado → estado vacío con mensaje informativo.
+- `FA-02`: Filtro de departamento activo → el sistema recalcula toda la distribución limitándola a los empleados del departamento elegido.
+
+**Observación:** Este caso de uso tiene su propia página dedicada (`/manager`) y actúa como punto de entrada a la supervisión de equipo. Se diferencia de CU-10 (Consultar Métrica Operativa) en que no forma parte del catálogo de métricas parametrizadas, sino que ofrece una vista de gestión agregada y navegable del estado del equipo, con paginación server-side. El cálculo de carga que subyace es el mismo que CU-10.4 (Workload individual), pero aplicado sobre todos los empleados del ámbito simultáneamente.
+
+**Relaciones:** Navega a CU-03 (al seleccionar un empleado del listado).
 
 ---
 ## 4. Prototipar Casos de Uso

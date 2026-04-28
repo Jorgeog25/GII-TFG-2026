@@ -1,5 +1,6 @@
 @startuml ContextoDirector
 !theme plain
+top to bottom direction
 
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -25,67 +26,73 @@ skinparam package {
   FontStyle bold
 }
 
-top to bottom direction
 actor Director as D
 
-package "Autenticación" {
+' ── P1 · Autenticación ───────────────────────────────────────
+package "P1 · Autenticación" {
   usecase "CU-01\nAutenticarse" as CU01
   usecase "CU-16\nCerrar Sesión" as CU16
 }
 
-package "Empleados" {
-  usecase "CU-02\nListar y Buscar Empleados" as CU02
+' ── P2 · Empleados ───────────────────────────────────────────
+package "P2 · Empleados" {
+  usecase "CU-02\nListar Empleados" as CU02
   usecase "CU-03\nResumen de Empleado" as CU03
-  CU02 -down-> CU03 : selecciona un empleado
+  CU02 -down-> CU03 : selecciona empleado
 }
 
-package "Departamentos" {
+' ── P3 · Departamentos ───────────────────────────────────────
+package "P3 · Departamentos" {
   usecase "CU-04\nListar Departamentos" as CU04
   usecase "CU-05\nResumen de Departamento" as CU05
-  CU04 -down-> CU05 : selecciona un departamento
+  CU04 -down-> CU05 : selecciona departamento
 }
 
-package "Proyectos" {
+' ── P4 · Proyectos ───────────────────────────────────────────
+package "P4 · Proyectos" {
   usecase "CU-06\nListar Proyectos" as CU06
   usecase "CU-07\nResumen de Proyecto" as CU07
-  CU06 -down-> CU07 : selecciona un proyecto
+  CU06 -down-> CU07 : selecciona proyecto
 }
 
-package "Tareas" {
-  usecase "CU-08\nListar y Filtrar Tareas" as CU08
+' ── P5 · Tareas ──────────────────────────────────────────────
+package "P5 · Tareas" {
+  usecase "CU-08\nListar Tareas" as CU08
   usecase "CU-09\nDetalle de Tarea" as CU09
-  CU08 -down-> CU09 : selecciona una tarea
+  CU08 -down-> CU09 : selecciona tarea
 }
 
-package "Métricas Operativas" {
-  usecase "CU-10\nConsultar Métrica Operativa\n(15 servicios · individual/equipo)" as CU10
+' ── P6 · Análisis ────────────────────────────────────────────
+package "P6 · Análisis" {
+  usecase "CU-10\nConsultar Métrica Operativa\n(11 subcasos · individual)" as CU10
+  usecase "CU-11\nGráficos Analíticos" as CU11
+  usecase "CU-12\nAsistencia vs Imputaciones" as CU12
+  usecase "CU-21\nDistribución de Carga\ndel Equipo" as CU21
 }
 
-package "Análisis Visual" {
-  usecase "CU-11\nVer Gráficos Analíticos" as CU11
-  usecase "CU-12\nConsultar Asistencia" as CU12
-}
-
-package "Rentabilidad  ★ Director exclusivo" #1A0A0A {
-  usecase "CU-13\nConsultar Rentabilidad Financiera" as CU13
-  usecase "CU-14\nVer Líneas Analíticas\n(proyecto y cliente)" as CU14
+' ── P7 · Rentabilidad ★ ──────────────────────────────────────
+package "P7 · Rentabilidad  ★ Director exclusivo" #1A0A0A {
+  usecase "CU-13\nRentabilidad Financiera" as CU13
+  usecase "CU-14\nLíneas Analíticas\n(proyecto | cliente)" as CU14
   CU13 -down-> CU14 : "Ver detalles"
 }
 
-package "Utilidades" {
+' ── P8 · Utilidades ──────────────────────────────────────────
+package "P8 · Utilidades" {
   usecase "CU-15\nBúsqueda Global" as CU15
 }
 
-package "Snapshots (MongoDB)" #0F1E2A {
+' ── P9 · Snapshots ───────────────────────────────────────────
+package "P9 · Snapshots (MongoDB)" #0F1E2A {
   usecase "CU-17\nGuardar Snapshot\n(upsert diario)" as CU17
   usecase "CU-18\nListar Snapshots" as CU18
   usecase "CU-19\nDetalle de Snapshot" as CU19
   usecase "CU-20\nEliminar Snapshot" as CU20
-
   CU18 -down-> CU19 : selecciona fila
   CU19 -right-> CU20 : pulsa "Eliminar"
 }
 
+' ── Entradas del Director ─────────────────────────────────────
 D -down-> CU01 : login
 D -down-> CU16 : logout
 D --> CU02
@@ -97,28 +104,35 @@ D --> CU11
 D --> CU12
 D --> CU13
 D --> CU15
-D --> CU17 : guardar desde vista calculada
-D --> CU18 : acceder al visor (frontend2)
+D --> CU17 : guardar snapshot
+D --> CU18 : visor (frontend2)
+D --> CU21
 
+' ── Navegación entre entidades ───────────────────────────────
 CU05 -right-> CU03 : empleado del depart.
-CU07 -up-> CU03 : empleado del equipo
-CU03 -down-> CU08 : ver sus tareas
+CU07 -right-> CU03 : empleado del equipo
+CU21 -right-> CU03 : selecciona empleado
+CU03 -down-> CU08 : tareas del empleado
 CU07 -down-> CU08 : tareas del proyecto
-CU09 -up-> CU07 : proyecto de la tarea
+CU09 -up-> CU07  : proyecto de la tarea
 CU09 -left-> CU03 : responsable/asignado
 
+' ── KPIs desde resúmenes de entidad ──────────────────────────
 CU03 .down.> CU10 : KPIs del empleado
-CU05 .down.> CU10 : workload depart.
-CU07 .down.> CU10 : eficiencia/riesgo proyecto
+CU05 .down.> CU10 : workload del depart.
+CU07 .down.> CU10 : eficiencia/riesgo
 
-CU10 ..down..> CU17 : guardar métrica
-"Análisis Visual" ..down..> CU17 : guardar gráfico
-"Rentabilidad  ★ Director exclusivo" .down.> CU17 : guardar rentabilidad
-CU03 ..down..> CU17 : guardar entidad (empl.)
-CU05 ..down..> CU17 : guardar entidad (depart.)
-CU07 ..down..> CU17 : guardar entidad (proy.)
-CU09 ..down..> CU17 : guardar entidad (tarea)
+' ── <<extend>> guardar snapshot ──────────────────────────────
+CU10 ..> CU17 : guardar métrica
+CU11 ..> CU17 : guardar gráfico
+CU12 ..> CU17 : guardar asistencia
+CU13 ..> CU17 : guardar rentabilidad
+CU03 ..> CU17 : guardar entidad (empl.)
+CU05 ..> CU17 : guardar entidad (depart.)
+CU07 ..> CU17 : guardar entidad (proy.)
+CU09 ..> CU17 : guardar entidad (tarea)
 
+' ── Desde búsqueda global ─────────────────────────────────────
 CU15 --> CU03
 CU15 --> CU07
 CU15 --> CU09

@@ -52,14 +52,14 @@ La única excepción a esta restricción es el subsistema de capturas, que persi
 
 Esta sección describe qué sucede en cada caso de uso desde el punto de vista del actor. Para cada CU se indica el actor que lo inicia, los datos de entrada que proporciona y la información que el sistema devuelve. Siguiendo el principio RUP de trazabilidad entre disciplinas, en esta fase se profundiza en el flujo principal del caso de uso, preparando el terreno para el diseño detallado que se abordará en el capítulo siguiente.
 
-Tras la aplicación de los principios de consolidación RUP documentados en el Capítulo 2, el sistema cuenta con **20 casos de uso** organizados en 10 paquetes funcionales.
+Tras la aplicación de los principios de consolidación RUP documentados en el Capítulo 2, el sistema cuenta con **21 casos de uso** organizados en 9 paquetes funcionales.
 
 ### 2.1 Actores
 
 | Actor | CUs disponibles | Descripción |
 |---|---|---|
-| **Director** | 20 | Acceso total. Ve datos de toda la organización: todos los empleados, proyectos, departamentos y métricas financieras. |
-| **Responsable** | 17 | Acceso restringido a su ámbito (empleados de su equipo, proyectos que gestiona, departamentos a su cargo). No puede eliminar snapshots ni acceder a los casos de uso exclusivos de Rentabilidad Financiera (CU-13 y CU-14). |
+| **Director** | 21 | Acceso total. Ve datos de toda la organización: todos los empleados, proyectos, departamentos y métricas financieras. |
+| **Responsable** | 18 | Acceso restringido a su ámbito (empleados de su equipo, proyectos que gestiona, departamentos a su cargo). No puede eliminar snapshots ni acceder a los casos de uso exclusivos de Rentabilidad Financiera (CU-13 y CU-14). |
 
 ### 2.2 Casos de uso del sistema
 
@@ -110,8 +110,8 @@ Tras la aplicación de los principios de consolidación RUP documentados en el C
 
 **CU-10 — Consultar métrica operativa**
 - Actor: Director, Responsable
-- Entrada: nombre de la métrica (productividad, cumplimiento, WIP, carga de trabajo, riesgo, retrabajo, estimación, lead time, tiempo por estado, tareas canceladas, tiempo por prioridad, eficiencia de proyecto, distribución por cliente…) y los parámetros contextuales que esa métrica requiera (empleado, proyecto, departamento, rango de fechas, modo solo tareas raíz)
-- Salida: indicador calculado con su representación y gráficos de apoyo específicos de la métrica seleccionada. El modo carga de trabajo admite parámetros individuales (empleado concreto) o agregados de equipo (departamento o sin parámetro). El sistema verifica el ámbito del actor sobre los parámetros antes de calcular.
+- Entrada: nombre de la métrica (productividad, cumplimiento, WIP, carga de trabajo individual, riesgo, retrabajo, estimación, lead time, tiempo por estado, tareas canceladas, tiempo por prioridad, eficiencia de proyecto, distribución por cliente…) y los parámetros contextuales que esa métrica requiera (empleado, proyecto, departamento, rango de fechas, modo solo tareas raíz)
+- Salida: indicador calculado con su representación y gráficos de apoyo específicos de la métrica seleccionada. El sistema verifica el ámbito del actor sobre los parámetros antes de calcular.
 
 **CU-11 — Consultar gráficos analíticos**
 - Actor: Director, Responsable
@@ -163,7 +163,12 @@ Tras la aplicación de los principios de consolidación RUP documentados en el C
 - Entrada: identificador de la captura y tipo de colección
 - Salida: confirmación de eliminación permanente del documento.
 
-> **Nota sobre consolidaciones.** CU-10 absorbe las métricas operativas y el panel de supervisión de equipo; CU-14 unifica la consulta de líneas de proyecto y líneas de cliente; y CU-17 absorbe la semántica de actualización mediante semántica de actualización diaria.
+**CU-21 — Consultar distribución de carga del equipo**
+- Actor: Director, Responsable
+- Entrada: filtros opcionales (departamento, estado de carga, página, ordenación)
+- Salida: cinco contadores de estado clicables (total, sobrecargado, normal, subcargado, sin tareas), ranking de los cinco empleados más cargados, gráfico de barras de distribución por estado y, al seleccionar un estado, listado paginado de empleados en ese estado con su porcentaje de carga, horas pendientes y número de tareas pendientes. El ámbito del JWT determina qué empleados son visibles: el Responsable ve únicamente los empleados de su equipo; el Director ve todos. El cálculo delega en `GET /dashboards/summary/manager` con paginación server-side.
+
+> **Nota sobre consolidaciones.** CU-10 absorbe las métricas operativas individuales; su endpoint es `/metrics/<nombre>` y opera siempre sobre un empleado o proyecto concreto. El panel de supervisión de equipo se modela como CU-21, con su propia página (`/manager`) y su propio endpoint (`/dashboards/summary/manager`), porque su función es distinta: ofrece una vista agregada y navegable del estado del equipo, con acceso directo a los perfiles de empleado, no un cálculo parametrizado de una métrica individual. CU-14 unifica la consulta de líneas de proyecto y líneas de cliente; y CU-17 unifica la semántica de actualización y creación mediante un máximo de 1 snapshot diaria.
 
 ---
 
@@ -227,8 +232,8 @@ Siguiendo la metodología RUP, las clases se clasifican en tres estereotipos:
 | Principal | `Departments` / `DepartmentDetail` | Ambos | CU-04, CU-05 |
 | Principal | `Projects` / `ProjectDetail` | Ambos | CU-06, CU-07 |
 | Principal | `Tasks` / `TaskDetail` | Ambos | CU-08, CU-09 |
-| Principal | `Metrics` / `MetricDetail` | Ambos | CU-10 (modo individual) |
-| Principal | `Manager` | Ambos | CU-10 (modo agregado de equipo) |
+| Principal | `Metrics` / `MetricDetail` | Ambos | CU-10 |
+| Principal | `Manager` | Ambos | CU-21 |
 | Principal | `Attendance` | Ambos | CU-12 |
 | Principal | `Rentability` | Director | CU-13, CU-14 |
 | Principal | `Charts` | Ambos | CU-11 |
@@ -249,8 +254,8 @@ Siguiendo la metodología RUP, las clases se clasifican en tres estereotipos:
 | `department.router` | CU-04, CU-05 | Servicio de departamentos |
 | `project.router` | CU-06, CU-07 | Servicio de proyectos |
 | `task.router` | CU-08, CU-09 | Servicio de tareas |
-| `metrics.router` | CU-10 y CU-12 | Servicios de métricas y servicio de asistencia |
-| `dashboards.router` | CU-03, CU-05, CU-07, CU-10 en modo equipo, CU-13 y CU-14 | Servicio de dashboards y servicio de rentabilidad |
+| `metrics.router` | CU-10, CU-12, CU-13 y CU-14 | Servicios de métricas, asistencia, rentabilidad |
+| `dashboards.router` | CU-03, CU-05, CU-07, CU-21| Servicio de dashboards|
 | `charts.router` | CU-11 | Servicio de gráficos |
 | `search.router` | CU-15 | Servicio de búsqueda |
 | `snapshots.router` | CU-17, CU-18, CU-19, CU-20 | Servicio de capturas |
