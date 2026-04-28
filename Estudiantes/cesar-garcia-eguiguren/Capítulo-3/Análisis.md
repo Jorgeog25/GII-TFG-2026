@@ -50,143 +50,274 @@ La única excepción a esta restricción es el subsistema de capturas, que persi
 
 ## 2. Análisis de Casos de Uso
 
-Esta sección describe qué sucede en cada caso de uso desde el punto de vista del actor. Para cada CU se indica el actor que lo inicia, los datos de entrada que proporciona y la información que el sistema devuelve. Siguiendo el principio RUP de trazabilidad entre disciplinas, en esta fase se profundiza en el flujo principal del caso de uso, preparando el terreno para el diseño detallado que se abordará en el capítulo siguiente.
+Esta sección describe qué sucede en cada caso de uso desde el punto de vista del actor. Se identifican los artefactos reales que participan en cada paso del flujo principal, y se documenta el estado devuelto por el sistema al finalizar el caso de uso. Finalmente, se incluyen notas de análisis sobre decisiones arquitectónicas relevantes para cada caso.
 
-Tras la aplicación de los principios de consolidación RUP documentados en el Capítulo 2, el sistema cuenta con **32 casos de uso** organizados en 10 paquetes funcionales.
+### CU-02 — Listar empleados
 
-### 2.1 Actores
+#### Participantes del modelo
 
-| Actor | CUs disponibles | Descripción |
+| Estereotipo RUP | Artefacto real | Responsabilidad |
 |---|---|---|
-| **Director** | 32 | Acceso total. Ve datos de toda la organización: todos los empleados, proyectos, departamentos y métricas financieras. |
-| **Responsable** | 29 | Acceso restringido a su ámbito (empleados de su equipo, proyectos que gestiona, departamentos a su cargo). No puede eliminar snapshots ni acceder a los casos de uso exclusivos del Director (CU-13, CU-14 y CU-20). |
+| **Modelo (Entidad)** | `app/models/employee.py → Employee` | Mapea `hr_employee` |
+| **Modelo (Entidad)** | `app/models/department.py → Department` | Mapea `hr_department` (JOIN para obtener nombre) |
+| **Esquema de salida** | `app/schemas/employee.py → EmployeeDetail` | Contrato JSON del empleado |
+| **Esquema de salida** | `app/schemas/base.py → PaginatedResponse[EmployeeDetail]` | Envuelve la lista paginada |
+| **Repositorio** | `app/repositories/employee.py → get_filtered_employees_query()` | Query SQLAlchemy filtrada y ordenada |
+| **Servicio** | `app/services/employee_service.py → EmployeeService.list_employees()` | Aplica filtro de ámbito, delega al repo, llama a `paginate()` |
+| **Controlador** | `app/routes/employee.py → GET /employees/` | Valida parámetros HTTP, inyecta `require_manager_or_above` |
+| **Vista** | `frontend/src/pages/Employees.jsx` | Tabla paginada con filtros de nombre, departamento y estado activo |
+| **API frontend** | `frontend/src/api/employees.js → getEmployees(params)` | Axios GET `/api/employees/` |
 
-### 2.2 Casos de uso del sistema
+### Estado devuelto
 
-**CU-01 — Autenticarse**
-- Actor: Director, Responsable
-- Entrada: credenciales de usuario (login y contraseña del ERP)
-- Salida: sesión activa con rol y ámbito organizativo embebidos; perfil del usuario. El sistema calcula en este momento la lista de empleados, departamentos y proyectos accesibles para el Responsable, y la conserva durante toda la sesión.
+```json
+{
+  "items": [{ "id": 1, "name": "...", "department_name": "...",
+              "job_title": "...", "work_email": "...",
+              "hourly_cost": 35.0, "active": true }],
+  "total": 48,
+  "page": 1,
+  "page_size": 25,
+  "total_pages": 2
+}
+```
 
-**CU-02 — Listar empleados**
-- Actor: Director, Responsable
-- Entrada: filtros opcionales (departamento, búsqueda por nombre, estado activo/inactivo, ordenación, paginación)
-- Salida: lista paginada de empleados con nombre, cargo, departamento, correo y coste por hora. El sistema aplica automáticamente el filtro de ámbito del Responsable antes de devolver los resultados.
+---
 
-**CU-03 — Ver resumen de empleado**
-- Actor: Director, Responsable
-- Entrada: identificador del empleado
-- Salida: ficha del empleado más indicadores de carga de trabajo (porcentaje de ocupación, horas pendientes), trabajo en curso (tareas en paralelo), productividad de los últimos 30 días y contadores de tareas por estado. Antes de calcular, el sistema verifica que el empleado pertenece al ámbito del actor.
+## CU-03 — Ver resumen de empleado
 
-**CU-04 — Listar departamentos**
-- Actor: Director, Responsable
-- Entrada: filtros opcionales de búsqueda y ordenación
-- Salida: lista de departamentos activos con nombre, responsable y jerarquía, filtrada por ámbito si el actor es Responsable.
+### Participantes del modelo
 
-**CU-05 — Ver detalle de departamento**
-- Actor: Director, Responsable
-- Entrada: identificador del departamento
-- Salida: ficha del departamento junto con la carga de trabajo del equipo (porcentaje por empleado, sobrecargados, subcargados, sin tareas) y listado de empleados.
+| Estereotipo RUP | Artefacto real | Responsabilidad |
+|---|---|---|
+| **Modelo** | `Employee`, `Task`, `TaskStage`, `Timesheet`, `TaskAssignment`, `ResUsers` | Datos del empleado y sus tareas |
+| **Esquema de salida** | `EmployeeSummaryResponse`, `WorkloadResponse`, `WIPResponse`, `ProductivityResponse`, `EmployeeQuickStats` | Contrato JSON compuesto del resumen |
+| **Repositorio** | `employee.py → get_employee_by_id()` | Ficha básica |
+| **Repositorio** | `metrics/workload.py → get_assigned_open_tasks(), get_assigned_closed_tasks(), get_pending_hours_per_employee()` | Datos de carga de trabajo |
+| **Repositorio** | `metrics/wip.py → count_open_assigned_tasks()` | WIP del empleado |
+| **Repositorio** | `metrics/productivity.py → get_completed_tasks_with_hours()` | Productividad 30 d |
+| **Repositorio** | `timesheet.py → worked_hours_subq()` | Subquery reutilizable de horas trabajadas |
+| **Servicio** | `WorkloadService.calculate()` | Calcula % de carga, estado y listas de tareas |
+| **Servicio** | `WIPService.calculate()` | Cuenta tareas abiertas en paralelo |
+| **Servicio** | `ProductivityService.calculate()` | Calcula productividad media últimos 30 d |
+| **Servicio** | `DashboardService.get_employee_summary()` | **Orquesta** los tres servicios anteriores |
+| **Controlador** | `employee.router → GET /employees/{id}` | Devuelve ficha básica; verifica ámbito |
+| **Controlador** | `dashboards.router → GET /dashboards/summary/employee/{id}` | Devuelve el resumen compuesto |
+| **Vista** | `EmployeeDetail.jsx` | Cabecera, KPIs, tabla de tareas con tabs |
+| **API frontend** | `getEmployee(id)`, `getEmployeeSummary(id)`, `getTasks({employee_id, status})` | Tres llamadas paralelas/secuenciales |
 
-**CU-06 — Listar proyectos**
-- Actor: Director, Responsable
-- Entrada: ninguna
-- Salida: lista de proyectos activos con nombre, cliente y código. El Responsable solo ve los proyectos que gestiona.
+### Estado devuelto
 
-**CU-07 — Ver detalle de proyecto**
-- Actor: Director, Responsable
-- Entrada: identificador del proyecto
-- Salida: ficha del proyecto con métricas de eficiencia, riesgo y rentabilidad por horas, listado de tareas y equipo asignado. El sistema compone estas métricas invocando los servicios de cálculo correspondientes.
+`GET /employees/{id}` → `EmployeeDetail`
 
-**CU-08 — Listar tareas**
-- Actor: Director, Responsable
-- Entrada: filtros combinables (estado, etapa, proyecto, departamento, fechas, empleado, responsable, solo tareas raíz, paginación, ordenación)
-- Salida: lista paginada de tareas con nombre, etapa, horas estimadas, fecha límite y estado. Las tareas filtradas por empleado incluyen horas trabajadas, pendientes y productividad, adaptadas al modo (pendiente, completada o asignada).
+`GET /dashboards/summary/employee/{id}` →
+```json
+{
+  "employee_id": 5,
+  "workload": { "workload_percentage": 87.5, "pending_hours": 35.0,
+                "available_hours": 40, "status": "normal",
+                "total_pending_tasks": 7, "total_completed_tasks": 12,
+                "pending_tasks": [...], "completed_tasks": [...] },
+  "wip": { "wip_count": 3, "status": "optimo", "recommendation": "..." },
+  "productivity_last_30_days": { "average_productivity": 94.2, "total_tasks": 12, "tasks": [...] },
+  "quick_stats": { "workload_status": "normal", "pending_hours": 35.0,
+                   "pending_tasks": 7, "completed_last_30_days": 12,
+                   "wip_count": 3, "avg_productivity": 94.2 }
+}
+```
 
-**CU-09 — Ver detalle de tarea**
-- Actor: Director, Responsable
-- Entrada: identificador de la tarea
-- Salida: toda la información de la tarea (fechas, horas, etapa, responsable, empleados asignados, subtareas, progreso de horas y productividad).
+---
 
-**CU-10 — Mostrar catálogo de métricas**
-- Actor: Director, Responsable
-- Entrada: ninguna
-- Salida: cuadrícula de las métricas operativas disponibles (CU-22 a CU-32), agrupadas por categoría (empleado, proyecto y generales). Al seleccionar una métrica, el sistema invoca el caso de uso correspondiente del paquete P10 vía `<<extend>>` y muestra el panel de parámetros y resultado.
+## CU-04 — Listar departamentos
 
-**CU-11 — Consultar gráficos analíticos**
-- Actor: Director, Responsable
-- Entrada: rango de fechas, agrupación temporal (semanal o mensual), filtros de entidad (empleado, departamento o proyecto)
-- Salida: gráficos de evolución temporal (tareas abiertas, cerradas y vencidas), distribución de tareas por estado y, solo para el Director, distribución de horas por cliente.
+### Participantes del modelo
 
-**CU-12 — Comparar asistencia vs partes**
-- Actor: Director, Responsable (solo modo equipo global)
-- Entrada: rango de fechas, filtros opcionales (departamento, empleado o responsable)
-- Salida: horas fichadas frente a horas imputadas por empleado, diferencia, porcentaje de cobertura y estado (correcto, revisar o alerta). Al seleccionar un empleado concreto, el sistema muestra la serie diaria correspondiente.
+| Estereotipo RUP | Artefacto real | Responsabilidad |
+|---|---|---|
+| **Modelo** | `app/models/department.py → Department` | Mapea `hr_department`; incluye auto-referencia `parent` y relación `manager` |
+| **Modelo** | `app/models/employee.py → Employee` | JOIN para obtener el nombre del manager |
+| **Esquema de salida** | `app/schemas/department.py → DepartmentDetail` | Contrato JSON del departamento |
+| **Esquema de salida** | `PaginatedResponse[DepartmentDetail]` | Lista paginada |
+| **Repositorio** | `app/repositories/department.py → get_filtered_departments_query()` | Query filtrada por búsqueda y ámbito |
+| **Servicio** | `app/services/department_service.py → DepartmentService.list_departments()` | Aplica filtro de ámbito (`cu.department_ids`), delega al repo, pagina, serializa con `_to_detail()` |
+| **Controlador** | `app/routes/department.py → GET /departments/` | Valida params, guard `require_manager_or_above` |
+| **Vista** | `frontend/src/pages/Departments.jsx` | Grid de cards, cada una navega al detalle |
+| **API frontend** | `frontend/src/api/departments.js → getDepartments()` | Axios GET `/api/departments/` |
 
-**CU-13 — Consultar rentabilidad financiera ★**
-- Actor: Director (exclusivo)
-- Entrada: rango de fechas y modo de análisis (global, por proyecto o por responsable)
-- Salida: ingresos totales, gastos totales, resultado neto, rentabilidad en porcentaje, estado por proyecto y descomposición por cliente o responsable cuando aplica. El sistema rechaza el acceso al resto de roles antes de calcular.
+### Estado devuelto
 
-**CU-14 — Consultar líneas analíticas ★**
-- Actor: Director (exclusivo)
-- Entrada: ámbito (proyecto o cliente), identificador del objetivo y rango de fechas
-- Salida: desglose de líneas analíticas en ingresos y gastos. Caso de uso único que unifica el desglose por proyecto (líneas de un proyecto concreto) y por cliente (líneas agregadas de todos los proyectos del cliente), invocable exclusivamente vía `<<extend>>` desde CU-13.
+```json
+{
+  "items": [
+    { "id": 3, "name": "Desarrollo", "complete_name": "Netkia / Desarrollo",
+      "manager_id": 7, "manager_name": "Ana García", "parent_id": 1 }
+  ],
+  "total": 6,
+  "page": 1,
+  "page_size": 50,
+  "total_pages": 1
+}
+```
 
-**CU-15 — Buscar globalmente**
-- Actor: Director, Responsable
-- Entrada: término de búsqueda (mínimo 2 caracteres), tipo de entidad (todos, tareas, proyectos o empleados), límite
-- Salida: coincidencias de tareas, proyectos y empleados con nombre, código y metadatos, filtradas por el ámbito del actor.
+---
 
-**CU-16 — Cerrar sesión**
-- Actor: Director, Responsable
-- Entrada: ninguna
-- Salida: sesión invalidada. El frontend borra la sesión localmente y redirige al login.
+## CU-08 — Listar tareas
 
-**CU-17 — Guardar snapshot**
-- Actor: Director, Responsable
-- Entrada: tipo de captura (métrica, gráfico o entidad), parámetros actuales de la vista calculada y datos ya calculados en pantalla
-- Salida: identificador de la captura persistida e indicador de si se ha creado o actualizado. Si ya existe una captura para el mismo tipo, parámetros y día, se actualiza en lugar de crearse una nueva (semántica de actualización diaria). El sistema registra al actor responsable junto con la fecha de creación o actualización.
+### Participantes del modelo
 
-**CU-18 — Listar snapshots**
-- Actor: Director, Responsable
-- Entrada: colección (métricas, gráficos o entidades), filtros opcionales por tipo y rango de fechas, parámetros de paginación
-- Salida: tabla paginada con tipo, fecha, parámetros resumidos, última actualización y actor responsable.
+| Estereotipo RUP | Artefacto real | Responsabilidad |
+|---|---|---|
+| **Modelo** | `Task`, `TaskStage`, `Project`, `Employee`, `TaskAssignment` | Tareas y sus relaciones |
+| **Modelo** | `Timesheet` (vía subquery) | Horas reales por tarea |
+| **Esquema de salida** | `TaskResponse`, `PendingTaskItem`, `CompletedTaskItem`, `AssignedTaskItem` | Cuatro variantes según el modo de filtrado |
+| **Esquema de salida** | `PaginatedResponse` | Envoltorio de paginación |
+| **Repositorio** | `app/repositories/task.py → build_filtered_query()` | Query central con 10+ filtros combinables; maneja `root_only`, `status`, `employee_id`, `department_id`, fechas y búsqueda |
+| **Repositorio** | `app/repositories/timesheet.py → get_worked_hours_batch(task_ids)` | Obtiene horas en un solo query para toda la página |
+| **Repositorio** | `app/repositories/task.py → open_stage_ids_subq() / closed_stage_ids_subq()` | Subqueries reutilizables para filtrar por estado de etapa |
+| **Servicio** | `app/services/task_service.py → TaskService.filter_tasks()` | Aplica restricciones de ámbito, selecciona el serializador correcto (`_to_pending`, `_to_completed`, `_to_assigned`) según el modo |
+| **Controlador** | `app/routes/task.py → GET /tasks/filter` | Valida todos los query-params; guard `require_manager_or_above` |
+| **Vista** | `frontend/src/pages/Tasks.jsx` | Tabla paginada con múltiples filtros (estado, etapa, proyecto, fechas, empleado, root_only) |
+| **API frontend** | `frontend/src/api/tasks.js → getTasks(params)` | Axios GET `/api/tasks/filter` |
 
-**CU-19 — Consultar detalle de snapshot**
-- Actor: Director, Responsable
-- Entrada: identificador de la captura y tipo de colección
-- Salida: ficha completa con metadatos (fecha, autor de creación y última actualización), parámetros usados y la vista reconstruida por el renderizador correspondiente al subtipo de la captura.
+### Estado devuelto (modo general, sin employee_id)
 
-**CU-20 — Eliminar snapshot ★**
-- Actor: Director (exclusivo)
-- Entrada: identificador de la captura y tipo de colección
-- Salida: confirmación de eliminación permanente del documento.
+```json
+{
+  "items": [
+    { "id": 42, "name": "Diseñar API REST", "project_id": 3,
+      "parent_id": null, "planned_hours": 16.0, "effective_hours": 14.5,
+      "date_deadline": "2025-06-30", "is_closed": false,
+      "stage_name": "En progreso", "subtasks": [] }
+  ],
+  "total": 130,
+  "page": 1,
+  "page_size": 25,
+  "total_pages": 6
+}
+```
 
-**CU-21 — Consultar distribución de carga del equipo**
-- Actor: Director, Responsable
-- Entrada: filtros opcionales (departamento, estado de carga, página, ordenación)
-- Salida: cinco contadores de estado clicables (total, sobrecargado, normal, subcargado, sin tareas), ranking de los cinco empleados más cargados, gráfico de barras de distribución por estado y, al seleccionar un estado, listado paginado de empleados en ese estado con su porcentaje de carga, horas pendientes y número de tareas pendientes. El ámbito del JWT determina qué empleados son visibles: el Responsable ve únicamente los empleados de su equipo; el Director ve todos. El cálculo delega en `GET /dashboards/summary/manager` con paginación server-side.
+### Modo con `employee_id + status=pending` → `PendingTaskItem`
 
-**P10 — Métricas Operativas (CU-22 a CU-32)**
+```json
+{ "id": 42, "name": "...", "stage_name": "En progreso",
+  "planned_hours": 16.0, "worked_hours": 14.5,
+  "pending_hours": 1.5, "date_deadline": "2025-06-30",
+  "is_overdue": false }
+```
 
-Los once casos de uso del paquete P10 son accesibles exclusivamente desde el catálogo de métricas (CU-10) vía `<<extend>>`. Todos comparten los mismos actores (Director y Responsable), la misma precondición esencial (sesión activa y parámetros dentro del ámbito) y la misma postcondición (el actor ha consultado el valor calculado de una métrica). Lo que distingue a cada uno es el objeto sobre el que opera, los parámetros de entrada, la fórmula de cálculo y los umbrales de interpretación. El detalle completo de cada caso de uso se recoge en [Casos de Uso de Métricas Operativas](./docs/CasosDeUsoMetricas.md).
+---
 
-| CU | Nombre | Objeto principal | Parámetros de entrada |
-|---|---|---|---|
-| CU-22 | Consultar productividad | Tareas cerradas | empleado (opt.), proyecto (opt.), rango de fechas |
-| CU-23 | Consultar cumplimiento de plazos | Tareas cerradas con fecha límite | empleado (opt.), proyecto (opt.) |
-| CU-24 | Consultar WIP de empleado | Tareas abiertas asignadas | empleado (obligatorio) |
-| CU-25 | Consultar carga de trabajo de empleado | Tareas abiertas asignadas | empleado (obligatorio) |
-| CU-26 | Consultar riesgo de proyecto | Tareas abiertas con fecha límite | proyecto (obligatorio) |
-| CU-27 | Consultar tasa de retrabajo | Historial de cambios de etapa | proyecto (opt.), empleado (opt.) |
-| CU-28 | Consultar exactitud de estimación | Tareas cerradas con horas | empleado como responsable (obligatorio) |
-| CU-29 | Consultar lead time | Tareas cerradas con fecha de asignación | empleado (opt.), proyecto (opt.) |
-| CU-30 | Consultar tiempo por estado | Historial de cambios de etapa | proyecto (opt.), empleado (opt.) |
-| CU-31 | Consultar tareas canceladas | Tareas en etapa de cancelación | proyecto (opt.), rango de fechas |
-| CU-32 | Consultar tiempo invertido por prioridad | Tareas cerradas con horas | empleado (opt.), proyecto (opt.) |
+## CU-13 — Consultar rentabilidad financiera ★ (Director exclusivo)
 
-> **Nota sobre consolidaciones.** CU-10 actúa exclusivamente como catálogo y punto de entrada; no contiene lógica de cálculo. Cada métrica concreta es un caso de uso independiente del paquete P10 (CU-22 a CU-32) que extiende CU-10 cuando el actor selecciona esa métrica. El panel de supervisión de equipo se modela como CU-21, con su propia página (`/manager`) y su propio endpoint (`/dashboards/summary/manager`), porque su función es distinta: ofrece una vista agregada y navegable del estado del equipo, con acceso directo a los perfiles de empleado. El cálculo de carga subyacente es el mismo que CU-25 (Consultar Carga de Trabajo de Empleado), pero aplicado sobre todos los empleados del ámbito simultáneamente. CU-14 unifica la consulta de líneas de proyecto y líneas de cliente; y CU-17 unifica la semántica de actualización y creación mediante un máximo de 1 snapshot diaria.
+### Participantes del modelo
+
+| Estereotipo RUP | Artefacto real | Responsabilidad |
+|---|---|---|
+| **Modelo** | `app/models/timesheet.py → Timesheet` | `account_analytic_line`; contiene `amount` (importe, positivo=ingreso, negativo=gasto) y `unit_amount` (horas) |
+| **Modelo** | `app/models/project.py → Project` | Metadatos del proyecto (nombre JSONB, cliente) |
+| **Modelo** | `app/models/employee.py → Employee` | Nombre del responsable |
+| **Modelo** | `app/models/partner.py → Partner` | Nombre del cliente |
+| **Repositorio** | `app/repositories/metrics/rentability.py` | `get_profitability_by_project()`, `get_global_totals()`, `get_project_meta()`, `get_manager_name()`, `get_all_managers()`, `get_account_analytic_lines()`, `get_client_analytic_lines()` |
+| **Servicio** | `app/services/metrics/rentability_service.py → RentabilityService` | `get_summary()`, `get_per_project()`, `get_per_client()`, `get_by_manager()`, `get_project_lines()`, `get_client_lines()` |
+| **Controlador** | `app/routes/metrics.py` (endpoints `/metrics/profitability/*`) | Todos con guard **`require_director`** — 403 para cualquier otro rol |
+| **Vista** | `frontend/src/pages/Rentability.jsx` | Panel multi-modo (global, por proyecto, por responsable); gráficos de barras, pie de estados, tabla de proyectos/clientes, panel de líneas analíticas |
+| **API frontend** | `api/metrics.js`: `getProfitabilitySummary`, `getProfitabilityPerProject`, `getProfitabilityPerClient`, `getProfitabilityByManager`, `getProjectAnalyticLines`, `getClientAnalyticLines` | Seis funciones Axios para los seis sub-modos |
+
+### Estado devuelto por sub-modo
+
+**`GET /metrics/profitability/summary`**
+```json
+{ "income": 125000.0, "expense": -98000.0, "net": 27000.0,
+  "total_hours": 3200.0, "profitability_pct": 21.6, "status": "ganancia",
+  "projects_summary": { "ganancia": 8, "neutro": 2, "perdida": 1, "total": 11 } }
+```
+
+**`GET /metrics/profitability/per-project`** → lista de proyectos con
+`income`, `expense`, `net`, `profitability_pct`, `status`, `client_name`.
+
+**`GET /metrics/profitability/per-project/{id}/lines`** →
+```json
+{ "incomes": [{ "id":1, "date":"2025-03-01", "name":"Consultoría", "amount":5000.0, "hours":40.0 }],
+  "expenses": [{ "id":2, "date":"2025-03-05", "name":"Coste empleado", "amount":-3200.0, "hours":80.0 }] }
+```
+
+---
+
+## CU-17 — Guardar snapshot
+
+### Participantes del modelo
+
+| Estereotipo RUP | Artefacto real | Responsabilidad |
+|---|---|---|
+| **Modelo (documental)** | Colecciones MongoDB: `metric_snapshots`, `chart_snapshots`, `entity_snapshots` | Documentos con índices únicos sobre `(metric_name, params_hash, snapshot_date)` etc. |
+| **Esquema de entrada** | `MetricSnapshotCreate`, `ChartSnapshotCreate`, `EntitySnapshotCreate` (Pydantic) | Validan `metric_name/chart_name/entity_type`, `params`, `data` |
+| **Esquema de salida** | `UpsertResult` | `{ id, created: bool, snapshot_date }` |
+| **Repositorio** | `app/repositories/snapshot.py → upsert_metric_snapshot() / upsert_chart_snapshot() / upsert_entity_snapshot()` | Calcula `params_hash = SHA-256[:16](json.dumps(params))`, fecha (`_today()`), construye el `match` único y ejecuta `update_one(match, $set+$setOnInsert, upsert=True)` |
+| **Servicio** | `app/services/snapshot.py → SnapshotService.save_metric/chart/entity()` | Construye el objeto `actor` desde `CurrentUser`; delega al repo |
+| **Controlador** | `app/routes/snapshots.py` → POST /snapshots/metrics|charts|entities` | Guard `require_manager_or_above`; deserializa body; llama al servicio |
+| **Componente UI** | `frontend/src/components/ui/SaveSnapshotButton.jsx` | Botón integrado en cualquier página calculada; gestiona estados `idle → saving → saved/updated/error` |
+| **API frontend** | `frontend/src/api/snapshots.js → saveMetricSnapshot/saveChartSnapshot/saveEntitySnapshot` | Axios POST a cada colección |
+
+### Estado devuelto
+
+```json
+{ "id": "6845a3f2e1b09c4d78a12345", "created": true, "snapshot_date": "2025-05-12" }
+```
+Si ya existe una snapshot para ese mismo día y parámetros: `"created": false` (actualización).
+
+
+---
+
+## CU-19 — Consultar detalle de snapshot
+
+### Participantes del modelo
+
+| Estereotipo RUP | Artefacto real | Responsabilidad |
+|---|---|---|
+| **Modelo (documental)** | Colección MongoDB correspondiente al tipo (`metric_snapshots`, `chart_snapshots` o `entity_snapshots`) | Documento único recuperado por `_id` (ObjectId) |
+| **Esquema de salida** | `MetricSnapshotOut`, `ChartSnapshotOut`, `EntitySnapshotOut` (Pydantic) | Contratos de respuesta con campos `id`, `*_name`, `params`, `data`, `created_at/by`, `updated_at/by` |
+| **Repositorio** | `app/repositories/snapshot.py → get_metric_snapshot(id) / get_chart_snapshot(id) / get_entity_snapshot(id)` | `coll.find_one({"_id": _oid(id_str)})` → `_serialize()` convierte `_id → id` (string) |
+| **Servicio** | `app/services/snapshot.py → SnapshotService.get_metric/chart/entity(id)` | Llama al repo; si `None` lanza `HTTPException(404)` |
+| **Controlador** | `app/routes/snapshots.py → GET /snapshots/metrics/{id} | charts/{id} | entities/{id}` | Guard `require_manager_or_above` |
+| **Vista** | `frontend2/src/pages/SnapshotDetail.jsx` | Cabecera, sidebar de metadatos, renderizador visual específico por subtipo, toggle JSON crudo |
+| **Renderizadores** | Componentes internos de `SnapshotDetail.jsx`: `MetricVisualizer`, `ChartVisualizer`, `EntityVisualizer` | Interpretan `snap.data` y renderizan gráficos Recharts, fichas de entidad, barras de progreso |
+| **API frontend (visor)** | `frontend2/src/api/snapshots.js → getMetric(id) / getChart(id) / getEntity(id)` | Axios GET al endpoint correspondiente |
+
+### Estado devuelto (ejemplo: métrica de productividad)
+
+```json
+{
+  "id": "6845a3f2e1b09c4d78a12345",
+  "metric_name": "productivity",
+  "params": { "employee_id": 5 },
+  "params_hash": "a3f7b2c1",
+  "snapshot_date": "2025-05-12",
+  "data": {
+    "average_productivity": 94.2,
+    "total_tasks": 12,
+    "tasks": [{ "task_id": 42, "task_name": "...", "planned_hours": 16.0,
+                "actual_hours": 14.5, "productivity_pct": 110.3 }]
+  },
+  "created_at": "2025-05-12T10:23:11+02:00",
+  "created_by": { "user_id": 3, "employee_id": 5, "employee_name": "Ana García", "role": "director" },
+  "updated_at": "2025-05-12T10:23:11+02:00",
+  "updated_by": { "user_id": 3, "employee_id": 5, "employee_name": "Ana García", "role": "director" }
+}
+```
+
+---
+
+## Tabla resumen de trazabilidad
+
+| CU | Vista React | API Frontend | Controlador FastAPI | Servicio | Repositorio principal | Modelos SQL | Colección MongoDB | Guard |
+|----|------------|-------------|--------------------|---------|-----------------------|-------------|------------------|----|
+| **CU-02** | `Employees.jsx` | `employees.js → getEmployees` | `employee.router GET /employees/` | `EmployeeService.list_employees` | `employee.py → get_filtered_employees_query` | `Employee`, `Department` | — | `require_manager_or_above` |
+| **CU-03** | `EmployeeDetail.jsx` | `getEmployee` + `getEmployeeSummary` + `getTasks` | `employee.router` + `dashboards.router` | `EmployeeService` + `DashboardService` (orquesta `WorkloadService`, `WIPService`, `ProductivityService`) | `employee`, `workload`, `wip`, `productivity` repos | `Employee`, `Task`, `Timesheet`, `TaskAssignment`, `TaskStage` | — | `require_manager_or_above` |
+| **CU-04** | `Departments.jsx` | `departments.js → getDepartments` | `department.router GET /departments/` | `DepartmentService.list_departments` | `department.py → get_filtered_departments_query` | `Department`, `Employee` | — | `require_manager_or_above` |
+| **CU-08** | `Tasks.jsx` | `tasks.js → getTasks` | `task.router GET /tasks/filter` | `TaskService.filter_tasks` | `task.py → build_filtered_query` + `timesheet.py → get_worked_hours_batch` | `Task`, `TaskStage`, `Project`, `Employee`, `TaskAssignment`, `Timesheet` | — | `require_manager_or_above` |
+| **CU-13** | `Rentability.jsx` | `metrics.js → getProfitability*` | `metrics.router GET /metrics/profitability/*` | `RentabilityService` | `rentability.py → get_profitability_by_project / get_global_totals / ...` | `Timesheet`, `Project`, `Employee`, `Partner` | — | **`require_director`** |
+| **CU-17** | `SaveSnapshotButton.jsx` (componente) | `snapshots.js → saveMetric/Chart/EntitySnapshot` | `snapshots.router POST /snapshots/{colección}` | `SnapshotService.save_metric/chart/entity` | `snapshot.py → upsert_*_snapshot` | — | `metric_snapshots` / `chart_snapshots` / `entity_snapshots` | `require_manager_or_above` |
+| **CU-19** | `SnapshotDetail.jsx` (frontend2) | `snapshots.js → getMetric/Chart/Entity` | `snapshots.router GET /snapshots/{colección}/{id}` | `SnapshotService.get_metric/chart/entity` | `snapshot.py → get_*_snapshot` | — | (colección según tipo) | `require_manager_or_above` |
 
 ---
 
