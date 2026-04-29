@@ -4,55 +4,35 @@ top to bottom direction
 skinparam packageStyle rectangle
 hide empty members
 
-package "Interfaces" {
+package "Controladores / Flujos" {
 
-  class CorreoExchangeOnline {
-    + asunto: String
-    + remitente: String
-    + cuerpo: String
-    + fechaRecepcion: DateTime
-  }
-
-  class FormularioMicrosoftForms {
-    + idFormulario: String
-    + respuestas: String
-    + fechaEnvio: DateTime
-  }
-
-  class SolicitudesViewPowerBI {
-    + mostrarSolicitudes(): List<Solicitud>
-    + mostrarFormularios(): List<Formulario>
-    + mostrarHistoricoCorreos(): List<CorreoRecibido>
-    + filtrarDatos(): void
-  }
-}
-
-package "Controladores" {
-
-  class RecibirSolicitudController {
-    + recibirCorreo(correo: CorreoExchangeOnline): void
-    + evaluarAsunto(asunto: String): String
-    + analizarPeticion(correo: CorreoExchangeOnline): String
+  class RecibirSolicitudFlow {
+    + procesarCorreo(correo: CorreoRecibido): void
+    + clasificarAsunto(asunto: String): String
+    + analizarIntencion(cuerpo: String): String
+    + extraerNumero(cuerpo: String): String
+    + consultarDatosSolicitud(numero: String): Solicitud
+    + generarRespuesta(solicitud: Solicitud, intencion: String): String
     + registrarCorreo(correo: CorreoRecibido): void
-    + consultarInformacion(numero: String): String
-    + generarRespuesta(datos: String): String
-    + generarRespuestaPlantilla(intencion: String): String
-    + enviarRespuesta(respuesta: String): void
     + registrarSolicitud(solicitud: Solicitud): void
   }
 
-  class RecibirFormularioController {
-    + recibirFormulario(formulario: FormularioMicrosoftForms): void
-    + evaluarDocumentacion(formulario: Formulario): Boolean
-    + enviarInstruccionesDocumentacion(): void
+  class RecibirFormularioFlow {
+    + procesarFormulario(formulario: Formulario): void
+    + validarDocumentacion(formulario: Formulario): Boolean
     + registrarFormulario(formulario: Formulario): void
+    + actualizarEstadoSolicitud(solicitud: Solicitud): void
+    + enviarInstruccionesDocumentacion(formulario: Formulario): void
   }
 }
 
-package "Modelos" {
+package "Entidades del dominio" {
 
   class CorreoRecibido {
     + idCorreo: int
+    + asunto: String
+    + remitente: String
+    + cuerpo: String
     + fechaRecepcion: DateTime
     + intencion: String
   }
@@ -63,67 +43,77 @@ package "Modelos" {
     + tecnico: String
     + eecc: String
     + totalConsultas: int
+    + estado: String
   }
 
   class Formulario {
-    + id: int
-    + idFormulario: int
-    + idSolicitud: int
-    + estado: boolean
+    + idFormulario: String
+    + idSolicitud: String
     + fechaEnvio: DateTime
     + fechaResolucion: DateTime
     + respuestas: String
     + documentacionMarcada: Boolean
+    + estado: Boolean
   }
 }
 
-package "Servicios Externos" {
+package "Acceso a datos" {
 
-  class ExchangeOnlineService {
-    + detectarNuevoCorreo(): CorreoExchangeOnline
+  class DatasetConsultaPowerBI <<dataset>> {
+    + consultarObra(numero: String): Solicitud
+    + consultarTecnico(numero: String): String
+    + consultarEECC(numero: String): String
+  }
+
+  class DatasetRegistroPowerBI <<dataset>> {
+    + guardarCorreo(correo: CorreoRecibido): void
+    + guardarSolicitud(solicitud: Solicitud): void
+    + guardarFormulario(formulario: Formulario): void
+    + actualizarSolicitud(solicitud: Solicitud): void
+  }
+}
+
+package "Interfaces externas" {
+
+  class ExchangeOnline <<external>> {
+    + recibirCorreo(): CorreoRecibido
     + enviarCorreo(destinatario: String, asunto: String, cuerpo: String): void
     + moverCorreo(carpeta: String): void
   }
 
-  class MicrosoftFormsService {
-    + detectarFormularioCompletado(): FormularioMicrosoftForms
-    + obtenerRespuestas(idFormulario: String): FormularioMicrosoftForms
+  class MicrosoftForms <<external>> {
+    + recibirFormulario(): Formulario
+    + obtenerRespuestas(idFormulario: String): Formulario
   }
 
-  class BaseDatos {
-    + consultarDatos(numero: String): String
-  }
-
-  class RepositorioDatos {
-    + guardarCorreo(correo: CorreoRecibido): void
-    + guardarSolicitud(solicitud: Solicitud): void
-    + guardarFormulario(formulario: Formulario): void
-    + obtenerCorreos(): List<CorreoRecibido>
-    + obtenerSolicitudes(): List<Solicitud>
-    + obtenerFormularios(): List<Formulario>
+  class InformePowerBI <<vista>> {
+    + mostrarSolicitudes(): List<Solicitud>
+    + mostrarFormularios(): List<Formulario>
+    + mostrarHistoricoCorreos(): List<CorreoRecibido>
+    + filtrarDatos(): void
   }
 }
 
-CorreoExchangeOnline --> RecibirSolicitudController
-FormularioMicrosoftForms --> RecibirFormularioController
+RecibirSolicitudFlow --> ExchangeOnline
+RecibirSolicitudFlow --> DatasetConsultaPowerBI
+RecibirSolicitudFlow --> DatasetRegistroPowerBI
+RecibirSolicitudFlow --> CorreoRecibido
+RecibirSolicitudFlow --> Solicitud
 
-RecibirSolicitudController --> CorreoRecibido
-RecibirSolicitudController --> Solicitud
-RecibirFormularioController --> Formulario
+RecibirFormularioFlow --> MicrosoftForms
+RecibirFormularioFlow --> ExchangeOnline
+RecibirFormularioFlow --> DatasetRegistroPowerBI
+RecibirFormularioFlow --> Formulario
+RecibirFormularioFlow --> Solicitud
 
-RecibirSolicitudController --> ExchangeOnlineService
-RecibirSolicitudController --> BaseDatos
-RecibirSolicitudController --> RepositorioDatos
+DatasetRegistroPowerBI --> CorreoRecibido
+DatasetRegistroPowerBI --> Solicitud
+DatasetRegistroPowerBI --> Formulario
 
-RecibirFormularioController --> MicrosoftFormsService
-RecibirFormularioController --> ExchangeOnlineService
-RecibirFormularioController --> RepositorioDatos
+DatasetConsultaPowerBI --> Solicitud
 
 Solicitud "1" -- "0..*" Formulario
 
-SolicitudesViewPowerBI --> RepositorioDatos
-SolicitudesViewPowerBI --> Solicitud
-SolicitudesViewPowerBI --> Formulario
-SolicitudesViewPowerBI --> CorreoRecibido
+InformePowerBI --> DatasetRegistroPowerBI
 
 @enduml
