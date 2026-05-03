@@ -121,6 +121,60 @@ Por último, las **interfaces externas** incluyen los sistemas con los que la so
 
 ### Modelo de Datos
 
+| Diagrama | Código Fuente |
+|----------|---------------|
+|![ModeloDaos](./ModeloDatos/ModeloDatos.png)|[Ver Código](./ModeloDatos/ModeloDatos.puml)
+
+El modelo de datos del sistema está implementado en Power BI mediante un modelo tabular, el cual permite almacenar, estructurar y analizar la información procesada por los flujos automatizados. Aunque Power BI se utiliza habitualmente como herramienta de visualización, en este caso también actúa como repositorio de datos.
+
+El modelo se compone de tres tablas principales:
+
+#### Tabla `Numero`
+Esta tabla representa la entidad principal del sistema, donde se almacena la información asociada a cada solicitud. Cada registro está identificado de manera única mediante el atributo `numero`, que actúa como clave primaria.
+
+Incluye atributos como:
+- Tipo de solicitud
+- Provincia
+- Técnico responsable
+- Empresa colaboradora (EECC)
+- Número total de consultas
+
+#### Tabla `Formulario`
+Esta tabla contiene los formularios asociados a cada solicitud. Recoge información detallada sobre cada interacción, incluyendo:
+- Tipo de formulario
+- Estado
+- Fechas de entrada y resolución
+- Tipo de peticionario
+- Motivos de reclamación o desacuerdo
+- Información adicional proporcionada
+
+El atributo `numero` actúa como clave foránea, permitiendo relacionar cada formulario con su solicitud correspondiente.
+
+#### Tabla `TotalEmail`
+Esta tabla almacena un histórico de los correos electrónicos que llegan al sistema. Para cada correo se registra:
+- La intención detectada
+- La fecha de entrada
+
+Su finalidad es permitir el análisis del volumen y tipo de correos recibidos.
+
+#### Relaciones
+
+La única relación existente en el modelo se establece entre las tablas `Numero` y `Formulario`.
+
+- Tipo de relación: **uno a cero o muchos (1:0..N)**
+- Interpretación:
+  - Una solicitud puede no tener formularios asociados o tener varios.
+  - Cada formulario pertenece a una única solicitud.
+
+La tabla `TotalEmail` no presenta relaciones con el resto del modelo, ya que su función es servir como histórico independiente de la actividad del buzón.
+
+El modelo presenta una estructura sencilla pero adecuada para los objetivos del sistema. Permite:
+- Asociar múltiples formularios a una misma solicitud
+- Realizar análisis históricos
+- Explotar la información mediante medidas y visualizaciones en Power BI
+
+Además, la separación de la tabla `TotalEmail` permite analizar de forma independiente el comportamiento de los correos entrantes sin afectar al resto del modelo.
+
 
 ### Diagramas de Secuencia por Caso de Uso 
 
@@ -164,3 +218,4 @@ El repositorio devuelve los datos correspondientes a las distintas entidades del
 Finalmente, la vista presenta la información al técnico de forma estructurada, permitiendo su consulta y análisis. Este proceso se realiza sin intervención de una capa de control intermedia, ya que Power BI accede directamente a los datos almacenados.
 
 De este modo, el diagrama refleja un flujo simple centrado en la recuperación y visualización de la información, diferenciándose de los otros casos de uso por la ausencia de procesamiento complejo y por su carácter exclusivamente consultivo.
+
