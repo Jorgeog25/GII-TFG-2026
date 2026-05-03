@@ -226,75 +226,74 @@ De este modo, el diagrama refleja un flujo simple centrado en la recuperación y
 El flujo se activa mediante un disparador asociado al buzón corporativo. Una vez recibido el correo, se ejecutan distintas fases:
 
 1. Lectura del correo
-   ├─ Obtener asunto
-   ├─ Obtener remitente
-   └─ Obtener cuerpo
+   - Obtener asunto
+   - Obtener remitente
+   - Obtener cuerpo
 
 2. Identificación del tipo de mensaje (según asunto)
-   ├─ Cambio de estado del formulario
-   ├─ Mover a carpeta "Documentación"
-   └─ Análisis del correo por IA
+   - Cambio de estado del formulario
+   - Mover a carpeta "Documentación"
+   - Análisis del correo por IA
 
 3. Extracción de información
-   ├─ Números de solicitud
-   └─ Intención del correo
-      ├─ No requiere consulta
-      │  └─ Respuesta mediante plantilla
-      └─ Requiere consulta
-         └─ Continuar flujo
+   - Números de solicitud
+   - Intención del correo
+     - No requiere consulta
+       - Respuesta mediante plantilla
+     - Requiere consulta
+       - Continuar flujo
 
 4. Iteración por cada número extraído
-   └─ Para cada número:
+   - Para cada número:
 
-      4.1 Consulta en base de datos correspondiente
-          ├─ Actuaciones (ACT)
-          ├─ Wepes (EXP)
-          └─ Petter (PET)
+     4.1 Consulta en base de datos correspondiente
+     - Actuaciones (ACT)
+     - Wepes (EXP)
+     - Petter (PET)
 
-      4.2 Resultado de la consulta
-          ├─ Si existen datos:
-          │  ├─ Procesar los datos obtenidos
-          │  ├─ Añadir información a la variable textoCorreo
-          │  ├─ Guardar la información en la base de datos (Solicitud)
-          │  └─ Continuar con el siguiente número
-          │
-          └─ Si no existen datos:
-             └─ Marcar como no encontrado
+     4.2 Resultado de la consulta
+     - Si existen datos:
+       - Procesar los datos obtenidos
+       - Añadir información a la variable textoCorreo
+       - Guardar la información en la base de datos (Solicitud)
+       - Continuar con el siguiente número
+     - Si no existen datos:
+       - Marcar como no encontrado
 
 5. Gestión de resultados globales
-   ├─ Calcular números encontrados
-   └─ Generar mensaje para no encontrados (si aplica)
+   - Calcular números encontrados
+   - Generar mensaje para no encontrados (si aplica)
 
 6. Gestión de alertas
-   └─ Añadir texto en caso de situaciones de riesgo
+   - Añadir texto en caso de situaciones de riesgo
 
 7. Construcción del correo
-   └─ Formar contenido final (textoCorreo)
+   - Formar contenido final (textoCorreo)
 
 8. Envío del correo
-   └─ Enviar respuesta al remitente
+   - Enviar respuesta al remitente
 
 9. Post-procesado
-   └─ Mover correo a carpeta "Archivo"
+   - Mover correo a carpeta "Archivo"
 
 
 #### Flujo Recibir Formulario
 
 1. Recepción del formulario
-   └─ Entrada de la respuesta del formulario en el sistema
+   - Entrada de la respuesta del formulario en el sistema
 
 2. Validación del contenido
-   └─ Comprobar si se ha marcado la opción "Documentación"
+   - Comprobar si se ha marcado la opción "Documentación"
 
-   ├─ Si SÍ requiere documentación:
-   │  └─ Enviar correo indicando los pasos a seguir para completar la documentación
-   │
-   └─ Si NO requiere documentación:
-      ├─ Registrar el formulario en la base de datos
-      │  ├─ Número de solicitud
-      │  ├─ Tipo de formulario
-      │  ├─ Estado
-      │  └─ Resto de datos asociados
+   - Si SÍ requiere documentación:
+     - Enviar correo indicando los pasos a seguir para completar la documentación
+
+   - Si NO requiere documentación:
+     - Registrar el formulario en la base de datos
+       - Número de solicitud
+       - Tipo de formulario
+       - Estado
+       - Resto de datos asociados
 
 
 #### Vista y Análisis en Power BI
@@ -302,40 +301,40 @@ El flujo se activa mediante un disparador asociado al buzón corporativo. Una ve
 La visualización en Power BI permite analizar la información registrada en el sistema a partir de las tablas Numero y Formulario.
 
 1. Carga de datos
-   ├─ Lectura de las tablas Numero y Formulario
-   ├─ Aplicación de relaciones (1:0..N)
-   └─ Preparación del modelo para análisis
+   - Lectura de las tablas Numero y Formulario
+   - Aplicación de relaciones (1:0..N)
+   - Preparación del modelo para análisis
 
 2. Actualización de datos
-   ├─ Datos actualizados desde los flujos de Power Automate
-   └─ Refresco de las visualizaciones
+   - Datos actualizados desde los flujos de Power Automate
+   - Refresco de las visualizaciones
 
 3. Construcción de la vista
-   ├─ Uso de la tabla Numero como base
-   ├─ Relación con Formulario para detalle
-   └─ Visualización por solicitud
+   - Uso de la tabla Numero como base
+   - Relación con Formulario para detalle
+   - Visualización por solicitud
 
 4. Cálculo de métricas
-   └─ Para cada número:
+   - Para cada número:
 
-      4.1 Formularios pendientes
-          └─ Conteo de formularios con estado "Pendiente"
+     4.1 Formularios pendientes
+     - Conteo de formularios con estado "Pendiente"
 
-      4.2 Formularios resueltos
-          └─ Conteo de formularios con estado "Resuelto"
+     4.2 Formularios resueltos
+     - Conteo de formularios con estado "Resuelto"
 
-      4.3 Reclamaciones por falta de fecha
-          └─ Conteo de formularios con motivo "Falta de previsión"
+     4.3 Reclamaciones por falta de fecha
+     - Conteo de formularios con motivo "Falta de previsión"
 
-      4.4 Reclamaciones por exceso de tiempo
-          └─ Conteo de formularios con motivo "Incumplimiento de tiempo"
+     4.4 Reclamaciones por exceso de tiempo
+     - Conteo de formularios con motivo "Incumplimiento de tiempo"
 
 5. Representación de resultados
-   ├─ Visualización por solicitud
-   ├─ Agregación de métricas
-   └─ Análisis del estado e incidencias
+   - Visualización por solicitud
+   - Agregación de métricas
+   - Análisis del estado e incidencias
 
 6. Uso de la información
-   ├─ Seguimiento de solicitudes
-   ├─ Detección de incidencias
-   └─ Apoyo a la toma de decisiones
+   - Seguimiento de solicitudes
+   - Detección de incidencias
+   - Apoyo a la toma de decisiones
