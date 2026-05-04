@@ -1,9 +1,4 @@
 # Análisis y Diseño 
-
-## Introducción
-
-En este capítulo se aborda el análisis y diseño del sistema a partir de los requisitos y casos de uso definidos previamente. En primer lugar, se realiza el análisis mediante la identificación de las clases y sus relaciones siguiendo el patrón arquitectónico Modelo-Vista-Controlador (MVC), así como la elaboración de diagramas de clases y de colaboración. A continuación, se presenta la transición hacia el diseño, donde se concreta la solución tecnológica adoptada y se detallan las clases con un enfoque implementable. Finalmente, se incluyen los diagramas de clases de diseño y los diagramas de secuencia que describen el comportamiento del sistema de forma más precisa.
-
 ## Análisis
 
 El sistema se basa en un enfoque de automatización orientada a eventos, en el que la mayor parte de los procesos se ejecutan sin intervención directa del usuario. El sistema gestiona solicitudes recibidas a través del correo electrónico, permite su ampliación mediante formularios y ofrece una capa de visualización para su consulta.
@@ -26,10 +21,6 @@ En consecuencia, el sistema se organiza en torno a una capa de control que gesti
 |----------|---------------|
 |![ModeloVistaControlador](./MVC/imagen/MVC.png)|[Ver Código](./MVC/codigo/MVC.puml)
 
-### Identificación de clases de análisis
-
-### Identificación de clases de análisis
-
 En el paquete de **Vistas** se define la clase *SolicitudesView*, que representa la única interfaz de usuario del sistema. Esta vista está implementada mediante Power BI y permite al técnico consultar las solicitudes procesadas. Dado que el sistema se basa en automatización, no existen otras interfaces de interacción directa con el usuario.
 
 En la capa de **Controladores** se incluyen las clases *RecibirSolicitudController*, *RecibirFormularioController* y *VerSolicitudesController*. Estas clases representan la lógica de control asociada a los distintos casos de uso identificados. A diferencia de sistemas tradicionales, estos controladores no responden a acciones directas del usuario, sino a eventos externos. En concreto, los dos primeros gestionan flujos automáticos activados por servicios externos, mientras que el tercero gestiona la interacción del técnico con la vista de consulta.
@@ -38,13 +29,11 @@ En el paquete de **Modelos** se encuentran las clases *Solicitud*, *Formulario* 
 
 ### Diagramas de Colaboración
 
-#### Recibir Solicitud
+#### Diagrama de colaboración: CA1 Recibir solicitud
 
 | Diagrama | Código Fuente |
 |----------|---------------|
 |![EnviarSolicitud](./DdC/imagen/RecibirSolicitud.png)|[Ver Código](./DdC/codigo/RecibirSolicitud.puml)
-
-### Diagrama de colaboración: CA1 Recibir solicitud
 
 En este caso, el actor **Exchange Online** actúa como origen del evento, enviando la solicitud al sistema cuando se recibe un nuevo correo en el buzón corporativo. Este evento es capturado por la clase **RecibirSolicitudController**, que constituye el elemento encargado de gestionar la lógica del proceso.
 
@@ -57,7 +46,7 @@ De este modo, se diferencia entre el registro histórico de correos (*CorreoReci
 Cabe destacar que, a diferencia de otros casos de uso, no existe una clase vista asociada, ya que el proceso se ejecuta de forma automática sin intervención directa del usuario.
 
 
-#### Recibir Formulario
+#### Diagrama de colaboración: CA2 Recibir Formulario
 
 | Diagrama | Código Fuente |
 |----------|---------------|
@@ -70,13 +59,11 @@ El controlador actúa como intermediario entre el actor externo y el modelo, del
 
 Al igual que en el caso de uso anterior, no existe una clase vista asociada, ya que el proceso se ejecuta automáticamente sin interacción directa del usuario.
 
-#### Ver Solicitudes
+#### Diagrama de colaboración: CA3 Ver solicitudes
 
 | Diagrama | Código Fuente |
 |----------|---------------|
 |![EnviarSolicitud](./DdC/imagen/VerSolicitudes.png)|[Ver Código](./DdC/codigo/VerSolicitudes.puml)
-
-### Diagrama de colaboración: CA3 Ver solicitudes
 
 En este caso, el actor **Técnico** interactúa directamente con la clase *SolicitudesView*, que representa la vista implementada en Power BI. Esta vista permite acceder a la información almacenada en el sistema de forma estructurada.
 
@@ -150,7 +137,7 @@ Esta tabla contiene los formularios asociados a cada solicitud. Recoge informaci
 
 El atributo `numero` actúa como clave foránea, permitiendo relacionar cada formulario con su solicitud correspondiente.
 
-#### Tabla `TotalEmail`
+#### Tabla `CorreoRecibido`
 Esta tabla almacena un histórico de los correos electrónicos que llegan al sistema. Para cada correo se registra:
 - La intención detectada
 - La fecha de entrada
@@ -166,14 +153,14 @@ La única relación existente en el modelo se establece entre las tablas `Numero
   - Una solicitud puede no tener formularios asociados o tener varios.
   - Cada formulario pertenece a una única solicitud.
 
-La tabla `TotalEmail` no presenta relaciones con el resto del modelo, ya que su función es servir como histórico independiente de la actividad del buzón.
+La tabla `CorreoRecibido` no presenta relaciones con el resto del modelo, ya que su función es servir como histórico independiente de la actividad del buzón.
 
 El modelo presenta una estructura sencilla pero adecuada para los objetivos del sistema. Permite:
 - Asociar múltiples formularios a una misma solicitud
 - Realizar análisis históricos
 - Explotar la información mediante medidas y visualizaciones en Power BI
 
-Además, la separación de la tabla `TotalEmail` permite analizar de forma independiente el comportamiento de los correos entrantes sin afectar al resto del modelo.
+Además, la separación de la tabla `CorreoRecibido` permite analizar de forma independiente el comportamiento de los correos entrantes sin afectar al resto del modelo.
 
 
 ### Diagramas de Secuencia por Caso de Uso 

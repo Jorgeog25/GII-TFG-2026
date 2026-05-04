@@ -29,7 +29,7 @@ entity Formulario {
   info_adicional : String
 }
 
-entity TotalEmail {
+entity CorreoRecibido {
   * id : Integer <<PK>>
   --
   intencion : String
