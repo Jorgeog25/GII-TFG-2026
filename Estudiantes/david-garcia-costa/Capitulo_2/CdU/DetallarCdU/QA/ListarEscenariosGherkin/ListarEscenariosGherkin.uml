@@ -1,4 +1,4 @@
-@startuml listarEscenariosGherkin
+@startuml ListarEscenariosGherkin
 
 skinparam linetype polyline
 

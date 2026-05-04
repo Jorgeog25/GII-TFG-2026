@@ -1,0 +1,27 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+title CU-02 - Crear caso de uso
+
+package "Vista" {
+  class UseCasesRequirementsView
+}
+
+package "Controlador" {
+  class UseCaseController
+}
+
+package "Modelo" {
+  class UseCase
+  class Documentation
+  class Session
+}
+
+UseCasesRequirementsView --> UseCaseController : POST /api/use-cases
+UseCaseController --> UseCase : crear caso de uso
+UseCaseController --> Documentation : referencia documental
+UseCaseController --> Session : asociar a sesión
+
+@enduml

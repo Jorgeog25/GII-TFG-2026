@@ -1,15 +1,20 @@
 @startuml
-title MODELOS
-left to right direction
+skinparam packageStyle rectangle
 skinparam shadowing false
 skinparam classAttributeIconSize 0
 
-class User
-class Session
-class Documentation
-class UseCase
-class FunctionalRequirement
-class GherkinScenario
-class Draft
+title Modelos - kiwi-mvc
+
+package "models" {
+
+  class User
+  class Session
+  class Documentation
+  class UseCase
+  class FunctionalRequirement
+  class GherkinScenario
+  class Draft
+
+}
 
 @enduml

@@ -1,4 +1,4 @@
-@startuml asociarDocumentacionAProyecto
+@startuml AsociarDocumentacionAProyecto
 
 skinparam linetype polyline
 

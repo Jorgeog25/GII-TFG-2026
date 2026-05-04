@@ -1,0 +1,28 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Conexión kiwi-mvc con Agent_ApiKiwi
+
+frame "kiwi-mvc" {
+  component AutomaticModeView
+  component SessionController
+  component Session
+}
+
+frame "Agent_ApiKiwi" {
+  component "POST /api/kiwi-mvc/handoff" as Handoff
+  component KiwiOrchestrator
+  component "get_kiwimvc_session_docs()" as MongoTool
+}
+
+database "MongoDB\nkiwi_mvc_manual" as MongoDB
+
+AutomaticModeView --> SessionController : POST /api/sessions/:id/handoff-to-agent
+SessionController --> Handoff : POST /api/kiwi-mvc/handoff
+Handoff --> KiwiOrchestrator : crea sesión ADK
+KiwiOrchestrator --> MongoTool : source_session_id
+MongoTool --> MongoDB : find(documentations)
+SessionController --> Session : guarda datos del agente
+
+@enduml

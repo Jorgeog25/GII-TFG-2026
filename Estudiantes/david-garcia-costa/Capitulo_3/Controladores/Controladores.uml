@@ -1,10 +1,12 @@
 @startuml
-title CONTROLADORES
-left to right direction
+skinparam packageStyle rectangle
 skinparam shadowing false
 skinparam classAttributeIconSize 0
 
-package "Controllers" {
+title Controladores - kiwi-mvc
+
+package "controllers" {
+
   class AuthController
   class SessionController
   class DocumentationController
@@ -14,23 +16,36 @@ package "Controllers" {
   class DraftController
 }
 
-package "Auxiliary Services" {
+package "services" {
+
+  class AuthService
   class SessionService
+  class DocumentationService
+  class GherkinService
   class IdentifierService
   class TraceabilityService
   class ManualKiwiService
 }
 
-AuthController --> SessionService 
+AuthController --> AuthService
+
 SessionController --> SessionService
+
+DocumentationController --> DocumentationService
 DocumentationController --> SessionService
+
+UseCaseController --> SessionService
 UseCaseController --> IdentifierService
+
+RequirementController --> SessionService
 RequirementController --> IdentifierService
-GherkinController --> TraceabilityService
+RequirementController --> TraceabilityService
+
+GherkinController --> GherkinService
 GherkinController --> SessionService
-DraftController --> ManualKiwiService
-DraftController --> TraceabilityService
+GherkinController --> TraceabilityService
+
 DraftController --> SessionService
-SessionController --> TraceabilityService
+DraftController --> ManualKiwiService
 
 @enduml

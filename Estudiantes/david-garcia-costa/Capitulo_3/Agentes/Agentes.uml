@@ -1,0 +1,56 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Arquitectura de agentes - Agent_ApiKiwi
+
+frame "Agent_ApiKiwi" {
+  component FastAPIApp
+  component HandoffEndpoint
+
+  frame "my_agent" {
+    component KiwiOrchestrator
+
+    frame "agents" {
+      component DraftPipelineAgent
+      component ExtractUcRfAgent
+      component KiwiGherkinAgent
+      component ReviewPublishAgent
+      component RequirementsManagerAgent
+    }
+
+    frame "tools" {
+      component KiwiMvcDbTool
+      component DraftStoreTool
+      component KiwiApiTool
+    }
+  }
+}
+
+database "MongoDB kiwi-mvc" as MongoDB
+file "kiwi_drafts.json" as DraftJson
+cloud "OpenAI/LiteLLM" as LLM
+cloud "Kiwi TCMS XML-RPC" as Kiwi
+
+FastAPIApp --> HandoffEndpoint
+HandoffEndpoint --> KiwiOrchestrator
+
+KiwiOrchestrator --> KiwiMvcDbTool
+KiwiMvcDbTool --> MongoDB : leer documentations
+
+KiwiOrchestrator --> DraftPipelineAgent
+DraftPipelineAgent --> ExtractUcRfAgent
+DraftPipelineAgent --> KiwiGherkinAgent
+
+ExtractUcRfAgent --> LLM : extraer UC/RF
+KiwiGherkinAgent --> LLM : generar Gherkin
+
+KiwiGherkinAgent --> DraftStoreTool
+ReviewPublishAgent --> DraftStoreTool
+RequirementsManagerAgent --> DraftStoreTool
+
+DraftStoreTool --> DraftJson
+ReviewPublishAgent --> KiwiApiTool
+KiwiApiTool --> Kiwi
+
+@enduml

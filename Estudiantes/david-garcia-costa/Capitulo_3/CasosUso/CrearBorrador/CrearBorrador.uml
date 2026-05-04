@@ -1,0 +1,36 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+title CU-05 - Crear borrador
+
+package "Vista" {
+  class DraftsView
+}
+
+package "Controlador" {
+  class DraftController
+}
+
+package "Servicio" {
+  class SessionService
+}
+
+package "Modelo" {
+  class Draft
+  class UseCase
+  class FunctionalRequirement
+  class GherkinScenario
+  class Session
+}
+
+DraftsView --> DraftController : POST /api/drafts/assemble
+DraftController --> SessionService : buildDraftContent()
+SessionService --> UseCase : leer UC
+SessionService --> FunctionalRequirement : leer RF
+SessionService --> GherkinScenario : leer escenarios
+SessionService --> Draft : crear/actualizar borrador
+SessionService --> Session : actualizar results
+
+@enduml

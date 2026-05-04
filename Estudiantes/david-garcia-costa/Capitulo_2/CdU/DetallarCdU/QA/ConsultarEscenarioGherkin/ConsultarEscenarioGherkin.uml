@@ -1,0 +1,41 @@
+@startuml ConsultarEscenarioGherkin
+
+skinparam linetype polyline
+
+state consultarEscenarioGherkin as "consultarEscenarioGherkin()" {
+    state " " as SeleccionandoEscenario
+    state " " as RecuperandoDetalle
+    state " " as MostrandoEscenario
+
+    [*] -[#green]-> SeleccionandoEscenario
+    note on link
+    Se selecciona un escenario Gherkin
+    end note
+
+    SeleccionandoEscenario -[#green]-> RecuperandoDetalle
+    note on link
+    <b>Sistema</b> recupera el escenario completo
+    end note
+
+    RecuperandoDetalle -[#green]-> MostrandoEscenario
+    note on link
+    Se prepara la visualizacion del escenario
+    end note
+
+    MostrandoEscenario -[#green]-> [*]
+    note on link
+    El sistema muestra el escenario seleccionado
+    end note
+}
+
+consultarEscenarioGherkin -[#green]-> ESCENARIO_GHERKIN_ABIERTO
+note on link
+completarConsulta()
+end note
+
+consultarEscenarioGherkin -[#red]-> ESCENARIOS_GHERKIN_ABIERTO
+note on link
+rechazarConsulta()
+end note
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Login y publicación en Kiwi TCMS
+
+frame "kiwi-mvc" {
+  component DraftsView
+  component DraftController
+  component ManualKiwiService
+  component Draft
+}
+
+frame "Kiwi TCMS XML-RPC" {
+  component "Auth.login" as Login
+  component "TestCase.create" as Create
+}
+
+database "MariaDB\nKiwi TCMS" as MariaDB
+
+DraftsView --> DraftController : POST /api/drafts/:id/publish
+DraftController --> Draft : leer borrador
+DraftController --> ManualKiwiService : publishDraftToKiwi()
+ManualKiwiService --> Login : usuario/contraseña
+Login --> ManualKiwiService : cookie de sesión
+ManualKiwiService --> Create : summary, text, ids Kiwi
+Create --> MariaDB : persistencia interna
+ManualKiwiService --> DraftController : resultado
+DraftController --> Draft : published + kiwiCaseId
+
+@enduml

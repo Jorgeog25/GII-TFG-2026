@@ -1,0 +1,41 @@
+@startuml ActualizarEscenarioGherkin
+
+skinparam linetype polyline
+
+state actualizarEscenarioGherkin as "actualizarEscenarioGherkin()" {
+    state " " as CargandoEscenario
+    state " " as EditandoEscenario
+    state " " as GuardandoCambios
+
+    [*] -[#green]-> CargandoEscenario
+    note on link
+    Se carga la version actual del escenario
+    end note
+
+    CargandoEscenario -[#green]-> EditandoEscenario
+    note on link
+    El actor modifica titulo, pasos o metadatos
+    end note
+
+    EditandoEscenario -[#green]-> GuardandoCambios
+    note on link
+    <b>Sistema</b> valida y persiste la actualizacion
+    end note
+
+    GuardandoCambios -[#green]-> [*]
+    note on link
+    El sistema confirma la actualizacion
+    end note
+}
+
+actualizarEscenarioGherkin -[#green]-> ESCENARIO_GHERKIN_ACTUALIZADO
+note on link
+completarActualizacion()
+end note
+
+actualizarEscenarioGherkin -[#red]-> ESCENARIO_GHERKIN_ABIERTO
+note on link
+rechazarActualizacion()
+end note
+
+@enduml

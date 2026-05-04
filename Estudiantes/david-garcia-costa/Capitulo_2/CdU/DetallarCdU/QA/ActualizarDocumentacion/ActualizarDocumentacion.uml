@@ -1,0 +1,41 @@
+@startuml ActualizarDocumentacion
+
+skinparam linetype polyline
+
+state actualizarDocumentacion as "actualizarDocumentacion()" {
+    state " " as CargandoDocumento
+    state " " as EditandoContenido
+    state " " as GuardandoCambios
+
+    [*] -[#green]-> CargandoDocumento
+    note on link
+    Se carga la informacion actual del documento
+    end note
+
+    CargandoDocumento -[#green]-> EditandoContenido
+    note on link
+    El actor modifica contenido o metadatos
+    end note
+
+    EditandoContenido -[#green]-> GuardandoCambios
+    note on link
+    <b>Sistema</b> valida y persiste los cambios
+    end note
+
+    GuardandoCambios -[#green]-> [*]
+    note on link
+    El sistema confirma la actualizacion
+    end note
+}
+
+actualizarDocumentacion -[#green]-> DOCUMENTACION_ACTUALIZADA
+note on link
+completarActualizacion()
+end note
+
+actualizarDocumentacion -[#red]-> DOCUMENTACION_ABIERTA
+note on link
+rechazarActualizacion()
+end note
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml EliminarEscenarioGherkin
+
+skinparam linetype polyline
+
+state eliminarEscenarioGherkin as "eliminarEscenarioGherkin()" {
+    state " " as SeleccionandoEscenario
+    state " " as ConfirmandoEliminacion
+    state " " as EliminandoEscenario
+
+    [*] -[#green]-> SeleccionandoEscenario
+    note on link
+    Se selecciona el escenario a eliminar
+    end note
+
+    SeleccionandoEscenario -[#green]-> ConfirmandoEliminacion
+    note on link
+    El sistema solicita confirmacion al actor
+    end note
+
+    ConfirmandoEliminacion -[#green]-> EliminandoEscenario
+    note on link
+    <b>Sistema</b> elimina el escenario confirmado
+    end note
+
+    EliminandoEscenario -[#green]-> [*]
+    note on link
+    El sistema confirma la eliminacion
+    end note
+}
+
+eliminarEscenarioGherkin -[#green]-> ESCENARIOS_GHERKIN_ACTUALIZADOS
+note on link
+completarEliminacion()
+end note
+
+eliminarEscenarioGherkin -[#red]-> ESCENARIO_GHERKIN_ABIERTO
+note on link
+rechazarEliminacion()
+end note
+
+@enduml

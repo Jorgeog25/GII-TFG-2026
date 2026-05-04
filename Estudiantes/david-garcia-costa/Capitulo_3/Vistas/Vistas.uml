@@ -1,37 +1,55 @@
 @startuml
-title VISTAS
-left to right direction
+skinparam packageStyle rectangle
 skinparam shadowing false
 skinparam classAttributeIconSize 0
 
-package "Aplicacion Web kiwi-mvc (SPA)" {
-  class Login
-  class Home
-  class GestionSesiones
-  class EleccionFlujo
-  class Paso1_Documentacion
-  class Paso2_CasosUso_Requisitos
-  class Paso3_EscenariosGherkin
-  class Paso4_Borrador_Publicacion
-  class PanelAutomatico
+title Vistas y Controladores - kiwi-mvc
+
+package "views" {
+
+  class LoginView
+  class SessionsView
+  class DocumentationView
+  class WorkflowModeView
+  class UseCasesRequirementsView
+  class GherkinScenariosView
+  class DraftsView
+  class AutomaticModeView
 }
 
-package "Interfaz Agent_ApiKiwi (/dev-ui/)" {
-  class SesionAgente
-  class RevisionBorradores
-  class RevisionYPublicacion
+package "controllers" {
+
+  class AuthController
+  class SessionController
+  class DocumentationController
+  class UseCaseController
+  class RequirementController
+  class GherkinController
+  class DraftController
 }
 
-Login --> Home
-Home --> GestionSesiones
-GestionSesiones --> Paso1_Documentacion
-Paso1_Documentacion --> EleccionFlujo
-EleccionFlujo --> Paso2_CasosUso_Requisitos : modo manual
-Paso2_CasosUso_Requisitos --> Paso3_EscenariosGherkin
-Paso3_EscenariosGherkin --> Paso4_Borrador_Publicacion
-EleccionFlujo --> PanelAutomatico : modo automatico
-PanelAutomatico --> SesionAgente : abrir handoff_url
-SesionAgente --> RevisionBorradores
-RevisionBorradores --> RevisionYPublicacion
+LoginView ..> AuthController : auth
+
+SessionsView --> SessionController : sesiones
+
+DocumentationView --> DocumentationController : documentación
+DocumentationView --> SessionController : contexto sesión
+
+WorkflowModeView --> SessionController : modo manual / automático
+
+UseCasesRequirementsView --> UseCaseController : casos de uso
+UseCasesRequirementsView --> RequirementController : requisitos funcionales
+UseCasesRequirementsView --> DocumentationController : documento fuente
+
+GherkinScenariosView --> GherkinController : escenarios
+GherkinScenariosView --> UseCaseController : consultar UC
+GherkinScenariosView --> RequirementController : consultar RF
+
+DraftsView --> DraftController : borradores
+DraftsView --> UseCaseController : consultar UC
+DraftsView --> RequirementController : consultar RF
+DraftsView --> GherkinController : consultar escenarios
+
+AutomaticModeView --> SessionController : handoff agente
 
 @enduml

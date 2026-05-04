@@ -1,4 +1,4 @@
-@startuml consultarCasoUso
+@startuml ConsultarCdU
 
 skinparam linetype polyline
 

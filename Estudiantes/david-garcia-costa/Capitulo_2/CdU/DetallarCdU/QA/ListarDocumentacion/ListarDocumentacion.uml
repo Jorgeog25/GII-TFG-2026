@@ -1,0 +1,35 @@
+@startuml ListarDocumentacion
+
+skinparam linetype polyline
+
+state listarDocumentacion as "listarDocumentacion()" {
+    state " " as RecuperandoDocumentos
+    state " " as MostrandoListado
+
+    [*] -[#green]-> RecuperandoDocumentos
+    note on link
+    Se solicita el listado de documentacion registrada
+    end note
+
+    RecuperandoDocumentos -[#green]-> MostrandoListado
+    note on link
+    <b>Sistema</b> recupera y ordena la documentacion disponible
+    end note
+
+    MostrandoListado -[#green]-> [*]
+    note on link
+    <b>Sistema</b> muestra el listado resultante
+    end note
+}
+
+listarDocumentacion -[#green]-> DOCUMENTACION_LISTADA
+note on link
+completarListado()
+end note
+
+listarDocumentacion -[#red]-> DOCUMENTACION_VACIA
+note on link
+rechazarConsulta()
+end note
+
+@enduml

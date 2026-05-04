@@ -1,0 +1,41 @@
+@startuml CrearEscenarioGherkin
+
+skinparam linetype polyline
+
+state crearEscenarioGherkin as "crearEscenarioGherkin()" {
+    state " " as IntroduciendoEscenario
+    state " " as ValidandoPasos
+    state " " as RegistrandoEscenario
+
+    [*] -[#green]-> IntroduciendoEscenario
+    note on link
+    El actor introduce titulo, feature y pasos
+    end note
+
+    IntroduciendoEscenario -[#green]-> ValidandoPasos
+    note on link
+    <b>Sistema</b> valida la estructura Gherkin
+    end note
+
+    ValidandoPasos -[#green]-> RegistrandoEscenario
+    note on link
+    <b>Sistema</b> registra el escenario validado
+    end note
+
+    RegistrandoEscenario -[#green]-> [*]
+    note on link
+    El sistema confirma la creacion
+    end note
+}
+
+crearEscenarioGherkin -[#green]-> ESCENARIO_GHERKIN_ABIERTO
+note on link
+completarCreacion()
+end note
+
+crearEscenarioGherkin -[#red]-> ESCENARIOS_GHERKIN_ABIERTO
+note on link
+rechazarCreacion()
+end note
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml EliminarDocumentacion
+
+skinparam linetype polyline
+
+state eliminarDocumentacion as "eliminarDocumentacion()" {
+    state " " as SeleccionandoDocumento
+    state " " as ConfirmandoEliminacion
+    state " " as EliminandoRegistro
+
+    [*] -[#green]-> SeleccionandoDocumento
+    note on link
+    Se selecciona la documentacion a eliminar
+    end note
+
+    SeleccionandoDocumento -[#green]-> ConfirmandoEliminacion
+    note on link
+    El sistema solicita confirmacion al actor
+    end note
+
+    ConfirmandoEliminacion -[#green]-> EliminandoRegistro
+    note on link
+    <b>Sistema</b> elimina el documento confirmado
+    end note
+
+    EliminandoRegistro -[#green]-> [*]
+    note on link
+    El sistema confirma la eliminacion
+    end note
+}
+
+eliminarDocumentacion -[#green]-> DOCUMENTACION_ELIMINADA
+note on link
+completarEliminacion()
+end note
+
+eliminarDocumentacion -[#red]-> DOCUMENTACION_ABIERTA
+note on link
+rechazarEliminacion()
+end note
+
+@enduml

@@ -1,0 +1,77 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Estructura de paquetes MVC - kiwi-mvc
+
+package "kiwi-mvc" {
+
+  package "Vista" {
+    package "public" {
+      class "index.html"
+      class "css/app.css"
+      class "js/app.js"
+    }
+  }
+
+  package "Controlador" {
+    package "src/routes" {
+      class "index.js"
+    }
+
+    package "src/controllers" {
+      class "authController.js"
+      class "sessionController.js"
+      class "documentationController.js"
+      class "useCaseController.js"
+      class "requirementController.js"
+      class "gherkinController.js"
+      class "draftController.js"
+    }
+
+    package "src/middleware" {
+      class "auth.js"
+    }
+  }
+
+  package "Modelo" {
+    package "src/models" {
+      class "User.js"
+      class "Session.js"
+      class "Documentation.js"
+      class "UseCase.js"
+      class "FunctionalRequirement.js"
+      class "GherkinScenario.js"
+      class "Draft.js"
+    }
+  }
+
+  package "Servicios auxiliares" {
+    package "src/services" {
+      class "authService.js"
+      class "documentationService.js"
+      class "gherkinService.js"
+      class "identifierService.js"
+      class "manualKiwiService.js"
+      class "sessionService.js"
+      class "traceabilityService.js"
+    }
+  }
+
+  package "Configuración" {
+    package "src/config" {
+      class "db.js"
+      class "loadSharedEnv.js"
+    }
+  }
+}
+
+"public/js/app.js" --> "index.js" : fetch REST
+"index.js" --> "auth.js" : requireLogin
+"index.js" --> "src/controllers" : enruta petición
+"src/controllers" --> "src/services" : lógica auxiliar
+"src/controllers" --> "src/models" : persistencia
+"src/services" --> "src/models" : consultas MongoDB
+"manualKiwiService.js" --> "Kiwi TCMS XML-RPC"
+
+@enduml
