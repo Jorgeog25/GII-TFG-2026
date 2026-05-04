@@ -193,7 +193,7 @@ Si la opción de documentación está marcada, el sistema envía un correo elect
 
 Finalmente, independientemente de la opción seleccionada, el sistema guarda la información del formulario en el **RepositorioDatos (Power BI)**, dejando los datos disponibles para su posterior consulta desde la vista de solicitudes.
 
-#### Ver Solicitudes Pendientes
+#### Ver Solicitudes
 | Diagrama | Código Fuente |
 |----------|---------------|
 |![Diagrama Secuencia](./DdS/imagen/VerSolicitudes.png)|[Ver Código](./DdS/codigo/VerSolicitudes.puml)
