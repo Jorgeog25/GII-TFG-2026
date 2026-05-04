@@ -192,7 +192,7 @@ Los casos de uso principales, como CA1 Recibir solicitud y CA2 Recibir formulari
 
 ### Caso de Uso - Ver Solicitudes
 
-![Prototipo](./Prototipar_CdU/VerSolicitudesPendientes.png)
+![Prototipo](./Prototipar_CdU/VerSolicitudes.png)
 
 ## Estructurar la Descripción de los Casos de Uso
 
