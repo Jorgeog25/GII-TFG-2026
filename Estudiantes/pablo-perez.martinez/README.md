@@ -44,6 +44,8 @@
 
 ##### [Prototipos](./Capitulo2/Prototipos.md)
 
+##### [Descripción de las gráficas](./Capitulo2/DescripcionGraficas.md)
+
 
 #### 4. Análisis y diseño
 
