@@ -80,7 +80,7 @@ Las subtareas en las que se ha fragmentado el análisis y diseño del CdU-02 son
 #### Cálculo del OEE
 | Diagrama | Código Fuente |
 |----------|---------------|
-|![Diagrama de colaboración](./imagenes/CalculoOEE.svg)|[Ver Código](./codigos/CalculoOEE.puml)
+|![Diagrama de colaboración](./imagenes/Calculo0EE.svg)|[Ver Código](./codigos/CalculoOEE.puml)
 
 
 #### Visualización de datos
