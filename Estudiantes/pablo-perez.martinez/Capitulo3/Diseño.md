@@ -91,12 +91,12 @@ implicadas y las relaciones más relevantes dentro de esta funcionalidad.
 
 
 ### Tablas de la base de datos
-![Tablas BD](./imagenes/tablasBD.svg)
+![Tablas BD](./imagenes/tablasBD.jpg)
 
 ### Diseño de la interfaz de rendimiento
-![Wireframe Pantalla principal](./imagenes/WireframePantallaPrincipal.svg)
+![Wireframe Pantalla principal](./imagenes/WireframePantallaPrincipal.png)
 
 
 ### Diseño de la ventana del selector de partición
-![Wireframe Pantalla principal](./imagenes/WireframeSelector.svg)
+![Wireframe Pantalla principal](./imagenes/WireframeSelector.png)
 
