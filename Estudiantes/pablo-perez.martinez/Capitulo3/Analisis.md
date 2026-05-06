@@ -13,7 +13,7 @@ de negocio, la representación de los datos y la interacción del usuario.
 ## Modelo-Vista-Controlador
 | Diagrama | Código Fuente |
 |----------|---------------|
-|![Modelo-Vista-Controlador](./imagenes/MVC.svg)|[Ver Código](./codigosMVC.puml) 
+|![Modelo-Vista-Controlador](./imagenes/MVC.svg)|[Ver Código](./codigos/MVC.puml) 
 
 En el modelo se incluyen: 
 - AssignmentSplit: entidad a partir de la que se obtiene toda la información teórica y de 
