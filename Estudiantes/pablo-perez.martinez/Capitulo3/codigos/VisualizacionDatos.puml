@@ -1,0 +1,55 @@
+@startuml VisualizacionDatos
+top to bottom direction
+
+actor Responsable
+
+package "VisualizaciónDatos(datosCalculados)" {
+
+  rectangle "DatosCalculados" as DatosCalculados
+
+  rectangle "ManufacturingInfoService_API" as APIService
+  rectangle "ManufacturingInfoController_API" as APIController
+  rectangle "ManufacturingInfoService_vt-master-api" as MasterService
+  rectangle "ManufacturingInfoController_vt-master-api" as MasterController
+  rectangle "Performance" as Performance
+  rectangle "PerformanceSpeedCurve" as PerformanceSpeedCurve
+  rectangle "PerformanceInfoGraphs" as PerformanceInfoGraphs
+  rectangle "PerformanceTable" as PerformanceTable
+  rectangle "Visualización de datos" as VisualizacionDatos
+
+  DatosCalculados-[hidden]-> APIService
+  APIService-[hidden]-> APIController
+  APIController-[hidden]-> MasterService
+  MasterService-[hidden]-> MasterController
+  MasterController-[hidden]-> Performance
+  
+  Performance-[hidden]-> PerformanceSpeedCurve
+  Performance-[hidden]-> PerformanceInfoGraphs
+  Performance-[hidden]-> PerformanceTable
+  Performance-[hidden]-> VisualizacionDatos
+
+  PerformanceSpeedCurve-[hidden]-> VisualizacionDatos
+  PerformanceInfoGraphs-[hidden]-> VisualizacionDatos
+  PerformanceTable-[hidden]-> VisualizacionDatos
+
+
+  DatosCalculados--> APIService: enviarInfo(ManufacturingIndexInfoBySplitDto)
+  APIService--> APIController: enviarInfo(ManufacturingIndexInfoBySplitDto)
+  APIController--> MasterService: enviarInfo(ManufacturingIndexInfoBySplitDto)
+  MasterService--> MasterController: enviarInfo(ManufacturingIndexInfoBySplitDto)
+  MasterController--> Performance: enviarInfo(ManufacturingIndexInfoBySplitDto)
+
+  Performance--> PerformanceSpeedCurve: enviar(SpeedCurveInfo)
+  Performance--> PerformanceInfoGraphs: enviar(InfoGraphsInfo)
+  Performance--> PerformanceTable: enviar(TableInfo)
+  Performance--> VisualizacionDatos
+
+  PerformanceSpeedCurve--> VisualizacionDatos: mostrar(SpeedCurveInfo)
+  PerformanceInfoGraphs--> VisualizacionDatos: mostrar(InfoGraphsInfo)
+  PerformanceTable--> VisualizacionDatos: mostrar(TableInfo)
+
+}
+
+VisualizacionDatos<-- Responsable
+
+@enduml

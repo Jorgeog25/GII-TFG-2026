@@ -2,17 +2,16 @@
 
 start
 
-:Selecciona partición;
+:Lista partición;
 
-if (¿Hay información de partición?) then (Sí)
+if (¿Cambia de partición?) then (No)
 
-else (No)
-  :Esperar información;
+else (Sí)
+  :Lista particiones;
 
 endif
 
-:Realizar cálculos;
-:Mostrar gráfica;
+:Lista partición;
 
 stop
 @enduml

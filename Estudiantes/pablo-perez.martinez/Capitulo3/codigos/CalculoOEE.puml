@@ -1,0 +1,24 @@
+@startuml CalculoOEE
+top to bottom direction
+
+
+package "CalcularOEE(datos)" {
+
+  rectangle "ManufacturingInfoService_API" as ApiService1
+  rectangle "ManufacturingInfoService_API" as ApiService2
+  rectangle "ManufacturingInfoService_API" as ApiService3
+
+  rectangle "OEE calculado" as OEECalculado
+
+  ApiService1-[hidden]-> ApiService2
+  ApiService2-[hidden]-> ApiService3
+
+  ApiService3-[hidden]-> OEECalculado
+
+  ApiService1--> ApiService2: estructurarDatos(datos)
+  ApiService2--> ApiService3: calcularIndicadores(datos)
+
+  ApiService3--> OEECalculado: calcularOEE(indicadores)
+}
+
+@enduml
