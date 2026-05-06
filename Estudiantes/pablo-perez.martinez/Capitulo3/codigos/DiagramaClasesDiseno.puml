@@ -1,0 +1,127 @@
+@startuml Diagrama_Clases_Diseno
+top to bottom direction
+skinparam packageStyle rectangle
+hide empty members
+
+package "Modelos" {
+
+  package "API" {
+    class ManufacturingInfoServiceV2 {
+      + getManufacturingIndexInfoBySplit(dto: ManufacturingInfoBySplitToCalculateDto): ManufacturingIndexInfoBySplitDto
+      + getManufacturingInfoForSpeedCurve(dto: ManufacturingInfoBySplitToCalculateDto, assignmentSplit: AssignmentSplit, fullMode: boolean, init: ZonedDateTime, end: ZonedDateTime): List<Long>
+      + getIndexInfo(piecesInfo: ManufacturingPiecesInfoDto, timeInfo: ManufacturingTimeInfoDto, cycleTimeTarget: Double, materialsByExecution: Double): ManufacturingIndexInfo
+      + getManufacturingInfoOfSplit(split: AssignmentSplit): ManufacturingInfoBySplitDto
+    }
+  }
+
+  package "vt-master-api" {
+    class ManufacturingInfoService {
+      + calcBySplitId(clientId: Long, dto: ManufacturingInfoBySplitToCalculateDto): ResponseObject<ManufacturingIndexInfoBySplitDto>
+    }
+  }
+
+  class AssignmentSplit {
+    + id: Long
+    + workstationId: Long
+    + startDateTime: ZonedDateTime
+    + duration: BigDecimal
+    + executions: BigDecimal
+    + assignment: Assignment
+    + routeStep: RouteStep
+    + routeStepWorkstation: RouteStepWorkstation
+    + activities: Set<ManufacturingActivity>
+    + materials: List<AssignmentSplitMaterial>
+    + manufacturingOutputs: Set<ManufacturingOutput>
+  }
+
+  class ManufacturingIndexInfoBySplitDto {
+    + splitId: Long
+    + executionInfo: ManufacturingExecutionInfoDto
+    + piecesInfo: ManufacturingPiecesInfoDto
+    + timeInfo: ManufacturingTimeInfoDto
+    + indexInfo: ManufacturingIndexInfoDto
+    + piecesInfoByMaterial: Map<Long, ManufacturingPiecesInfoDto>
+    + speedCurve: List<Long>
+  }
+
+  class ManufacturingInfoBySplitToCalculateDto {
+    + splitId: Long
+    + initDate: String
+    + endDate: String
+    + fullMode: boolean
+    + scrappedReportedInProduction: boolean
+    + returnInProductionOnly: boolean
+  }
+
+  class ManufacturingIndexInfoDto {
+    + cycleTime: BigDecimal
+    + qualityIndex: BigDecimal
+    + availabilityIndex: BigDecimal
+    + performanceIndex: BigDecimal
+    + oee: BigDecimal
+  }
+
+  ManufacturingIndexInfoBySplitDto -[hidden]down-> ManufacturingInfoServiceV2
+  ManufacturingInfoBySplitToCalculateDto -[hidden]down-> ManufacturingInfoServiceV2
+  ManufacturingIndexInfoDto -[hidden]down-> ManufacturingInfoServiceV2
+  AssignmentSplit -[hidden]down-> ManufacturingInfoServiceV2
+  ManufacturingInfoServiceV2 -[hidden]down-> ManufacturingInfoService
+}
+
+package "Controladores" {
+  package "API" {
+    class "ManufacturingInfoController" as ApiManufacturingInfoController {
+      + manufacturingInfoBySplit(dto: ManufacturingInfoBySplitToCalculateDto): ResponseEntity<ManufacturingIndexInfoBySplitDto>
+    }
+  }
+  package "vt-master-api" {
+    class "ManufacturingInfoController" as MasterManufacturingInfoController {
+      + calcBySplitId(clientId: Long, dto: ManufacturingInfoBySplitToCalculateDto): ResponseEntity<ManufacturingIndexInfoBySplitDto>
+    }
+  }
+  ApiManufacturingInfoController -[hidden]down-> MasterManufacturingInfoController
+}
+
+package "Vistas" {
+  class Performance {
+    + speedCurveData: SpeedCurveData
+    + executionsInfo: ExecutionsInfo
+    + piecesInfo: PiecesInfo
+    + timeInfo: TimeInfo
+    + indexInfo: IndexInfo
+    + selectedSplit: SplitInfo
+  }
+  class PerformanceSpeedCurve {
+    + speedCurveData: SpeedCurveData
+  }
+  class PerformanceInfoGraphs {
+    + executionsInfo: ExecutionsInfo
+    + piecesInfo: PiecesInfo
+    + timeInfo: TimeInfo
+    + indexInfo: IndexInfo
+  }
+  class PerformanceTable {
+    + indexInfo: IndexInfo
+  }
+  class PerformanceSplitState {
+    + selectedSplit: SplitInfo
+  }
+}
+
+AssignmentSplit -down-> ManufacturingInfoServiceV2
+ManufacturingIndexInfoBySplitDto -down-> ManufacturingInfoServiceV2
+ManufacturingIndexInfoDto -down-> ManufacturingInfoServiceV2
+ManufacturingInfoBySplitToCalculateDto -down-> ManufacturingInfoServiceV2
+
+ManufacturingInfoServiceV2 -down-> ApiManufacturingInfoController
+ManufacturingInfoService -down-> MasterManufacturingInfoController
+
+ManufacturingInfoService <-down- ApiManufacturingInfoController
+
+MasterManufacturingInfoController -down-> Performance
+Performance -down-> PerformanceSpeedCurve
+Performance -down-> PerformanceInfoGraphs
+Performance -down-> PerformanceTable
+Performance -down-> PerformanceSplitState
+
+@enduml

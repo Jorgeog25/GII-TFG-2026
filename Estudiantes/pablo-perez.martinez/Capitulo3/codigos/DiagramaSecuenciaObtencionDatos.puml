@@ -1,0 +1,28 @@
+@startuml ObtenerDatosProduccion
+title Diagrama de Secuencia - Obtención de datos de producción
+
+
+actor "Responsable de producción" as Responsable
+participant "VT\nPerformance" as Frontend
+participant "Master-ManufacturingInfoController" as MasterController
+participant "Master-ManufacturingInfoService" as MasterService
+participant "API-ManufacturingInfoController" as APIController
+participant "API-ManufacturingInfoServiceV2" as APIService
+database "Base de Datos VT" as BD
+
+Responsable -> Frontend : abrirPerformance()
+
+Frontend -> MasterController: getManufacturingInfoBySplit(dtoEntrada)
+
+MasterController-> MasterService: calcBySplitId(dtoEntrada)
+
+MasterService -> APIController: getManufacturingInfoBySplit(dtoEntrada)
+
+APIController-> APIService: manufacturingInfoBySplit(dtoEntrada)
+
+APIService-> BD: consultaInfo(splitId)
+
+BD-> APIService: devuelveInfo(info)
+
+
+@enduml

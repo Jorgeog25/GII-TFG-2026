@@ -1,0 +1,20 @@
+@startuml ListarParticiones
+title Diagrama de Secuencia - Listar particiones
+
+actor "Responsable de producción" as Responsable
+participant "Frontend VT\nPerformance" as Frontend
+participant "PerformanceSplitState" as Selector
+
+
+Responsable -> Frontend : abrirSelectorParticion()
+
+Frontend -> Selector: particiones(Orden)
+
+Selector-> Selector: listarParticiones()
+
+Responsable -> Selector: seleccionaParticion()
+
+Selector -> Frontend : cambiaParticion(nuevoSplitId)
+
+
+@enduml
