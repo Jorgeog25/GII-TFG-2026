@@ -411,3 +411,7 @@ En esta seccion se detallan los casos de uso del sistema manteniendo una descrip
 - **Casos de Error:** Datos invalidos o error de almacenamiento externo.
 - **Postcondiciones:** El caso de prueba queda registrado en Kiwi TCMS.
 - **Diagrama:** ![Registrar caso de prueba en Kiwi TCMS](/Estudiantes/david-garcia-costa/Capitulo_2/CdU/DetallarCdU/KiwiTCMS/RegistrarCasoPrueba/RegistrarCasoPrueba.svg)
+
+---
+
+[← Volver al Índice](../../../README.md)

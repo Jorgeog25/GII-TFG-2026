@@ -41,3 +41,7 @@ De esta forma:
 
 - **Ingeniero de QA** actua como actor primario e iniciador del flujo.
 - **Kiwi TCMS** actua como sistema externo de integracion, persistencia y consulta.
+
+---
+
+[← Volver al Índice](../../../README.md)

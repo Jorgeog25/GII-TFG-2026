@@ -193,3 +193,7 @@ Por su parte, plataformas de testing basadas en IA, como Testim, Applitools, Mab
 Finalmente, la elección de Google ADK se debe a que en un principio dentro de la empresa se realizaron pruebas con este framework y dio buenos resultados, y puedo destacar que Google no llega a ser partnership de CIC pero le ofrece soporte de primer nivel en caso de necesitar ayuda, por tanto, el uso de esta herramienta encaja perfectamente. 
 
 Si que es cierto que se podría usar otros frameworks como LangGraph pero debido a estas causas se utiliza Google ADK. A partir de esta decisión, se puede decir que Google ADK ofrece unas capacidades muy apropiadas que permiten construir la arquitectura multiagente y también flujos estructurados, por lo que toda esta suma de ventajas lo hace el framework mas óptimo para usar en este trabajo.
+
+---
+
+[← Volver al Índice](../README.md)

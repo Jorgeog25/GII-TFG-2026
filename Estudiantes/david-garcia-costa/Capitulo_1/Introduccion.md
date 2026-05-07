@@ -23,3 +23,7 @@ Para resolver este problema, el presente trabajo propone el diseño de una arqui
 La solución se estructura en torno a un sistema multiagente especializado que se detallarán durante la solución, en el cual cada agente asume un rol específico dentro del flujo de trabajo.
 
 Esta arquitectura aprovecha las capacidades de los agentes de IA no solo para ejecutar tareas repetitivas, sino también para interpretar y analizar la documentación por parte de los Project Managers y Clientes, estructurar la información y tomar decisiones en un proceso colaborativo orientado a un objetivo común.
+
+---
+
+[← Volver al Índice](../README.md)

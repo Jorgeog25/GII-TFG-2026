@@ -64,3 +64,7 @@ Este diagrama refuerza la idea de control y trazabilidad sobre los requisitos fu
 #### Explicacion
 
 El `Borrador` comienza en `Generado` cuando el sistema produce una primera propuesta a partir de los escenarios Gherkin. Pasa a `PendienteRevision` cuando queda disponible para el Ingeniero de QA y puede entrar en `Modificado` si se incorpora feedback o se regenera su contenido. Cuando el borrador queda conforme, alcanza el estado `Aprobado`, que habilita la generacion del caso de prueba derivado. Si finalmente se descarta o deja de ser util, tambien puede terminar en `Eliminado`.
+
+---
+
+[← Volver al Índice](../../README.md)

@@ -766,5 +766,9 @@ La estructura de paquetes de `app` sigue el patrón MVC:
 - Servicios auxiliares: contienen lógica reutilizable que no pertenece estrictamente al controlador ni al modelo.
 - Configuración: conexión a MongoDB y carga de variables de entorno compartidas.
 
+---
+
+[← Volver al Índice](../README.md)
+
 
 

@@ -32,3 +32,7 @@ El alcance de este TFG se concreta en los siguientes puntos:
 En este trabajo se busca demostrar que los agentes de IA pueden actuar como herramienta de apoyo dentro del proceso de QA, no se pretende automatizar en este TFG el 100% del flujo de trabajo, es decir, no se van a realizar test e2e, solo se llegara hasta los scenarios en Kiwi TCMS.
 
 Y por último, es necesario decir que la arquitectura propuesta sí está planteada de forma que pueda servir como base para futuros desarrollos dentro de la empresa.
+
+---
+
+[← Volver al Índice](../README.md)

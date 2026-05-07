@@ -59,3 +59,7 @@ Se consideran de prioridad `Media` los casos de uso orientados a consulta, lista
 ### Kiwi TCMS
 
 El sistema `Kiwi TCMS` actua como sistema externo participante. Su caso de uso `Registrar caso de prueba en Kiwi TCMS` tiene prioridad `Alta` porque materializa la integracion y completa la publicacion final de los casos de prueba generados.
+
+---
+
+[← Volver al Índice](../../../README.md)

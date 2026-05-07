@@ -27,3 +27,7 @@ Solución Propuesta:
 Un agente puede encargarse de analizar el DRF (Documento Requisitos Funcionales) y el DDS (Documentos Diseño Sistema) y con ellos extraer requisitos o casos de uso relevantes; otro puede coger ese output y transformar esa información a casos de pruebas, como Gherkin (Scenarios (Given,When,And,Then)); y otro puede coger esos casos de prueba en dicho lenguaje para inyectarlos dentro KiwiTCMS a través de su API.
 
 La propuesta se plantea como un prototipo controlado, de manera que sea posible comprobar su viabilidad técnica y valorar su utilidad dentro de un contexto real.
+
+---
+
+[← Volver al Índice](../README.md)
