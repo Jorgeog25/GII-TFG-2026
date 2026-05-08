@@ -151,11 +151,11 @@ Permite liberar una mesa ocupada una vez que el ticket asociado ha sido cobrado 
 
 ## Analisis de Clases
 
-![Diagrama de Diseño1](/Estudiantes/daniel-puente/Capitulo-3/imagenes/diagramaDiseño1.png)
+![Diagrama de Diseño1](/Estudiantes/daniel-puente/Capitulo-3/imagenes/DiagramaDiseño1.svg)
 
-![Diagrama de Diseño2](/Estudiantes/daniel-puente/Capitulo-3/imagenes/diagramaDiseño2.png)
+![Diagrama de Diseño2](/Estudiantes/daniel-puente/Capitulo-3/imagenes/DiagramaDiseño2.svg)
 
-![Diagrama de Diseño3](/Estudiantes/daniel-puente/Capitulo-3/imagenes/diagramaDiseño3.png)
+![Diagrama de Diseño3](/Estudiantes/daniel-puente/Capitulo-3/imagenes/diagramaDiseño3.svg)
 
 
 El diagrama de clases de diseño muestra la organización interna del backend en controladores, servicios y modelos, siguiendo una separación clara de responsabilidades. Los controladores gestionan las peticiones HTTP y delegan la lógica de negocio en los servicios, que son el núcleo funcional del sistema y coordinan tanto el acceso a los modelos como la comunicación en tiempo real y el registro de auditoría.
