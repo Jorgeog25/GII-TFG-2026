@@ -203,18 +203,19 @@ El sistema se estructura en cuatro capas principales: frontend, backend API, tie
 
 Los modelos de persistencia se implementan mediante Mongoose sobre MongoDB, definiendo esquemas con referencias entre documentos. Esta elección permite trasladar el diseño lógico a una estructura documental flexible sin perder validaciones ni coherencia funcional.
 
+
 | Modelo | Campos principales | Relaciones |
 |---|---|---|
 | `Usuario` | nombre, email, passwordHash, rol, activo, intentosFallidos, bloqueadoHasta | Referenciado por `Comanda`, `Ticket` y `LogAuditoria`. |
 | `Zona` | nombre, descripcion | Relacionada con `Mesa` y `Reserva`. |
-| `Mesa` | numero, estado, zona_id, comanda_activa_id | Referencia a `Zona` y opcionalmente a `Comanda`. |
-| `Comanda` | mesa_id, camarero_id, estado, creadaEn | Referencia a `Mesa` y `Usuario`. |
-| `LineaComanda` | comanda_id, plato_id, tarifa_menu_id, cantidad, observaciones, estado, esMenu | Referencia a `Comanda`, `Plato` y opcionalmente a `TarifaMenu`. |
+| `Mesa` | numero, estado, zona_id, comanda_activa_id | Referencia a `Zona`. Asociación activa con `Comanda` durante el servicio. |
+| `Comanda` | mesa_id, camarero_id, estado, creadaEn,  | Referencia a `Mesa` y `Usuario`. Compuesta por varias `LineaComanda`. |
+| `LineaComanda` | comanda_id, plato_id, tarifa_menu_id, cantidad, observaciones,alergenos, estado, esMenu | Referencia a `Comanda` y `Plato`. Asociación con `TarifaMenu` condicionada al campo `esMenu`. |
 | `Plato` | nombre, precio, categoria, disponible, disponibleEnMenu | Referenciado por `LineaComanda`. |
-| `TarifaMenu` | tipo, modalidad, precio, vigente | Referenciado opcionalmente por `LineaComanda`. |
-| `Ticket` | comanda_id, camarero_id, total, estado, creadoEn, cobradoEn, cobradoPor | Referencia a `Comanda` y `Usuario`. |
-| `Reserva` | nombreCliente, telefono, comensales, fecha, mesa_id, zona_id, estado | Referencia a `Mesa` y `Zona`. |
-| `LogAuditoria` | accion, usuario_id, entidadAfectada, entidadId, timestamp | Referencia a `Usuario`. |
+| `TarifaMenu` | tipo, modalidad, precio, vigente | Asociado a `LineaComanda` cuando el plato pertenece al menú del día. |
+| `Ticket` | comanda_id, total, estado, fechaCreacion, fechaCobro, cobradoPor | Referencia a `Comanda` y `Usuario`. |
+| `Reserva` | nombreCliente, telefono, comensales, fecha, hora, mesa_id, zona_id, estado | Referencia a `Mesa` y `Zona`. |
+| `LogAuditoria` | accion, usuario_id, entidadAfectada, entidadId, detalles, timestamp | Referencia a `Usuario`. |
 
 ### Ejemplo de esquema Mongoose
 
