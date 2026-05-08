@@ -1,4 +1,4 @@
-@startuml guardarResultados
+@startuml GuardarResultados
 
 skinparam linetype polyline
 

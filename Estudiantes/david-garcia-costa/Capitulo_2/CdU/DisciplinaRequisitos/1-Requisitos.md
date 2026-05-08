@@ -14,21 +14,21 @@ El sistema debe permitir introducir documentacion funcional en formato texto lib
 
 El sistema debe permitir asociar la documentacion introducida a un proyecto cuando dicha asociacion no este disponible inicialmente.
 
-## RF04. Consulta de documentacion registrada
+## RF04. Gestion de documentacion registrada
 
-El sistema debe permitir consultar las referencias de la documentacion funcional asociada a un proyecto.
+El sistema debe permitir consultar referencias, listar, consultar, actualizar y eliminar documentacion funcional registrada.
 
 ## RF05. Gestion de casos de uso locales
 
-El sistema debe permitir extraer, listar, consultar, crear, actualizar y eliminar casos de uso locales.
+El sistema debe permitir listar, consultar, crear, actualizar y eliminar casos de uso locales.
 
 ## RF06. Gestion de requisitos funcionales locales
 
-El sistema debe permitir extraer, listar, consultar, crear, actualizar y eliminar requisitos funcionales locales.
+El sistema debe permitir listar, consultar, crear, actualizar y eliminar requisitos funcionales locales.
 
-## RF07. Generacion de escenarios Gherkin
+## RF07. Gestion de escenarios Gherkin
 
-El sistema debe permitir generar y listar escenarios Gherkin a partir de casos de uso y requisitos funcionales.
+El sistema debe permitir listar, crear, consultar, actualizar y eliminar escenarios Gherkin asociados al proyecto.
 
 ## RF08. Gestion de borradores
 
@@ -44,7 +44,7 @@ El sistema debe permitir buscar y ver casos de prueba en Kiwi TCMS.
 
 ## RF11. Gestion de sesiones de trabajo
 
-El sistema debe permitir seleccionar sesiones existentes y crear nuevas sesiones para continuar o iniciar el trabajo en un contexto diferenciado.
+El sistema debe permitir seleccionar sesiones existentes, crear nuevas sesiones y eliminar sesiones para continuar, iniciar o depurar el trabajo en un contexto diferenciado.
 
 ## RF12. Almacenamiento de resultados
 

@@ -1,0 +1,51 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+title Controladores - app
+
+package "controllers" {
+
+  class AuthController
+  class SessionController
+  class DocumentationController
+  class UseCaseController
+  class RequirementController
+  class GherkinController
+  class DraftController
+}
+
+package "services" {
+
+  class AuthService
+  class SessionService
+  class DocumentationService
+  class GherkinService
+  class IdentifierService
+  class TraceabilityService
+  class ManualKiwiService
+}
+
+AuthController --> AuthService
+
+SessionController --> SessionService
+
+DocumentationController --> DocumentationService
+DocumentationController --> SessionService
+
+UseCaseController --> SessionService
+UseCaseController --> IdentifierService
+
+RequirementController --> SessionService
+RequirementController --> IdentifierService
+RequirementController --> TraceabilityService
+
+GherkinController --> GherkinService
+GherkinController --> SessionService
+GherkinController --> TraceabilityService
+
+DraftController --> SessionService
+DraftController --> ManualKiwiService
+
+@enduml

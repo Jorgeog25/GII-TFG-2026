@@ -1,0 +1,41 @@
+@startuml ConsultarDocumentacion
+
+skinparam linetype polyline
+
+state consultarDocumentacion as "consultarDocumentacion()" {
+    state " " as SeleccionandoDocumento
+    state " " as RecuperandoDetalle
+    state " " as MostrandoContenido
+
+    [*] -[#green]-> SeleccionandoDocumento
+    note on link
+    Se selecciona un documento para consulta
+    end note
+
+    SeleccionandoDocumento -[#green]-> RecuperandoDetalle
+    note on link
+    <b>Sistema</b> recupera contenido y metadatos
+    end note
+
+    RecuperandoDetalle -[#green]-> MostrandoContenido
+    note on link
+    <b>Sistema</b> prepara la vista detallada
+    end note
+
+    MostrandoContenido -[#green]-> [*]
+    note on link
+    Se muestra la documentacion seleccionada
+    end note
+}
+
+consultarDocumentacion -[#green]-> DOCUMENTACION_ABIERTA
+note on link
+completarConsulta()
+end note
+
+consultarDocumentacion -[#red]-> DOCUMENTACION_NO_ENCONTRADA
+note on link
+rechazarConsulta()
+end note
+
+@enduml

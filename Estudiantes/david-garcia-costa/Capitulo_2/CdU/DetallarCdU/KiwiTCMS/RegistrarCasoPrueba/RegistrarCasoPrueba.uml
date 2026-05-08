@@ -1,4 +1,4 @@
-@startuml registrarCasoPrueba
+@startuml RegistrarCasoPrueba
 
 skinparam linetype polyline
 

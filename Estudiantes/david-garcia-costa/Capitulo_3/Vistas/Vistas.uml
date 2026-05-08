@@ -1,0 +1,55 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+title Vistas - app
+
+package "views" {
+
+  class LoginView
+  class SessionsView
+  class DocumentationView
+  class WorkflowModeView
+  class UseCasesRequirementsView
+  class GherkinScenariosView
+  class DraftsView
+  class AutomaticModeView
+}
+
+package "controllers" {
+
+  class AuthController
+  class SessionController
+  class DocumentationController
+  class UseCaseController
+  class RequirementController
+  class GherkinController
+  class DraftController
+}
+
+LoginView ..> AuthController : auth
+
+SessionsView --> SessionController : sesiones
+
+DocumentationView --> DocumentationController : documentación
+DocumentationView --> SessionController : contexto sesión
+
+WorkflowModeView --> SessionController : modo manual / automático
+
+UseCasesRequirementsView --> UseCaseController : casos de uso
+UseCasesRequirementsView --> RequirementController : requisitos funcionales
+UseCasesRequirementsView --> DocumentationController : documento fuente
+
+GherkinScenariosView --> GherkinController : escenarios
+GherkinScenariosView --> UseCaseController : consultar UC
+GherkinScenariosView --> RequirementController : consultar RF
+
+DraftsView --> DraftController : borradores
+DraftsView --> UseCaseController : consultar UC
+DraftsView --> RequirementController : consultar RF
+DraftsView --> GherkinController : consultar escenarios
+
+AutomaticModeView --> SessionController : handoff agente
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml CdU_Tecnico
+left to right direction
+
+actor Tecnico
+
+    
+    usecase "Ver solicitudes" as VerSolicitudes
+
+
+Tecnico --> VerSolicitudes
+
+@enduml

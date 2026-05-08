@@ -1,4 +1,4 @@
-@startuml crearRequisitoFuncional
+@startuml CrearRequisitosFuncionales
 
 skinparam linetype polyline
 

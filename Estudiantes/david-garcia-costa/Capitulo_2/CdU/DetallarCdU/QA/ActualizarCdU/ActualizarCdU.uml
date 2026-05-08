@@ -1,4 +1,4 @@
-@startuml actualizarCasoUso
+@startuml ActualizarCdU
 
 skinparam linetype polyline
 

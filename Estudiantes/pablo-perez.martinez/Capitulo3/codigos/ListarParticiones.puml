@@ -1,0 +1,20 @@
+@startuml ListarParticiones
+top to bottom direction
+
+actor Responsable
+
+package "ListarParticiones()" {
+
+  rectangle "PerformanceSplitState" as PerformanceSplitState
+
+  rectangle "Performance" as Performance
+
+  PerformanceSplitState-[hidden]-> Performance
+
+  PerformanceSplitState--> Performance: nuevaParticion(SplitId)
+
+}
+
+Responsable--> PerformanceSplitState: abrir(SelectorParticion)
+
+@enduml

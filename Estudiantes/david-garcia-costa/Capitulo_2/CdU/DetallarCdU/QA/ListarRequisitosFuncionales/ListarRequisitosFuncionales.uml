@@ -1,4 +1,4 @@
-@startuml listarRequisitosFuncionales
+@startuml ListarRequisitosFuncionales
 
 skinparam linetype polyline
 

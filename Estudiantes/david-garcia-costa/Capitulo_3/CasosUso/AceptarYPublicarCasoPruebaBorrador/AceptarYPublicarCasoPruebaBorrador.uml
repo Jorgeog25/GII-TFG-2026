@@ -1,0 +1,35 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+title CU-06 - Aceptar y publicar caso de prueba
+
+package "Vista" {
+  class DraftsView
+}
+
+package "Controlador" {
+  class DraftController
+}
+
+package "Servicio" {
+  class ManualKiwiService
+}
+
+package "Modelo" {
+  class Draft
+}
+
+package "Sistema externo" {
+  class KiwiTCMS
+}
+
+DraftsView --> DraftController : POST /api/drafts/:id/publish
+DraftController --> Draft : obtener borrador
+DraftController --> ManualKiwiService : publishDraftToKiwi()
+ManualKiwiService --> KiwiTCMS : Auth.login
+ManualKiwiService --> KiwiTCMS : TestCase.create
+DraftController --> Draft : guardar kiwiCaseId
+
+@enduml

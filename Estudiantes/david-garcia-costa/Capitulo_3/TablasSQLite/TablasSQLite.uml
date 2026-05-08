@@ -1,0 +1,15 @@
+@startuml
+skinparam databaseBorderColor black
+skinparam shadowing false
+
+title Tablas internas runtime ADK - SQLite
+
+database "SQLite\nsessions.db" as db {
+  rectangle "sessions" as s1
+  rectangle "events" as s2
+  rectangle "app_states" as s3
+  rectangle "user_states" as s4
+  rectangle "adk_internal_metadata" as s5
+}
+
+@enduml

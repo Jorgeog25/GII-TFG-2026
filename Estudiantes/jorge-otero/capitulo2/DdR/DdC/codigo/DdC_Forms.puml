@@ -1,0 +1,10 @@
+@startuml DdC_Forms
+
+top to bottom direction
+
+rectangle "Microsoft Forms" as Forms
+rectangle "Sistema de Automatización" as Sistema
+
+Forms --> Sistema : Recibir formulario
+
+@enduml

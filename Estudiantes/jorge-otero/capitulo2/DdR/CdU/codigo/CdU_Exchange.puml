@@ -1,0 +1,12 @@
+@startuml CdU_Exchange
+left to right direction
+
+actor "Exchange Online" as Exchange
+
+    
+    usecase "Recibir solicitud" as RecibirSolicitud
+
+
+Exchange --> RecibirSolicitud
+
+@enduml

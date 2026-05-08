@@ -1,0 +1,40 @@
+@startuml ModeloDatos
+
+entity Numero {
+  * numero : String <<PK>>
+  --
+  numero_INT : Integer
+  tipo : String
+  provincia : String
+  tecnico : String
+  eecc : String
+  total_consultas : Integer
+}
+
+entity Formulario {
+  * id : Integer <<PK>>
+  --
+  id_form : Integer
+  tipo : String
+  numero : String <<FK>>
+  estado : String
+  fecha_entrada : Date
+  fecha_resolucion : Date
+  tipo_peticionario : String
+  motivo_reclamacionTiempo : String
+  motivo_FaltaPrevisionTiempo : String
+  motivo_desacuerdo : String
+  explicacion : String
+  documentacion : String
+  info_adicional : String
+}
+
+entity TotalEmail {
+  * id : Integer <<PK>>
+  --
+  intencion : String
+  fecha_entrada : Date
+}
+Numero "1" --- "0..*" Formulario
+
+@enduml

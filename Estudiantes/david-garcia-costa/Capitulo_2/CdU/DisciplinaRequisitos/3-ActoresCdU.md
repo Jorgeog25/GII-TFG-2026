@@ -8,7 +8,7 @@ En el sistema se identifican dos actores principales:
 
 ![Actores](/Estudiantes/david-garcia-costa/Capitulo_2/CdU/ActoresIndividuales/Actores.svg)
 
-- **Ingeniero de QA (Quality Assurance)**: actor principal del sistema, responsable de iniciar y controlar el flujo de trabajo. A partir de la documentacion del proyecto, utiliza el sistema para seleccionar o crear sesiones de trabajo, extraer casos de uso y requisitos funcionales, generar escenarios Gherkin, crear y revisar borradores, aceptar y publicar casos de prueba en Kiwi TCMS, y guardar los resultados obtenidos.
+- **Ingeniero de QA (Quality Assurance)**: actor principal del sistema, responsable de iniciar y controlar el flujo de trabajo. A partir de la documentacion del proyecto, utiliza el sistema para introducir documentacion funcional, asociarla a proyectos, consultar y mantener la documentacion registrada, seleccionar, crear y eliminar sesiones de trabajo, crear casos de uso y requisitos funcionales, gestionar escenarios Gherkin, crear y revisar borradores, aceptar y publicar casos de prueba en Kiwi TCMS, y guardar los resultados obtenidos.
 - **Kiwi TCMS**: sistema externo con el que se integra la solucion, encargado de recibir y registrar los casos de prueba publicados. Tambien proporciona funcionalidades de consulta para buscar y visualizar casos de prueba existentes.
 
 ---

@@ -1,0 +1,11 @@
+@startuml
+
+[*] --> LISTAR_PARTICIÓN : navegación a pestaña rendimiento
+
+LISTAR_PARTICIÓN  --> LISTAR_PARTICIONES
+
+LISTAR_PARTICIONES  --> LISTAR_PARTICIÓN  
+
+LISTAR_PARTICIÓN  --> [*]
+
+@enduml

@@ -1,4 +1,4 @@
-@startuml cerrarSesion
+@startuml CerrarSesion
 
 skinparam linetype polyline
 

@@ -1,4 +1,4 @@
-@startuml introducirDocumentacionFuncional
+@startuml IntroducirDocumentacion
 
 skinparam linetype polyline
 

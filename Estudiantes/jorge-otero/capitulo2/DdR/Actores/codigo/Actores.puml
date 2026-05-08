@@ -2,19 +2,26 @@
 
 left to right direction
 
-actor Cliente
 actor Tecnico
-
-note right of Cliente
-**Cliente**:
-Inicia el ciclo mediante solicitudes
-y recibe respuestas
-end note
+actor "Exchange Online" as Exchange
+actor "Microsoft Forms" as Forms
 
 note right of Tecnico
-**Tecnico**:
-Se encarga de ver los formularios 
-pendientes y resolverlos
+**Técnico**:
+Consulta los formularios pendientes,
+gestiona las solicitudes y actualiza su estado
+end note
+
+note right of Exchange
+**Exchange Online**:
+Servicio de correo que genera eventos
+cuando se recibe un nuevo mensaje
+end note
+
+note right of Forms
+**Microsoft Forms**:
+Servicio de formularios que genera eventos
+cuando un formulario es completado
 end note
 
 @enduml

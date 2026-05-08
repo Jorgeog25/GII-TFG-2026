@@ -1,4 +1,4 @@
-@startuml consultarReferenciasDocumentacionProyecto
+@startuml ConsultarReferenciasDocumentacionProyecto
 
 skinparam linetype polyline
 

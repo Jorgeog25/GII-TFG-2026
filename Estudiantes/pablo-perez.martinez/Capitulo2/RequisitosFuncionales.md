@@ -8,7 +8,7 @@ La solución debe cubrir los siguientes requisitos funcionales:
 - Cálculo de indicadores: disponibilidad, calidad y rendimiento.
 - Cálculo del OEE.
 - Generar y presentar gráficos de los resultados.
-- Consultar lista de particiones de la orden.
+- Listar particiones de la orden.
 - Elegir partición para la que mostrar información.
 
 
@@ -16,15 +16,15 @@ La solución debe cubrir los siguientes requisitos funcionales:
 ## Especificación de requisitos funcionales
 |Código | Descripción |
 |:---:|:---|
-|RF01 | Obtención de datos de planificación. |
-|RF02 | Obtención de los datos reales de producción. |
+|RF01 | Obtención de datos de planificación de la partición. |
+|RF02 | Obtención de los datos reales de producción de la partición. |
 |RF03 | Cálculo de disponibilidad a partir de información de tiempos. |
 |RF04 | Cálculo de rendimiento a partir de información de tiempos. |
 |RF05 | Cálculo de calidad a partir de información de cantidades producidas y rechazos. |
-|RF06 | Cálculo de OEE a partir de disponibilidad, rendimiento y calidad. |
+|RF06 | Cálculo del OEE a partir de disponibilidad, rendimiento y calidad. |
 |RF07 | Generar gráficos de los resultados. |
 |RF08 | Presentar gráficos de los resultados. |
-|RF09 | Consultar lista de particiones de la orden. |
+|RF09 | Listar particiones de la orden. |
 |RF10 | Elegir partición para la que mostrar información. |
 
 

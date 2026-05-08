@@ -1,0 +1,16 @@
+@startuml
+skinparam databaseBorderColor black
+skinparam shadowing false
+
+title Tablas externas - MariaDB Kiwi TCMS
+
+database "MariaDB\nKiwi TCMS" as db {
+  rectangle "testcases_testcase" as t1
+  rectangle "testcases_historicaltestcase" as t2
+  rectangle "testcases_category" as t3
+  rectangle "testcases_testcasestatus" as t4
+  rectangle "management_priority" as t5
+  rectangle "management_tag" as t6
+}
+
+@enduml

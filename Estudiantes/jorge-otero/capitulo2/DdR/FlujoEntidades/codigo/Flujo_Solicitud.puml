@@ -2,11 +2,37 @@
 
 top to bottom direction
 
-[*] --> Enviada : CA1 Enviar solicitud
+[*] --> Recibida : CA1 Recibir solicitud
 
-Enviada --> En_Proceso : Sistema consulta BBDD y procesa solicitud
+Recibida --> Evaluar_Asunto : Sistema analiza asunto del correo
 
-En_Proceso --> Respondida : CA2 Recibir respuesta
+Evaluar_Asunto --> Actualizar_Formulario : "TE:FORMRESUELTO"
+Evaluar_Asunto --> Mover_Documentacion_Acuerdo : "Envío documentación acuerdo"
+Evaluar_Asunto --> Mover_Documentacion_Desacuerdo : "Envío documentación desacuerdo"
+Evaluar_Asunto --> Analizar_Solicitud : Otro caso
+
+Actualizar_Formulario --> [*] : Sistema actualiza estado
+
+Mover_Documentacion_Acuerdo --> [*] : Sistema mueve a carpeta
+
+Mover_Documentacion_Desacuerdo --> [*] : Sistema mueve a carpeta
+
+Analizar_Solicitud --> Analizar_Intencion
+
+Analizar_Intencion --> Buscar_Datos_BBDD : Consulta / Reclamación / Peligro con número
+Analizar_Intencion --> Respuesta_Plantilla : Otra intención
+
+Buscar_Datos_BBDD --> Datos_Recibidos : Sistema consulta BBDD
+
+Datos_Recibidos --> Procesar_Datos
+
+Procesar_Datos --> Generar_Respuesta
+
+Generar_Respuesta --> Registrar_Solicitud
+
+Registrar_Solicitud --> Respondida : Sistema envía respuesta
+
+Respuesta_Plantilla --> Respondida : Sistema envía correo plantilla
 
 Respondida --> [*]
 

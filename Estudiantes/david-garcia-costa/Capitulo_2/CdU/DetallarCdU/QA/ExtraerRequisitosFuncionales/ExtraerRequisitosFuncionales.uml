@@ -1,4 +1,4 @@
-@startuml extraerRequisitosFuncionales
+@startuml ExtraerRequisitosFuncionales
 
 skinparam linetype polyline
 

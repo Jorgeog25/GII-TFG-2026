@@ -11,36 +11,42 @@ rectangle "Sistema" {
   usecase "Introducir\ndocumentacion funcional" as CU03
   usecase "Asociar documentacion\na proyecto" as CU04
   usecase "Consultar referencias de documentacion\nde un proyecto" as CU05
+  usecase "Listar\ndocumentacion" as CU06
+  usecase "Consultar\ndocumentacion" as CU07
+  usecase "Actualizar\ndocumentacion" as CU08
+  usecase "Eliminar\ndocumentacion" as CU09
 
-  usecase "Extraer\ncasos de uso" as CU06
-  usecase "Listar\ncasos de uso" as CU07
-  usecase "Consultar\ncaso de uso" as CU08
-  usecase "Crear\ncaso de uso" as CU09
-  usecase "Actualizar\ncaso de uso" as CU10
-  usecase "Eliminar\ncaso de uso" as CU11
+  usecase "Listar\ncasos de uso" as CU10
+  usecase "Consultar\ncaso de uso" as CU11
+  usecase "Crear\ncaso de uso" as CU12
+  usecase "Actualizar\ncaso de uso" as CU13
+  usecase "Eliminar\ncaso de uso" as CU14
 
-  usecase "Extraer requisitos\nfuncionales" as CU12
-  usecase "Listar requisitos\nfuncionales" as CU13
-  usecase "Consultar requisito\nfuncional" as CU14
-  usecase "Crear requisito\nfuncional" as CU15
-  usecase "Actualizar requisito\nfuncional" as CU16
-  usecase "Eliminar requisito\nfuncional" as CU17
+  usecase "Listar requisitos\nfuncionales" as CU15
+  usecase "Consultar requisito\nfuncional" as CU16
+  usecase "Crear requisito\nfuncional" as CU17
+  usecase "Actualizar requisito\nfuncional" as CU18
+  usecase "Eliminar requisito\nfuncional" as CU19
 
-  usecase "Generar escenarios\nGherkin" as CU18
-  usecase "Listar escenarios\nGherkin" as CU19
+  usecase "Listar escenarios\nGherkin" as CU20
+  usecase "Crear escenario\nGherkin" as CU21
+  usecase "Consultar escenario\nGherkin" as CU22
+  usecase "Actualizar escenario\nGherkin" as CU23
+  usecase "Eliminar escenario\nGherkin" as CU24
 
-  usecase "Crear borrador de\ncaso de prueba" as CU20
-  usecase "Listar\nborradores" as CU21
-  usecase "Consultar\nborrador" as CU22
-  usecase "Anadir feedback\na borrador" as CU23
-  usecase "Rechazar\nborrador" as CU24
-  usecase "Aceptar y publicar caso de prueba\na partir de borrador" as CU25
+  usecase "Crear borrador de\ncaso de prueba" as CU25
+  usecase "Listar\nborradores" as CU26
+  usecase "Consultar\nborrador" as CU27
+  usecase "Anadir feedback\na borrador" as CU28
+  usecase "Rechazar\nborrador" as CU29
+  usecase "Aceptar y publicar caso de prueba\na partir de borrador" as CU30
 
-  usecase "Buscar casos de prueba\nen Kiwi TCMS" as CU26
-  usecase "Ver caso de prueba\nen Kiwi TCMS" as CU27
-  usecase "Seleccionar\nsesiones" as CU28
-  usecase "Crear nueva\nsesion" as CU29
-  usecase "Guardar\nresultados" as CU30
+  usecase "Buscar casos de prueba\nen Kiwi TCMS" as CU31
+  usecase "Ver caso de prueba\nen Kiwi TCMS" as CU32
+  usecase "Seleccionar\nsesiones" as CU33
+  usecase "Crear nueva\nsesion" as CU34
+  usecase "Eliminar\nsesion" as CU35
+  usecase "Guardar\nresultados" as CU36
 }
 
 QA --> CU01
@@ -73,5 +79,10 @@ QA --> CU27
 QA --> CU28
 QA --> CU29
 QA --> CU30
-
+QA --> CU31
+QA --> CU32
+QA --> CU33
+QA --> CU34
+QA --> CU35
+QA --> CU36
 @enduml
