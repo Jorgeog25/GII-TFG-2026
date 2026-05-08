@@ -1,4 +1,4 @@
-@startuml rechazarBorrador
+@startuml RechazarBorrador
 
 skinparam linetype polyline
 

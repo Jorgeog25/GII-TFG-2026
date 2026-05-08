@@ -1,0 +1,29 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+title CU-03 - Crear requisito funcional
+
+package "Vista" {
+  class UseCasesRequirementsView
+}
+
+package "Controlador" {
+  class RequirementController
+}
+
+package "Modelo" {
+  class FunctionalRequirement
+  class UseCase
+  class Documentation
+  class Session
+}
+
+UseCasesRequirementsView --> RequirementController : POST /api/requirements
+RequirementController --> FunctionalRequirement : crear requisito funcional
+RequirementController --> UseCase : ucId
+RequirementController --> Documentation : documentationId
+RequirementController --> Session : sessionId
+
+@enduml

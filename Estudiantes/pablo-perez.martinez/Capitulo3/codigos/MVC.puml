@@ -1,0 +1,45 @@
+@startuml MVC
+top to bottom direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+package "Modelos" {
+
+  package "API" {
+    class ManufacturingInfoServiceV2
+  }
+
+  package "vt-master-api" {
+    class ManufacturingInfoService
+  }
+
+  class AssignmentSplit
+  class ManufacturingIndexInfoBySplitDto
+  class ManufacturingInfoBySplitToCalculateDto
+}
+
+package "Vistas" {
+  class Performance
+  class PerformanceSpeedCurve
+  class PerformanceInfoGraphs
+  class PerformanceTable
+  class PerformanceSplitState
+}
+
+package "Controladores" {
+  package "API" {
+    class "ManufacturingInfoController" as ApiManufacturingInfoController
+  }
+  package "vt-master-api" {
+    class "ManufacturingInfoController" as MasterManufacturingInfoController
+  }
+}
+
+' Forzar alineación vertical usando clases específicas
+
+AssignmentSplit-[hidden]down-> Performance
+
+ManufacturingInfoBySplitToCalculateDto -[hidden]down-> MasterManufacturingInfoController
+
+
+@enduml

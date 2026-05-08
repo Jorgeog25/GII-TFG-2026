@@ -1,4 +1,4 @@
-@startuml iniciarSesion
+@startuml IniciarSesion
 
 skinparam linetype polyline
 

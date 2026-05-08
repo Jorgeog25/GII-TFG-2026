@@ -1,0 +1,41 @@
+@startuml EliminarSesion
+
+skinparam linetype polyline
+
+state eliminarSesion as "eliminarSesion()" {
+    state " " as SeleccionandoSesion
+    state " " as ConfirmandoEliminacion
+    state " " as EliminandoArtefactos
+
+    [*] -[#green]-> SeleccionandoSesion
+    note on link
+    Se selecciona la sesion a eliminar
+    end note
+
+    SeleccionandoSesion -[#green]-> ConfirmandoEliminacion
+    note on link
+    El sistema solicita confirmacion al actor
+    end note
+
+    ConfirmandoEliminacion -[#green]-> EliminandoArtefactos
+    note on link
+    <b>Sistema</b> elimina la sesion y sus artefactos asociados
+    end note
+
+    EliminandoArtefactos -[#green]-> [*]
+    note on link
+    El sistema confirma la eliminacion
+    end note
+}
+
+eliminarSesion -[#green]-> SESIONES_ACTUALIZADAS
+note on link
+completarEliminacion()
+end note
+
+eliminarSesion -[#red]-> SESION_ACTIVA
+note on link
+rechazarEliminacion()
+end note
+
+@enduml

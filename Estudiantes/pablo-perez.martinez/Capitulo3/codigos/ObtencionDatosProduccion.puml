@@ -1,0 +1,30 @@
+@startuml ObtencionDatos
+top to bottom direction
+
+actor Responsable
+
+package "ObtenerDatosProducción()" {
+
+  rectangle "Performance" as Performance
+  rectangle "ManufacturingInfoController_vt-master-api" as MasterController
+  rectangle "ManufacturingInfoService_vt-master-api" as MasterService
+  rectangle "ManufacturingInfoController_API" as ApiController
+  rectangle "ManufacturingInfoService_API" as ApiService
+
+  rectangle "Obtención de datos" as ObtencionDatos
+
+  MasterController-[hidden]-> MasterService
+  MasterService-[hidden]-> ApiController
+  ApiController-[hidden]-> ApiService
+  ApiService-[hidden]-> ObtencionDatos
+
+  Performance--> MasterController: enviarSolicitud(ManufacturingInfoBySplitToCalculateDto)
+  MasterController--> MasterService: enviarSolicitud(ManufacturingInfoBySplitToCalculateDto)
+  MasterService--> ApiController: enviarSolicitud(ManufacturingInfoBySplitToCalculateDto)
+  ApiController--> ApiService: enviarSolicitud(ManufacturingInfoBySplitToCalculateDto)
+  ApiService--> ObtencionDatos: crearManufacturingIndexInfoBySplitDto(datos)
+}
+
+Responsable--> Performance
+
+@enduml

@@ -44,8 +44,16 @@
 
 ##### [Prototipos](./Capitulo2/Prototipos.md)
 
+##### [Descripción de las gráficas](./Capitulo2/DescripcionGraficas.md)
+
 
 #### 4. Análisis y diseño
+
+##### [Análisis](./Capitulo3/Analisis.md)
+
+##### [Diseño](./Capitulo3/Diseño.md)
+
+
 
 #### 5. Descripción de la solución propuesta
 

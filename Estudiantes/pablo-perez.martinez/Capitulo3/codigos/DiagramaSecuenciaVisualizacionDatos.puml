@@ -1,0 +1,12 @@
+@startuml ObtenerDatosProduccion
+title Diagrama de Secuencia - Visualización de datos
+
+actor "Responsable de producción" as Responsable
+participant "VT\nPerformance" as Frontend
+
+Responsable -> Frontend : abrirPerformance()
+
+Frontend -> Responsable : muestraGraficas()
+
+
+@enduml

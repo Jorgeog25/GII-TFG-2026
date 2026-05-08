@@ -1,0 +1,8 @@
+@startuml ObtenerDatosProduccion
+title Diagrama de Secuencia - Cálculo del OEE
+
+participant "API-ManufacturingInfoServiceV2" as APIService
+
+APIService-> APIService: getIndexInfo(info)
+
+@enduml

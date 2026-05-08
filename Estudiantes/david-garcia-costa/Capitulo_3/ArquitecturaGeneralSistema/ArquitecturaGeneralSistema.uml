@@ -1,0 +1,47 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Arquitectura general del sistema
+
+actor IngenieroQA
+
+frame "Frontend SPA" {
+  component "HTML / CSS / JavaScript"
+}
+
+frame "Backend MVC\nNode.js + Express" {
+  component "API REST"
+}
+
+frame "Servicio IA Multiagente\nFastAPI + Google ADK" {
+  component "Sistema de agentes"
+}
+
+database "MongoDB" as MongoDB
+database "SQLite" as SQLite
+database "MariaDB\nKiwi TCMS" as MariaDB
+
+cloud "OpenAI / LiteLLM" as LLM
+cloud "Kiwi TCMS\nXML-RPC API" as Kiwi
+
+IngenieroQA --> "HTML / CSS / JavaScript"
+
+"HTML / CSS / JavaScript" --> "API REST" : HTTP REST
+
+"API REST" --> "Sistema de agentes" : handoff HTTP
+
+"API REST" --> MongoDB : guardar documentación
+
+"API REST" --> Kiwi : XML-RPC\npublicación manual\nTestCase.create(...)
+
+"Sistema de agentes" --> MongoDB : recuperar documentación
+"Sistema de agentes" --> SQLite : sesiones ADK
+
+"Sistema de agentes" --> LLM
+
+"Sistema de agentes" --> Kiwi : XML-RPC\npublicación automática\nTestCase.create(...)
+
+Kiwi --> MariaDB : persistencia TCMS
+
+@enduml

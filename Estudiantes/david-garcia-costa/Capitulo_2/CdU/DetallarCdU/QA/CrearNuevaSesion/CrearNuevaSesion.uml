@@ -1,4 +1,4 @@
-@startuml crearNuevaSesion
+@startuml CrearNuevaSesion
 
 skinparam linetype polyline
 

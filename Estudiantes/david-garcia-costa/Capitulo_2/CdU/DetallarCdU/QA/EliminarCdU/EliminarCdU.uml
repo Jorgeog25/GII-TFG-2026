@@ -1,4 +1,4 @@
-@startuml eliminarCasoUso
+@startuml EliminarCdU
 
 skinparam linetype polyline
 

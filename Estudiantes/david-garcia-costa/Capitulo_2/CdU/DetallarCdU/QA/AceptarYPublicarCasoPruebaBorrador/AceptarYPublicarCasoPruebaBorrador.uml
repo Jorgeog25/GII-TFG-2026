@@ -1,4 +1,4 @@
-@startuml aceptarYPublicarCasoPruebaBorrador
+@startuml AceptarYPublicarCasoPruebaBorrador
 
 skinparam linetype polyline
 

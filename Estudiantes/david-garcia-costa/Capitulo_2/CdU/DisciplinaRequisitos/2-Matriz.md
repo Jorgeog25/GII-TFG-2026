@@ -11,35 +11,41 @@
 - CDU03. IntroducirDocumentacion
 - CDU04. AsociarDocumentacionAProyecto
 - CDU05. ConsultarReferenciasDocumentacionProyecto
-- CDU06. ExtraerCdU
-- CDU07. ListarCdU
-- CDU08. ConsultarCdU
-- CDU09. CrearCdU
-- CDU10. ActualizarCdU
-- CDU11. EliminarCdU
-- CDU12. ExtraerRequisitosFuncionales
-- CDU13. ListarRequisitosFuncionales
-- CDU14. ConsultarRequisitoFuncional
-- CDU15. CrearRequisitoFuncional
-- CDU16. ActualizarRequisitoFuncional
-- CDU17. EliminarRequisitoFuncional
-- CDU18. GenerarEscenariosGherkin
-- CDU19. ListarEscenariosGherkin
-- CDU20. CrearBorradorCasoPrueba
-- CDU21. ListarBorradores
-- CDU22. ConsultarBorrador
-- CDU23. AnadirFeedbackBorrador
-- CDU24. RechazarBorrador
-- CDU25. AceptarYPublicarCasoPruebaDesdeBorrador
-- CDU26. BuscarCasoPruebaKiwi
-- CDU27. VerCasoPruebaKiwi
-- CDU28. SeleccionarSesiones
-- CDU29. CrearNuevaSesion
-- CDU30. GuardarResultados
+- CDU06. ListarDocumentacion
+- CDU07. ConsultarDocumentacion
+- CDU08. ActualizarDocumentacion
+- CDU09. EliminarDocumentacion
+- CDU10. ListarCdU
+- CDU11. ConsultarCdU
+- CDU12. CrearCdU
+- CDU13. ActualizarCdU
+- CDU14. EliminarCdU
+- CDU15. ListarRequisitosFuncionales
+- CDU16. ConsultarRequisitoFuncional
+- CDU17. CrearRequisitoFuncional
+- CDU18. ActualizarRequisitoFuncional
+- CDU19. EliminarRequisitoFuncional
+- CDU20. ListarEscenariosGherkin
+- CDU21. CrearEscenarioGherkin
+- CDU22. ConsultarEscenarioGherkin
+- CDU23. ActualizarEscenarioGherkin
+- CDU24. EliminarEscenarioGherkin
+- CDU25. CrearBorradorCasoPrueba
+- CDU26. ListarBorradores
+- CDU27. ConsultarBorrador
+- CDU28. AnadirFeedbackBorrador
+- CDU29. RechazarBorrador
+- CDU30. AceptarYPublicarCasoPruebaDesdeBorrador
+- CDU31. BuscarCasoPruebaKiwi
+- CDU32. VerCasoPruebaKiwi
+- CDU33. SeleccionarSesiones
+- CDU34. CrearNuevaSesion
+- CDU35. EliminarSesion
+- CDU36. GuardarResultados
 
 ### Actor Kiwi TCMS
 
-- CDU31. RegistrarCasoPruebaKiwi
+- CDU37. RegistrarCasoPruebaKiwi
 
 ## Matriz de requisitos funcionales
 
@@ -49,122 +55,127 @@
 | RF01 | Autenticacion | CDU02. CerrarSesion |
 | RF02 | Introduccion de documentacion funcional | CDU03. IntroducirDocumentacion |
 | RF03 | Asociacion de documentacion a proyecto | CDU04. AsociarDocumentacionAProyecto |
-| RF04 | Consulta de documentacion registrada | CDU05. ConsultarReferenciasDocumentacionProyecto |
-| RF05 | Gestion de casos de uso locales | CDU06. ExtraerCdU |
-| RF05 | Gestion de casos de uso locales | CDU07. ListarCdU |
-| RF05 | Gestion de casos de uso locales | CDU08. ConsultarCdU |
-| RF05 | Gestion de casos de uso locales | CDU09. CrearCdU |
-| RF05 | Gestion de casos de uso locales | CDU10. ActualizarCdU |
-| RF05 | Gestion de casos de uso locales | CDU11. EliminarCdU |
-| RF06 | Gestion de requisitos funcionales locales | CDU12. ExtraerRequisitosFuncionales |
-| RF06 | Gestion de requisitos funcionales locales | CDU13. ListarRequisitosFuncionales |
-| RF06 | Gestion de requisitos funcionales locales | CDU14. ConsultarRequisitoFuncional |
-| RF06 | Gestion de requisitos funcionales locales | CDU15. CrearRequisitoFuncional |
-| RF06 | Gestion de requisitos funcionales locales | CDU16. ActualizarRequisitoFuncional |
-| RF06 | Gestion de requisitos funcionales locales | CDU17. EliminarRequisitoFuncional |
-| RF07 | Generacion de escenarios Gherkin | CDU18. GenerarEscenariosGherkin |
-| RF07 | Generacion de escenarios Gherkin | CDU19. ListarEscenariosGherkin |
-| RF08 | Gestion de borradores | CDU20. CrearBorradorCasoPrueba |
-| RF08 | Gestion de borradores | CDU21. ListarBorradores |
-| RF08 | Gestion de borradores | CDU22. ConsultarBorrador |
-| RF08 | Gestion de borradores | CDU23. AnadirFeedbackBorrador |
-| RF08 | Gestion de borradores | CDU24. RechazarBorrador |
-| RF09 | Aceptacion y publicacion de casos de prueba | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
-| RF09 | Aceptacion y publicacion de casos de prueba | CDU31. RegistrarCasoPruebaKiwi |
-| RF10 | Consulta en Kiwi TCMS | CDU26. BuscarCasoPruebaKiwi |
-| RF10 | Consulta en Kiwi TCMS | CDU27. VerCasoPruebaKiwi |
-| RF11 | Gestion de sesiones de trabajo | CDU28. SeleccionarSesiones |
-| RF11 | Gestion de sesiones de trabajo | CDU29. CrearNuevaSesion |
-| RF12 | Almacenamiento de resultados | CDU30. GuardarResultados |
+| RF04 | Gestion de documentacion registrada | CDU05. ConsultarReferenciasDocumentacionProyecto |
+| RF04 | Gestion de documentacion registrada | CDU06. ListarDocumentacion |
+| RF04 | Gestion de documentacion registrada | CDU07. ConsultarDocumentacion |
+| RF04 | Gestion de documentacion registrada | CDU08. ActualizarDocumentacion |
+| RF04 | Gestion de documentacion registrada | CDU09. EliminarDocumentacion |
+| RF05 | Gestion de casos de uso locales | CDU10. ListarCdU |
+| RF05 | Gestion de casos de uso locales | CDU11. ConsultarCdU |
+| RF05 | Gestion de casos de uso locales | CDU12. CrearCdU |
+| RF05 | Gestion de casos de uso locales | CDU13. ActualizarCdU |
+| RF05 | Gestion de casos de uso locales | CDU14. EliminarCdU |
+| RF06 | Gestion de requisitos funcionales locales | CDU15. ListarRequisitosFuncionales |
+| RF06 | Gestion de requisitos funcionales locales | CDU16. ConsultarRequisitoFuncional |
+| RF06 | Gestion de requisitos funcionales locales | CDU17. CrearRequisitoFuncional |
+| RF06 | Gestion de requisitos funcionales locales | CDU18. ActualizarRequisitoFuncional |
+| RF06 | Gestion de requisitos funcionales locales | CDU19. EliminarRequisitoFuncional |
+| RF07 | Gestion de escenarios Gherkin | CDU20. ListarEscenariosGherkin |
+| RF07 | Gestion de escenarios Gherkin | CDU21. CrearEscenarioGherkin |
+| RF07 | Gestion de escenarios Gherkin | CDU22. ConsultarEscenarioGherkin |
+| RF07 | Gestion de escenarios Gherkin | CDU23. ActualizarEscenarioGherkin |
+| RF07 | Gestion de escenarios Gherkin | CDU24. EliminarEscenarioGherkin |
+| RF08 | Gestion de borradores | CDU25. CrearBorradorCasoPrueba |
+| RF08 | Gestion de borradores | CDU26. ListarBorradores |
+| RF08 | Gestion de borradores | CDU27. ConsultarBorrador |
+| RF08 | Gestion de borradores | CDU28. AnadirFeedbackBorrador |
+| RF08 | Gestion de borradores | CDU29. RechazarBorrador |
+| RF09 | Aceptacion y publicacion de casos de prueba | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RF09 | Aceptacion y publicacion de casos de prueba | CDU37. RegistrarCasoPruebaKiwi |
+| RF10 | Consulta en Kiwi TCMS | CDU31. BuscarCasoPruebaKiwi |
+| RF10 | Consulta en Kiwi TCMS | CDU32. VerCasoPruebaKiwi |
+| RF11 | Gestion de sesiones de trabajo | CDU33. SeleccionarSesiones |
+| RF11 | Gestion de sesiones de trabajo | CDU34. CrearNuevaSesion |
+| RF11 | Gestion de sesiones de trabajo | CDU35. EliminarSesion |
+| RF12 | Almacenamiento de resultados | CDU36. GuardarResultados |
+| RF13 | Trazabilidad funcional | CDU03. IntroducirDocumentacion |
 | RF13 | Trazabilidad funcional | CDU04. AsociarDocumentacionAProyecto |
 | RF13 | Trazabilidad funcional | CDU05. ConsultarReferenciasDocumentacionProyecto |
-| RF13 | Trazabilidad funcional | CDU06. ExtraerCdU |
-| RF13 | Trazabilidad funcional | CDU08. ConsultarCdU |
-| RF13 | Trazabilidad funcional | CDU12. ExtraerRequisitosFuncionales |
-| RF13 | Trazabilidad funcional | CDU14. ConsultarRequisitoFuncional |
-| RF13 | Trazabilidad funcional | CDU18. GenerarEscenariosGherkin |
-| RF13 | Trazabilidad funcional | CDU20. CrearBorradorCasoPrueba |
-| RF13 | Trazabilidad funcional | CDU22. ConsultarBorrador |
-| RF13 | Trazabilidad funcional | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
-| RF13 | Trazabilidad funcional | CDU26. BuscarCasoPruebaKiwi |
-| RF13 | Trazabilidad funcional | CDU27. VerCasoPruebaKiwi |
-| RF13 | Trazabilidad funcional | CDU28. SeleccionarSesiones |
-| RF13 | Trazabilidad funcional | CDU29. CrearNuevaSesion |
-| RF13 | Trazabilidad funcional | CDU30. GuardarResultados |
+| RF13 | Trazabilidad funcional | CDU07. ConsultarDocumentacion |
+| RF13 | Trazabilidad funcional | CDU11. ConsultarCdU |
+| RF13 | Trazabilidad funcional | CDU16. ConsultarRequisitoFuncional |
+| RF13 | Trazabilidad funcional | CDU20. ListarEscenariosGherkin |
+| RF13 | Trazabilidad funcional | CDU22. ConsultarEscenarioGherkin |
+| RF13 | Trazabilidad funcional | CDU25. CrearBorradorCasoPrueba |
+| RF13 | Trazabilidad funcional | CDU27. ConsultarBorrador |
+| RF13 | Trazabilidad funcional | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RF13 | Trazabilidad funcional | CDU31. BuscarCasoPruebaKiwi |
+| RF13 | Trazabilidad funcional | CDU32. VerCasoPruebaKiwi |
+| RF13 | Trazabilidad funcional | CDU33. SeleccionarSesiones |
+| RF13 | Trazabilidad funcional | CDU34. CrearNuevaSesion |
+| RF13 | Trazabilidad funcional | CDU36. GuardarResultados |
 
 ## Matriz de requisitos no funcionales
 
 | Requisito | Titulo | Caso de uso |
 |---|---|---|
-| RNF01 | Consistencia | CDU06. ExtraerCdU |
-| RNF01 | Consistencia | CDU09. CrearCdU |
-| RNF01 | Consistencia | CDU10. ActualizarCdU |
-| RNF01 | Consistencia | CDU12. ExtraerRequisitosFuncionales |
-| RNF01 | Consistencia | CDU15. CrearRequisitoFuncional |
-| RNF01 | Consistencia | CDU16. ActualizarRequisitoFuncional |
-| RNF01 | Consistencia | CDU18. GenerarEscenariosGherkin |
-| RNF01 | Consistencia | CDU20. CrearBorradorCasoPrueba |
-| RNF01 | Consistencia | CDU23. AnadirFeedbackBorrador |
-| RNF01 | Consistencia | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF01 | Consistencia | CDU08. ActualizarDocumentacion |
+| RNF01 | Consistencia | CDU12. CrearCdU |
+| RNF01 | Consistencia | CDU13. ActualizarCdU |
+| RNF01 | Consistencia | CDU17. CrearRequisitoFuncional |
+| RNF01 | Consistencia | CDU18. ActualizarRequisitoFuncional |
+| RNF01 | Consistencia | CDU21. CrearEscenarioGherkin |
+| RNF01 | Consistencia | CDU23. ActualizarEscenarioGherkin |
+| RNF01 | Consistencia | CDU25. CrearBorradorCasoPrueba |
+| RNF01 | Consistencia | CDU28. AnadirFeedbackBorrador |
+| RNF01 | Consistencia | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF02 | Trazabilidad | CDU03. IntroducirDocumentacion |
 | RNF02 | Trazabilidad | CDU04. AsociarDocumentacionAProyecto |
 | RNF02 | Trazabilidad | CDU05. ConsultarReferenciasDocumentacionProyecto |
-| RNF02 | Trazabilidad | CDU06. ExtraerCdU |
-| RNF02 | Trazabilidad | CDU08. ConsultarCdU |
-| RNF02 | Trazabilidad | CDU12. ExtraerRequisitosFuncionales |
-| RNF02 | Trazabilidad | CDU14. ConsultarRequisitoFuncional |
-| RNF02 | Trazabilidad | CDU18. GenerarEscenariosGherkin |
-| RNF02 | Trazabilidad | CDU20. CrearBorradorCasoPrueba |
-| RNF02 | Trazabilidad | CDU22. ConsultarBorrador |
-| RNF02 | Trazabilidad | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
-| RNF02 | Trazabilidad | CDU26. BuscarCasoPruebaKiwi |
-| RNF02 | Trazabilidad | CDU27. VerCasoPruebaKiwi |
-| RNF02 | Trazabilidad | CDU28. SeleccionarSesiones |
-| RNF02 | Trazabilidad | CDU29. CrearNuevaSesion |
-| RNF02 | Trazabilidad | CDU30. GuardarResultados |
+| RNF02 | Trazabilidad | CDU07. ConsultarDocumentacion |
+| RNF02 | Trazabilidad | CDU11. ConsultarCdU |
+| RNF02 | Trazabilidad | CDU16. ConsultarRequisitoFuncional |
+| RNF02 | Trazabilidad | CDU20. ListarEscenariosGherkin |
+| RNF02 | Trazabilidad | CDU22. ConsultarEscenarioGherkin |
+| RNF02 | Trazabilidad | CDU25. CrearBorradorCasoPrueba |
+| RNF02 | Trazabilidad | CDU27. ConsultarBorrador |
+| RNF02 | Trazabilidad | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF02 | Trazabilidad | CDU31. BuscarCasoPruebaKiwi |
+| RNF02 | Trazabilidad | CDU32. VerCasoPruebaKiwi |
+| RNF02 | Trazabilidad | CDU33. SeleccionarSesiones |
+| RNF02 | Trazabilidad | CDU34. CrearNuevaSesion |
+| RNF02 | Trazabilidad | CDU36. GuardarResultados |
 | RNF03 | Usabilidad | CDU01. IniciarSesion |
 | RNF03 | Usabilidad | CDU02. CerrarSesion |
 | RNF03 | Usabilidad | CDU03. IntroducirDocumentacion |
-| RNF03 | Usabilidad | CDU04. AsociarDocumentacionAProyecto |
-| RNF03 | Usabilidad | CDU05. ConsultarReferenciasDocumentacionProyecto |
-| RNF03 | Usabilidad | CDU07. ListarCdU |
-| RNF03 | Usabilidad | CDU08. ConsultarCdU |
-| RNF03 | Usabilidad | CDU13. ListarRequisitosFuncionales |
-| RNF03 | Usabilidad | CDU14. ConsultarRequisitoFuncional |
-| RNF03 | Usabilidad | CDU19. ListarEscenariosGherkin |
-| RNF03 | Usabilidad | CDU21. ListarBorradores |
-| RNF03 | Usabilidad | CDU22. ConsultarBorrador |
-| RNF03 | Usabilidad | CDU26. BuscarCasoPruebaKiwi |
-| RNF03 | Usabilidad | CDU27. VerCasoPruebaKiwi |
-| RNF03 | Usabilidad | CDU28. SeleccionarSesiones |
-| RNF03 | Usabilidad | CDU29. CrearNuevaSesion |
-| RNF03 | Usabilidad | CDU30. GuardarResultados |
-| RNF04 | Integracion | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
-| RNF04 | Integracion | CDU26. BuscarCasoPruebaKiwi |
-| RNF04 | Integracion | CDU27. VerCasoPruebaKiwi |
-| RNF04 | Integracion | CDU31. RegistrarCasoPruebaKiwi |
+| RNF03 | Usabilidad | CDU06. ListarDocumentacion |
+| RNF03 | Usabilidad | CDU07. ConsultarDocumentacion |
+| RNF03 | Usabilidad | CDU10. ListarCdU |
+| RNF03 | Usabilidad | CDU11. ConsultarCdU |
+| RNF03 | Usabilidad | CDU15. ListarRequisitosFuncionales |
+| RNF03 | Usabilidad | CDU16. ConsultarRequisitoFuncional |
+| RNF03 | Usabilidad | CDU20. ListarEscenariosGherkin |
+| RNF03 | Usabilidad | CDU22. ConsultarEscenarioGherkin |
+| RNF03 | Usabilidad | CDU26. ListarBorradores |
+| RNF03 | Usabilidad | CDU27. ConsultarBorrador |
+| RNF03 | Usabilidad | CDU31. BuscarCasoPruebaKiwi |
+| RNF03 | Usabilidad | CDU32. VerCasoPruebaKiwi |
+| RNF03 | Usabilidad | CDU33. SeleccionarSesiones |
+| RNF03 | Usabilidad | CDU34. CrearNuevaSesion |
+| RNF03 | Usabilidad | CDU36. GuardarResultados |
+| RNF04 | Integracion | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF04 | Integracion | CDU31. BuscarCasoPruebaKiwi |
+| RNF04 | Integracion | CDU32. VerCasoPruebaKiwi |
+| RNF04 | Integracion | CDU37. RegistrarCasoPruebaKiwi |
 | RNF05 | Mantenibilidad | CDU03. IntroducirDocumentacion |
 | RNF05 | Mantenibilidad | CDU04. AsociarDocumentacionAProyecto |
-| RNF05 | Mantenibilidad | CDU06. ExtraerCdU |
-| RNF05 | Mantenibilidad | CDU09. CrearCdU |
-| RNF05 | Mantenibilidad | CDU12. ExtraerRequisitosFuncionales |
-| RNF05 | Mantenibilidad | CDU15. CrearRequisitoFuncional |
-| RNF05 | Mantenibilidad | CDU18. GenerarEscenariosGherkin |
-| RNF05 | Mantenibilidad | CDU20. CrearBorradorCasoPrueba |
-| RNF05 | Mantenibilidad | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
-| RNF05 | Mantenibilidad | CDU30. GuardarResultados |
+| RNF05 | Mantenibilidad | CDU08. ActualizarDocumentacion |
+| RNF05 | Mantenibilidad | CDU12. CrearCdU |
+| RNF05 | Mantenibilidad | CDU17. CrearRequisitoFuncional |
+| RNF05 | Mantenibilidad | CDU21. CrearEscenarioGherkin |
+| RNF05 | Mantenibilidad | CDU25. CrearBorradorCasoPrueba |
+| RNF05 | Mantenibilidad | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF05 | Mantenibilidad | CDU36. GuardarResultados |
 | RNF06 | Extensibilidad | CDU03. IntroducirDocumentacion |
 | RNF06 | Extensibilidad | CDU04. AsociarDocumentacionAProyecto |
-| RNF06 | Extensibilidad | CDU06. ExtraerCdU |
-| RNF06 | Extensibilidad | CDU12. ExtraerRequisitosFuncionales |
-| RNF06 | Extensibilidad | CDU18. GenerarEscenariosGherkin |
-| RNF06 | Extensibilidad | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF06 | Extensibilidad | CDU21. CrearEscenarioGherkin |
+| RNF06 | Extensibilidad | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF07 | Identificacion de contexto | CDU03. IntroducirDocumentacion |
 | RNF07 | Identificacion de contexto | CDU04. AsociarDocumentacionAProyecto |
 | RNF07 | Identificacion de contexto | CDU05. ConsultarReferenciasDocumentacionProyecto |
-| RNF07 | Identificacion de contexto | CDU06. ExtraerCdU |
-| RNF07 | Identificacion de contexto | CDU12. ExtraerRequisitosFuncionales |
-| RNF07 | Identificacion de contexto | CDU18. GenerarEscenariosGherkin |
-| RNF07 | Identificacion de contexto | CDU20. CrearBorradorCasoPrueba |
-| RNF07 | Identificacion de contexto | CDU25. AceptarYPublicarCasoPruebaDesdeBorrador |
-| RNF07 | Identificacion de contexto | CDU28. SeleccionarSesiones |
-| RNF07 | Identificacion de contexto | CDU29. CrearNuevaSesion |
-| RNF07 | Identificacion de contexto | CDU30. GuardarResultados |
+| RNF07 | Identificacion de contexto | CDU20. ListarEscenariosGherkin |
+| RNF07 | Identificacion de contexto | CDU25. CrearBorradorCasoPrueba |
+| RNF07 | Identificacion de contexto | CDU30. AceptarYPublicarCasoPruebaDesdeBorrador |
+| RNF07 | Identificacion de contexto | CDU33. SeleccionarSesiones |
+| RNF07 | Identificacion de contexto | CDU34. CrearNuevaSesion |
+| RNF07 | Identificacion de contexto | CDU36. GuardarResultados |

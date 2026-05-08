@@ -8,45 +8,61 @@ QA interactua con el Sistema principal y tambien
 directamente con Kiwi TCMS, que es un sistema externo
 end note
 
-QA -> SISTEMA : Introducir documentacion funcional
+== Operaciones sobre documentacion ==
+
+QA -> SISTEMA : Listar documentacion
+SISTEMA --> QA : Lista de documentacion
 note right of SISTEMA
-CU03 - Introducir documentacion funcional
+CU05 - Listar documentacion
 end note
 
-alt Documentacion sin proyecto asociado
+QA -> SISTEMA : Consultar documentacion
+SISTEMA --> QA : Detalle de documentacion
+note right of SISTEMA
+CU06 - Consultar documentacion
+end note
+
+alt Documentacion requiere ajuste
+  QA -> SISTEMA : Actualizar documentacion
+  SISTEMA --> QA : Documentacion actualizada
+  note right of SISTEMA
+  CU07 - Actualizar documentacion
+  end note
+else Documentacion descartada
+  QA -> SISTEMA : Eliminar documentacion
+  SISTEMA --> QA : Documentacion eliminada
+  note right of SISTEMA
+  CU08 - Eliminar documentacion
+  end note
+else Documentacion sin proyecto asociado
   SISTEMA --> QA : Solicitar proyecto asociado
   QA -> SISTEMA : Asociar documentacion a proyecto
   note right of SISTEMA
-  CU04 - Asociar documentacion a proyecto
+  CU03 - Asociar documentacion a proyecto
   end note
 end
 
 SISTEMA -> SISTEMA : Registrar y asociar documentacion
 SISTEMA -> SISTEMA : Extraer casos de uso
 note right of SISTEMA
-CU06 - Extraer casos de uso
+CU09 - Extraer casos de uso
 end note
 
 SISTEMA -> SISTEMA : Extraer requisitos funcionales
 note right of SISTEMA
-CU12 - Extraer requisitos funcionales
-end note
-
-SISTEMA -> SISTEMA : Generar escenarios Gherkin
-note right of SISTEMA
-CU18 - Generar escenarios Gherkin
+CU15 - Extraer requisitos funcionales
 end note
 
 SISTEMA -> SISTEMA : Crear borrador de caso de prueba
 note right of SISTEMA
-CU20 - Crear borrador de caso de prueba
+CU26 - Crear borrador de caso de prueba
 end note
 
 SISTEMA -> SISTEMA : Guardar casos de uso
 SISTEMA -> SISTEMA : Guardar requisitos funcionales
 SISTEMA -> SISTEMA : Guardar borrador
 note right of SISTEMA
-CU30 - Guardar resultados
+CU37 - Guardar resultados
 (casos de uso, requisitos funcionales,
 y borradores)
 end note
@@ -56,7 +72,7 @@ SISTEMA --> QA : Mostrar resultados generados ( UC+RF+Escenarios Gherkin)
 QA -> SISTEMA : Consultar referencias de documentacion de un proyecto
 SISTEMA --> QA : Mostrar referencias de documentacion
 note right of SISTEMA
-CU05 - Consultar referencias de documentacion de un proyecto
+CU04 - Consultar referencias de documentacion de un proyecto
 end note
 
 == Operaciones sobre casos de uso ==
@@ -64,35 +80,35 @@ end note
 QA -> SISTEMA : Listar casos de uso
 SISTEMA --> QA : Lista de casos de uso
 note right of SISTEMA
-CU07 - Listar casos de uso
+CU10 - Listar casos de uso
 end note
 
 QA -> SISTEMA : Consultar caso de uso
 SISTEMA --> QA : Detalle de caso de uso
 note right of SISTEMA
-CU08 - Consultar caso de uso
+CU11 - Consultar caso de uso
 end note
 
 QA -> SISTEMA : Crear caso de uso
 SISTEMA -> SISTEMA : Guardar caso de uso
 SISTEMA --> QA : Caso de uso creado
 note right of SISTEMA
-CU09 - Crear caso de uso
-CU30 - Guardar resultados
+CU12 - Crear caso de uso
+CU37 - Guardar resultados
 end note
 
 QA -> SISTEMA : Actualizar caso de uso
 SISTEMA -> SISTEMA : Guardar cambios
 SISTEMA --> QA : Caso de uso actualizado
 note right of SISTEMA
-CU10 - Actualizar caso de uso
-CU30 - Guardar resultados
+CU13 - Actualizar caso de uso
+CU37 - Guardar resultados
 end note
 
 QA -> SISTEMA : Eliminar caso de uso
 SISTEMA --> QA : Caso de uso eliminado
 note right of SISTEMA
-CU11 - Eliminar caso de uso
+CU14 - Eliminar caso de uso
 end note
 
 == Operaciones sobre requisitos funcionales ==
@@ -100,35 +116,35 @@ end note
 QA -> SISTEMA : Listar requisitos funcionales
 SISTEMA --> QA : Lista de requisitos funcionales
 note right of SISTEMA
-CU13 - Listar requisitos funcionales
+CU16 - Listar requisitos funcionales
 end note
 
 QA -> SISTEMA : Consultar requisito funcional
 SISTEMA --> QA : Detalle de requisito funcional
 note right of SISTEMA
-CU14 - Consultar requisito funcional
+CU17 - Consultar requisito funcional
 end note
 
 QA -> SISTEMA : Crear requisito funcional
 SISTEMA -> SISTEMA : Guardar requisito funcional
 SISTEMA --> QA : Requisito funcional creado
 note right of SISTEMA
-CU15 - Crear requisito funcional
-CU30 - Guardar resultados
+CU18 - Crear requisito funcional
+CU37 - Guardar resultados
 end note
 
 QA -> SISTEMA : Actualizar requisito funcional
 SISTEMA -> SISTEMA : Guardar cambios
 SISTEMA --> QA : Requisito funcional actualizado
 note right of SISTEMA
-CU16 - Actualizar requisito funcional
-CU30 - Guardar resultados
+CU19 - Actualizar requisito funcional
+CU37 - Guardar resultados
 end note
 
 QA -> SISTEMA : Eliminar requisito funcional
 SISTEMA --> QA : Requisito funcional eliminado
 note right of SISTEMA
-CU17 - Eliminar requisito funcional
+CU20 - Eliminar requisito funcional
 end note
 
 == Operaciones sobre escenarios Gherkin ==
@@ -136,7 +152,33 @@ end note
 QA -> SISTEMA : Listar escenarios Gherkin
 SISTEMA --> QA : Lista de escenarios Gherkin
 note right of SISTEMA
-CU19 - Listar escenarios Gherkin
+CU21 - Listar escenarios Gherkin
+end note
+
+QA -> SISTEMA : Crear escenario Gherkin
+SISTEMA --> QA : Escenario Gherkin creado
+note right of SISTEMA
+CU22 - Crear escenario Gherkin
+CU37 - Guardar resultados
+end note
+
+QA -> SISTEMA : Consultar escenario Gherkin
+SISTEMA --> QA : Detalle de escenario Gherkin
+note right of SISTEMA
+CU23 - Consultar escenario Gherkin
+end note
+
+QA -> SISTEMA : Actualizar escenario Gherkin
+SISTEMA --> QA : Escenario Gherkin actualizado
+note right of SISTEMA
+CU24 - Actualizar escenario Gherkin
+CU37 - Guardar resultados
+end note
+
+QA -> SISTEMA : Eliminar escenario Gherkin
+SISTEMA --> QA : Escenario Gherkin eliminado
+note right of SISTEMA
+CU25 - Eliminar escenario Gherkin
 end note
 
 == Operaciones sobre borradores ==
@@ -144,34 +186,34 @@ end note
 QA -> SISTEMA : Listar borradores
 SISTEMA --> QA : Lista de borradores
 note right of SISTEMA
-CU21 - Listar borradores
+CU27 - Listar borradores
 end note
 
 QA -> SISTEMA : Consultar borrador
 SISTEMA --> QA : Mostrar borrador
 note right of SISTEMA
-CU22 - Consultar borrador
+CU28 - Consultar borrador
 end note
 
 alt Anadir feedback
   QA -> SISTEMA : Anadir feedback a borrador
   note right of SISTEMA
-  CU23 - Anadir feedback a borrador
+  CU29 - Anadir feedback a borrador
   end note
 
   SISTEMA -> SISTEMA : Registrar feedback
   SISTEMA -> SISTEMA : Generar nueva version del borrador
   SISTEMA --> QA : Mostrar borrador actualizado
   note right of SISTEMA
-  CU23 - Anadir feedback a borrador
-  CU30 - Guardar resultados
+  CU29 - Anadir feedback a borrador
+  CU37 - Guardar resultados
   end note
 
 else Borrador rechazado
   QA -> SISTEMA : Rechazar borrador
   SISTEMA --> QA : Borrador rechazado
   note right of SISTEMA
-  CU24 - Rechazar borrador
+  CU30 - Rechazar borrador
   end note
 
 else Borrador aceptado y publicado
@@ -181,8 +223,8 @@ else Borrador aceptado y publicado
   KIWI --> SISTEMA : Resultado publicacion
   SISTEMA --> QA : Caso de prueba publicado
   note right of SISTEMA
-  CU25 - Aceptar y publicar caso de prueba a partir de borrador
-  CU31 - Registrar caso de prueba en Kiwi TCMS
+  CU31 - Aceptar y publicar caso de prueba a partir de borrador
+  CU38 - Registrar caso de prueba en Kiwi TCMS
   end note
 end
 
@@ -191,14 +233,34 @@ end
 QA -> KIWI : Buscar casos de prueba en Kiwi TCMS
 KIWI --> QA : Lista de resultados
 note right of KIWI
-CU26 - Buscar casos de prueba en Kiwi TCMS
+CU32 - Buscar casos de prueba en Kiwi TCMS
 end note
 
 QA -> KIWI : Ver caso de prueba en Kiwi TCMS
 KIWI --> QA : Detalle de caso
 KIWI --> QA : Resultado final / estado
 note right of KIWI
-CU27 - Ver caso de prueba en Kiwi TCMS
+CU33 - Ver caso de prueba en Kiwi TCMS
+end note
+
+== Operaciones sobre sesiones ==
+
+QA -> SISTEMA : Seleccionar sesiones
+SISTEMA --> QA : Lista de sesiones
+note right of SISTEMA
+CU34 - Seleccionar sesiones
+end note
+
+QA -> SISTEMA : Crear nueva sesion
+SISTEMA --> QA : Sesion creada
+note right of SISTEMA
+CU35 - Crear nueva sesion
+end note
+
+QA -> SISTEMA : Eliminar sesion
+SISTEMA --> QA : Sesion eliminada
+note right of SISTEMA
+CU36 - Eliminar sesion
 end note
 
 @enduml

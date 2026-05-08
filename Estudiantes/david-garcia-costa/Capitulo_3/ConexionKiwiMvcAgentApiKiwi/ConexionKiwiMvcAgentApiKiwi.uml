@@ -1,0 +1,36 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Conexión app con Agent
+
+frame "app" {
+  component AutomaticModeView
+  component SessionController
+  component Session
+}
+
+frame "Agent\nFastAPI + Google ADK" {
+  component "POST /api/kiwi-mvc/handoff" as Handoff
+  component "Sesión ADK" as ADKSession
+  component "POST /run" as Run
+  component KiwiOrchestrator
+  component "get_kiwimvc_session_docs()" as MongoTool
+}
+
+database "MongoDB\nkiwi_mvc_manual" as MongoDB
+
+AutomaticModeView --> SessionController : POST /api/sessions/:id/handoff-to-agent
+SessionController --> Handoff : POST /api/kiwi-mvc/handoff
+
+Handoff --> ADKSession : crea sesión ADK
+Handoff --> Run : lanza ejecución\nsi run_immediately=true
+Run --> KiwiOrchestrator : ejecuta agente raíz
+
+KiwiOrchestrator --> MongoTool : source_session_id
+MongoTool --> MongoDB : find(documentations)
+MongoTool --> MongoDB : find_one(sessions)
+
+SessionController --> Session : guarda agent_session_id,\nagent_user_id, agent_app_name,\nhandoff_url
+
+@enduml
