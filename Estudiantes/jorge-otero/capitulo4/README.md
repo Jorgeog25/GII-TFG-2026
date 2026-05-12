@@ -194,5 +194,14 @@ SELECTCOLUMNS(
 ```
 Tras finalizar la consulta y antes de comprobar el sigueinte numero, se guardara en la tabla Numero el número, la empresa colaboradora ya traducida, la provincia, el técnico responsable y se hara un calculo de cuantas veces se ha consultado. 
 
-En caso de que esta consulta tambien este vacia. Se respondera con el sigueinte correo
+En caso de que esta consulta tambien este vacia. Se dirá que este numero no existe en las bases de datos y que se revise si es correcto. 
+
+Un ejemplo de la respuesta que daría ante una consulta sería
+
+![](./DescripcionSol/RespuestaCompleta.png)
+
+
+
+
+
 
