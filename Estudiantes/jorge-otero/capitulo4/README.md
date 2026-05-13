@@ -1,27 +1,42 @@
-# Descripción de la solución
+# Descripción del funcionamiento del sistema
 
-El proyecto se ha desarrollado con sistemas de Microsoft gracias a su compatibilidad con Exchange Online. 
+## Caso de Uso - Recibir Solicitud
 
-El funcionamiento es el siguiente. Al recibir un correo dirigido al buzon compartido VARIACIONES_PLANTA_EXTERIOR. Se dispara el trigger. Esta conexion entre Power Automate y Excahn ge Online es mediante el conector Office 365 Outlook. Se comprueba cada minuto. Este correo se procesa de la siguiente manera. Un json con los siguientes datos.
-![](./DescripcionSol/Trigger.png)
+El proyecto se ha desarrollado utilizando sistemas de Microsoft, aprovechando su compatibilidad con Exchange Online. En este flujo, el actor principal es Exchange Online, que activa el evento inicial del sistema cuando se recibe un correo electrónico. A partir de ese momento, el proceso se ejecuta automáticamente y el sistema genera la respuesta correspondiente según el caso detectado.
 
-Uno de los atributos es subject. Que se tliza para determinar el acto que se va a hacer con ese correo. 
+El funcionamiento es el siguiente: cuando se recibe un correo dirigido al buzón compartido **VARIACIONES_PLANTA_EXTERIOR**, se dispara el trigger del flujo. La conexión entre **Power Automate** y **Exchange Online** se realiza mediante el conector **Office 365 Outlook**, que comprueba el buzón cada minuto.
 
-Hay 4 casuisticsas trabajadas por un Switch 
-1. El asunto es **TE:FORMRESUELTO** determinado internamiente.Un técnico enviara este correo al buzón que actualizará el estado del formulario. 
+El correo recibido se procesa como un JSON que contiene distintos atributos. Uno de los más importantes es `subject`, que se utiliza para determinar la acción que debe realizarse con el correo.
 
-2. El asunto es **Documentacion Desacuerdo con la Solucion** enviado por un cliente para que el sistema mueva ese correo a la carpeta de Documentacion Desacuerdo. Que facilita al técnico trabjar esa documentacion.
+![Trigger](./DescripcionSol/Trigger.png)
 
-3. El asunto es **Documentacion Acuerdo** enviado tambien por un cliente. Se movera el correo a una carpeta para que el técnico lo trabaje. 
+El sistema contempla cuatro casuísticas principales mediante un bloque **Switch**:
 
-4. Un asunto diferente a los mencionados. Es el caso default.
+## 1. Caso `TE:FORMRESUELTO`
 
-El detalle del caso 4 es el siguiente:
+Asunto definido internamente. Un técnico envía este correo al buzón para actualizar el estado del formulario.
 
-Este correo pasa a ser analizado por un agente con prompt introducido para que conteste con un JSON con la intencion y todos los números de más de 4 cifras mencionados en el correo. Este agente está en Power Apps (herammienta de Micorsoft) que se conecta a traves de Microsoft Dataverse. 
+## 2. Caso `Documentacion Desacuerdo con la Solucion`
 
-**Ejemplo de JSON**
-``` 
+Correo enviado por un cliente. El sistema mueve el mensaje a la carpeta de documentación de desacuerdo, facilitando al técnico la gestión de dicha documentación.
+
+## 3. Caso `Documentacion Acuerdo`
+
+Correo enviado también por un cliente. El sistema mueve el mensaje a una carpeta específica para que el técnico pueda tratarlo posteriormente.
+
+## 4. Caso por defecto
+
+Corresponde a cualquier asunto diferente de los anteriores.
+
+## Detalle del caso por defecto
+
+Cuando el asunto no coincide con ninguno de los casos anteriores, el correo es analizado por un agente configurado mediante un prompt. Este agente devuelve un JSON con la intención del mensaje y todos los números de más de cuatro cifras mencionados en el correo.
+
+El agente está desarrollado en **Power Apps**, herramienta de Microsoft, y se conecta al flujo mediante **Microsoft Dataverse**.
+
+### Ejemplo de JSON devuelto
+
+```json
 {
   "intencion": "consulta",
   "numeros": [
@@ -32,24 +47,47 @@ Este correo pasa a ser analizado por un agente con prompt introducido para que c
 }
 ```
 
-Aqui se guarda el primer dato en el dataset de PowerBi. La conexion se crea con Power Bi connector que accede al Dataset semántico de Power Bi. Inicialmente se almacena en la tabla TotalEmai. Un ID unívoco junto con la intencion y la fecha actual. 
+A continuación, se almacena el primer dato en el dataset de **Power BI**. La conexión se realiza mediante el conector de Power BI, que accede al dataset semántico. Inicialmente, se guarda en la tabla `TotalEmail` un identificador único, junto con la intención detectada y la fecha actual.
 
-A continucación, se pasa a analizar la intención. Que da lugar a dos posibles situaciones.
+Después, se analiza la intención obtenida, lo que puede dar lugar a dos situaciones.
 
-1. La intencion es: separata, asesoramiento, canalizacion, peligro (sin número) o ajena. Todas estas situacione se responden con correos que informan que el buaon no se dedica a responder a esos casos y se desvia al lugar correcto. 
+# 1. Intenciones que no requieren consulta en base de datos
 
-Caso Ajena
-![](./DescripcionSol/IntencionAjena.png)
+Si la intención es:
 
-Caso Separata
-![](./DescripcionSol/IntencionSeparata.png)
+- `separata`
+- `asesoramiento`
+- `canalizacion`
+- `peligro` (sin número)
+- `ajena`
 
-2. En caso de que la intencion sea: reclamación, consulta o peligro (con número), se procede a consultar en base de datos y a procesar los datos recibidos.
+El sistema responde automáticamente con un correo informando de que el buzón no está destinado a atender ese tipo de solicitudes y redirige al remitente al canal correspondiente.
 
-Este paso, se hace a traves de if anidados porque se tratan de varias tablas. Además, los datosd e cada una son diferentes. 
+## Caso Ajena
 
-La primera que se consulta es la de Actuaciones. 
-```
+![Caso Ajena](./DescripcionSol/IntencionAjena.png)
+
+## Caso Separata
+
+![Caso Separata](./DescripcionSol/IntencionSeparata.png)
+
+# 2. Intenciones que requieren consulta en base de datos
+
+Si la intención es:
+
+- `reclamación`
+- `consulta`
+- `peligro` (con número)
+
+El sistema consulta las bases de datos disponibles y procesa la información obtenida.
+
+Este proceso se realiza mediante condiciones anidadas, ya que se consultan varias tablas y cada una contiene datos con estructuras diferentes.
+
+# Consulta sobre Actuaciones
+
+La primera consulta se realiza sobre la tabla de **Actuaciones**.
+
+```sql
 EVALUATE
 SELECTCOLUMNS(
     FILTER(
@@ -72,17 +110,26 @@ SELECTCOLUMNS(
 )
 ```
 
-Un ejemplo de como se trabja un dato en este caso sería el de provincia. En base de datos está guardado con un número. Entonces se comprueba el valor almacenado con el valor correspondiente 
+Esta consulta devuelve información como la siguiente:
 
-```
+![Respuesta Actuaciones](./DescripcionSol/RespuestaACT.png)
+
+## Traducción de provincia
+
+Por ejemplo, la provincia se almacena en base de datos mediante un código numérico. Posteriormente, dicho código se traduce al nombre correspondiente mediante una tabla de equivalencias.
+
+```text
 coalesce(
   variables('provincias')?[string(outputs('Run_a_query_against_a_dataset_ACT')?['body/firstTableRows']?[0]?['[cod_prov]'])],
   'Desconocida'
 )
 ```
-Las fases (todas las Fs...) se usan para calcular el estado del proyecto, tiempos etc. 
 
-```
+## Cálculo del estado del proyecto
+
+Las distintas fases del proyecto (`FaF`, `FaLF`, `FNmF`, `FeF`, `FvF`, `FPmF`, `FrF`, etc.) se utilizan para calcular el estado actual del expediente.
+
+```text
 if(
   or(
     not(empty(outputs('Run_a_query_against_a_dataset_ACT')?['body/firstTableRows']?[0]?['[FaF]'])),
@@ -128,11 +175,14 @@ if(
   )
 )
 ```
-El siguiente paso es ir formando el correo en funcion de los resultados obtenidos. En funcion del estado se dice una cosa u otra. Dando un correo diferente dependiendo de lo obtenido.
 
-En caso de que la respuesta de la consulta este vacia, se pasa a consultar para Wepes
+Una vez procesados los datos, el sistema construye automáticamente el correo de respuesta en función del estado obtenido.
 
-```
+# Consulta sobre WEPES
+
+Si la consulta anterior no devuelve resultados, el sistema consulta la base de datos de **WEPES**.
+
+```sql
 EVALUATE
 SELECTCOLUMNS(
     FILTER(
@@ -152,9 +202,11 @@ SELECTCOLUMNS(
 )
 ```
 
-Por último si esta consulta devuelve vacia, se comprueba para Petter
+# Consulta sobre PETTER
 
-```
+Si la consulta sobre WEPES también devuelve resultados vacíos, se realiza una última consulta sobre **PETTER**.
+
+```sql
 EVALUATE
 SELECTCOLUMNS(
     ADDCOLUMNS(
@@ -192,16 +244,145 @@ SELECTCOLUMNS(
     "EECC", [EECC]
 )
 ```
-Tras finalizar la consulta y antes de comprobar el sigueinte numero, se guardara en la tabla Numero el número, la empresa colaboradora ya traducida, la provincia, el técnico responsable y se hara un calculo de cuantas veces se ha consultado. 
 
-En caso de que esta consulta tambien este vacia. Se dirá que este numero no existe en las bases de datos y que se revise si es correcto. 
+# Registro de información procesada
 
-Un ejemplo de la respuesta que daría ante una consulta sería
+Tras finalizar la consulta y antes de comprobar el siguiente número, el sistema almacena en la tabla `Numero`:
 
-![](./DescripcionSol/RespuestaCompleta.png)
+- El número consultado.
+- La empresa colaboradora traducida.
+- La provincia.
+- El técnico responsable.
+- El número de veces que se ha consultado dicho identificador.
 
+# Caso sin resultados
 
+Si ninguna de las consultas devuelve resultados, el sistema informa en la respuesta de que el número indicado no existe en las bases de datos y solicita que se revise si es correcto.
 
+# Ejemplo de respuesta
 
+![Respuesta Numeros](./DescripcionSol/RespuestaNumeros.png)
 
+## Caso de uso - Recibir formulario
 
+El actor principal de este caso de uso es **Microsoft Forms**, ya que es el sistema encargado de registrar el envío del formulario y desencadenar automáticamente el flujo de procesamiento.
+
+En caso de que el cliente necesite adjuntar documentación, reclamar por exceso sobre la fecha prevista o reclamar sobre la solución propuesta, deberá rellenar un formulario desarrollado en **Microsoft Forms**.
+
+Una vez completado y enviado el formulario, se activa automáticamente el siguiente flujo de **Power Automate**, encargado de analizar la información recibida y ejecutar las acciones correspondientes.
+
+# Activación del flujo
+
+El flujo comienza mediante el trigger:
+
+- `When a new response is submitted`
+
+Este trigger pertenece al conector de **Microsoft Forms** y se encarga de detectar automáticamente cuándo un usuario envía una nueva respuesta en el formulario configurado.
+
+Internamente, el trigger mantiene una conexión permanente entre Microsoft Forms y Power Automate. Cada vez que un usuario pulsa el botón **Enviar** en el formulario, Microsoft Forms genera un evento que es recibido por Power Automate, iniciando así la ejecución automática del flujo.
+
+El trigger devuelve información básica relacionada con el envío realizado, principalmente:
+
+- Identificador del formulario.
+- Identificador único de la respuesta generada.
+- Fecha de envío.
+- Usuario que realizó la respuesta, si aplica.
+
+Un ejemplo simplificado de los datos recibidos por el trigger sería el siguiente:
+
+```json
+{
+  "formId": "f3b2f2aa-92f0-4f13-81ab-xxxxxxxx",
+  "responseId": "125",
+  "responder": "cliente@correo.com",
+  "submitDate": "2025-01-18T10:25:43Z"
+}
+```
+
+El dato más importante recibido es `responseId`, ya que permite recuperar posteriormente toda la información rellenada por el cliente dentro del formulario.
+
+# Obtención de datos del formulario
+
+Una vez activado el trigger, el flujo ejecuta la acción:
+
+- `Get response details`
+
+Esta acción utiliza el identificador `responseId` generado anteriormente para consultar directamente la respuesta almacenada en Microsoft Forms.
+
+En este punto, el sistema recupera todos los campos rellenados por el usuario, incluyendo:
+
+- Datos identificativos.
+- Número de expediente o actuación.
+- Tipo de solicitud.
+- Comentarios escritos por el cliente.
+- Respuesta seleccionada en preguntas de opción.
+- Archivos adjuntos, en caso de existir.
+
+La información se recibe estructurada en formato JSON, permitiendo posteriormente trabajar cada campo de manera independiente dentro de Power Automate.
+
+Un ejemplo simplificado de la respuesta obtenida sería:
+
+```json
+{
+  "responseId": "125",
+  "nombre": "Juan Pérez",
+  "correo": "cliente@correo.com",
+  "telefono": "600123123",
+  "numero_expediente": "23052900002",
+  "tipo_solicitud": "Desacuerdo con solucion",
+  "comentarios": "No estoy conforme con la solucion propuesta.",
+  "hay_documentacion": true,
+}
+```
+
+Gracias a esta estructura JSON, Power Automate puede acceder individualmente a cada dato utilizando expresiones dinámicas, condiciones y variables internas del flujo.
+
+# Comprobación de documentación
+
+Posteriormente, el flujo realiza una comprobación denominada:
+
+- `Hay Documentacion`
+
+Esta condición permite verificar si el cliente ha adjuntado documentación adicional.
+
+Después, el sistema evalúa si el cliente acepta la solución propuesta mediante la condición:
+
+- `Es aceptación de acuerdo`
+
+## Caso aceptación de acuerdo
+
+Si el cliente acepta la solución propuesta, el sistema ejecuta automáticamente las siguientes acciones:
+
+1. Envío de un correo electrónico desde el buzón compartido mediante:
+
+   - `Send an email from a shared mailbox (V2)`
+
+2. Actualización de variables internas del flujo para registrar el estado del expediente y el resultado del proceso.
+
+El correo enviado confirma la recepción de la aceptación y deja constancia del acuerdo alcanzado.
+
+## Caso desacuerdo con documentación
+
+Si el cliente indica desacuerdo con la solución propuesta y además adjunta documentación, el flujo accede a la condición:
+
+- `Es desacuerdo con documentacion`
+
+En este caso, el sistema realiza automáticamente las siguientes acciones:
+
+1. Envío de un correo desde el buzón compartido notificando la recepción de la reclamación y de la documentación aportada.
+
+2. Actualización de las variables internas necesarias para identificar el estado del proceso y facilitar posteriormente el trabajo del técnico responsable.
+
+Una vez finalizadas las validaciones y ejecutadas las acciones correspondientes, el flujo procede a almacenar toda la información procesada en la base de datos de **Power BI**.
+
+La conexión entre **Power Automate** y **Power BI** se realiza mediante el conector oficial de Power BI, que permite insertar información directamente sobre un dataset semántico previamente configurado.
+
+El almacenamiento de la información se realiza mediante la acción:
+
+- `Add a row into a table`
+
+Esta acción inserta automáticamente un nuevo registro en la tabla `Formulario` del dataset de Power BI.
+
+La tabla está configurada con un identificador autogenerado, funcionando de manera similar a una base de datos SQL con campos autoincrementales. Por ello, no es necesario obtener manualmente el último identificador almacenado, ya que Power BI genera automáticamente un ID único para cada nuevo registro insertado.
+
+Los datos almacenados corresponden a toda la información obtenida y procesada desde Microsoft Forms. Únicamente se insertan aquellos campos que han sido rellenados por el usuario durante el formulario. Los campos no informados se almacenan con valor `null`, permitiendo mantener una estructura homogénea dentro de la tabla `Formulario` del dataset de Power BI.
