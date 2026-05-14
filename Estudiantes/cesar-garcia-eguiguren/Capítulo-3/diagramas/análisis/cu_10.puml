@@ -1,0 +1,22 @@
+@startuml CU10-mostrarCatalogoMetricas-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PAGINA_METRICAS_ABIERTA" as Overview
+
+package "mostrarCatalogoMetricas()" {
+
+    rectangle #629EF9 "Metrics.jsx" as View
+    rectangle #b5bd68 "MetricsAPI" as API
+
+}
+
+rectangle #CDEBA5 ":CUn_CALCULAR_MÉTRICA_INDIVIDUAL" as CUn
+
+
+Overview -r-> View : mostrarCatalogoMetricas()
+
+View -d-> API : solicitarCalculo(metrica,parametros)
+
+API ..> CUn : <<include>>
+
+@enduml

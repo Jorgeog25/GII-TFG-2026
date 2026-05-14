@@ -1,0 +1,35 @@
+@startuml CU22-consultarProductividad-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":CATÁLOGO_METRICAS_ABIERTO" as Overview
+
+package "consultarProductividad()" {
+
+    rectangle #629EF9 "Metrics.jsx" as View
+    rectangle #b5bd68 "ProductivityService" as Service
+    rectangle #F2AC4E "ProductivityRepository" as Repo
+
+}
+
+rectangle #F2AC4E "Task" as TaskModel
+rectangle #F2AC4E "TaskStage" as StageModel
+rectangle #F2AC4E "Timesheet" as TimeModel
+
+rectangle #CDEBA5 ":SNAPSHOT_GUARDADO" as Snapshot
+
+
+Overview -r-> View : consultarProductividad()
+
+View -d-> Service : calculate(empleado, proyecto, fechas)
+
+Service -d-> Repo : obtenerTareasConHoras(filtros)
+
+Repo -- TaskModel
+Repo -- StageModel
+Repo -- TimeModel
+
+Service --> View : resultado(productividadMedia, ranking, total)
+
+View --> Snapshot : guardarSnapshot()
+
+@enduml
