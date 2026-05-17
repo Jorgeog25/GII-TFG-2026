@@ -1,5 +1,13 @@
 # Descripción del funcionamiento del sistema
 
+En Telefónica, las automatizaciones son supervisadas y gestionadas por el departamento de Hiperautomatización. Por este motivo, el desarrollo de esta solución se llevó a cabo bajo su supervisión y siguiendo las normas y estándares establecidos por dicho departamento.
+
+El desarrollo se realizó inicialmente en el entorno de desarrollo, destinado a la implementación y ejecución de pruebas. En este entorno se establecen convenciones específicas para el nombrado de los flujos, referencias de conexión y demás componentes, incluyendo en la nomenclatura el código MIGA correspondiente, con el fin de mantener una estructura homogénea y facilitar la identificación y mantenimiento de los desarrollos.
+
+![Solucion](./DescripcionSol/Solucion.png)
+
+Una vez finalizado el desarrollo, la solución pasa por un proceso de revisión y validación por parte del departamento de Hiperautomatización. Si la evaluación es favorable, se procede a su despliegue en el entorno de producción. En este entorno no se permite realizar modificaciones directas; cualquier cambio o mejora debe implementarse nuevamente en el entorno de desarrollo y seguir el mismo proceso de validación antes de ser promovido a producción.
+
 ## Caso de Uso - Recibir Solicitud
 
 El proyecto se ha desarrollado utilizando sistemas de Microsoft, aprovechando su compatibilidad con Exchange Online. En este flujo, el actor principal es Exchange Online, que activa el evento inicial del sistema cuando se recibe un correo electrónico. A partir de ese momento, el proceso se ejecuta automáticamente y el sistema genera la respuesta correspondiente según el caso detectado.
@@ -246,6 +254,18 @@ SELECTCOLUMNS(
     "EECC", [EECC]
 )
 ```
+
+# Formación del Correo 
+
+A la hora de generar el contenido del correo, se decidió implementar una construcción dinámica mediante algoritmo, en lugar de utilizar una plantilla estática. Esta decisión se tomó debido a la gran variedad de casuísticas que pueden producirse en función de los resultados obtenidos durante las consultas realizadas por el sistema.
+
+Para ello, se emplea una variable encargada de almacenar el contenido del correo. A medida que el flujo procesa la información recibida, se van añadiendo diferentes fragmentos de texto de forma progresiva. Cada frase o bloque de contenido se incorpora en función de las condiciones y datos obtenidos, permitiendo construir respuestas personalizadas y adaptadas a cada situación específica.
+
+La construcción del mensaje se realiza mediante estructuras de control como switch e if, que permiten evaluar las distintas condiciones del flujo y añadir el contenido correspondiente en cada caso. De esta forma, el texto final se genera dinámicamente según la lógica definida y la información obtenida durante el proceso, tal y como se muestra en la siguiente imagen:
+
+![TextoCorreo](./DescripcionSol/TextCorreo.png)
+
+Este enfoque aporta una mayor flexibilidad al sistema, facilita el mantenimiento de la lógica de negocio y permite gestionar de forma eficiente múltiples escenarios sin necesidad de definir una plantilla independiente para cada caso.
 
 # Registro de información procesada
 
