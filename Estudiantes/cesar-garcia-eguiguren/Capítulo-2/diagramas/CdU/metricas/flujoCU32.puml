@@ -1,4 +1,4 @@
-@startuml CU32_TiempoPorPrioridad
+@startuml CU32_RentabilidadPorHoras
 !theme plain
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -9,35 +9,50 @@ skinparam ActivityDiamondBackgroundColor #0D1018
 skinparam ActivityDiamondBorderColor #38BDF8
 skinparam NoteBackgroundColor #141824
 skinparam NoteBorderColor #38BDF8
-title CU-32 · Consultar Tiempo Invertido por Prioridad
+title CU-32 · Consultar Rentabilidad por Horas Estimadas/Reales
 
 start
 :El actor selecciona la métrica
-Tiempo por Prioridad;
+Rentabilidad por Horas;
 :El actor puede aplicar filtros opcionales:
-· Empleado concreto
-· Proyecto concreto;
+· Proyecto concreto
+· Rango de fechas;
 
-:El sistema agrupa las tareas cerradas
-por nivel de prioridad y calcula
-las horas medias invertidas en cada grupo;
+if (¿El actor es Responsable y el proyecto\nno está en su ámbito?) then (SÍ)
+  :El sistema deniega el acceso
+  con error 403;
+  stop
+else (NO / Director)
+  :El sistema compara las horas planificadas
+  (planned_hours) con las horas reales
+  registradas en partes de horas
+  (account_analytic_line.unit_amount)
+  para las tareas del ámbito;
 
-if (¿Existen tareas cerradas con horas registradas?) then (NO)
-  :El sistema muestra que no hay datos
-  disponibles para los filtros aplicados;
-  stop
-else (SÍ)
-  :El sistema muestra las horas medias
-  invertidas por nivel de prioridad:
-  · Prioridad Normal
-  · Prioridad Urgente;
-  stop
+  if (¿Existen tareas con ambos valores\ninformados?) then (NO)
+    :El sistema muestra que no hay datos
+    disponibles para los filtros aplicados;
+    stop
+  else (SÍ)
+    :El sistema calcula:
+    · Ratio = horas_estimadas / horas_reales × 100
+    · Desviación total en horas
+    · Impacto económico usando hourly_cost;
+    :El sistema muestra:
+    · Ratio global con semáforo
+    · Desviación total en horas
+    · Desglose por proyecto o tarea;
+    stop
+  endif
 endif
 
 note right
-  Permite identificar si las tareas urgentes
-  consumen desproporcionadamente más tiempo
-  que las de prioridad normal.
+  Ratio > 100%: proyecto completado
+  con menos horas de las previstas.
+  Ratio < 100%: sobrecoste de horas.
+  Acceso: Director (global) y
+  Responsable (filtrado por scope).
 end note
 
 @enduml
+

@@ -1,4 +1,4 @@
-@startuml CU31_TareasCanceladas
+@startuml CU31_EficienciaProyecto
 !theme plain
 skinparam backgroundColor #07090F
 skinparam defaultFontColor #E2E8F5
@@ -9,37 +9,48 @@ skinparam ActivityDiamondBackgroundColor #0D1018
 skinparam ActivityDiamondBorderColor #38BDF8
 skinparam NoteBackgroundColor #141824
 skinparam NoteBorderColor #38BDF8
-title CU-31 · Consultar Tareas Canceladas
+title CU-31 · Consultar Eficiencia de Proyecto
 
 start
 :El actor selecciona la métrica
-Tareas Canceladas;
+Eficiencia de Proyecto;
 :El actor puede aplicar filtros opcionales:
 · Proyecto concreto
-· Rango de fechas;
+· Solo tareas raíz (root_only);
 
-:El sistema identifica las tareas cuya etapa
-corresponde a una etapa de cancelación
-y calcula su porcentaje sobre el total;
+if (¿El actor es Responsable y el proyecto\nno está en su ámbito?) then (SÍ)
+  :El sistema deniega el acceso
+  con error 403;
+  stop
+else (NO / Director)
+  :El sistema compara las horas planificadas
+  (planned_hours) de las tareas cerradas
+  con las horas reales registradas
+  (account_analytic_line.unit_amount);
 
-if (¿Existen tareas en el ámbito?) then (NO)
-  :El sistema muestra que no hay datos
-  disponibles para los filtros aplicados;
-  stop
-else (SÍ)
-  :El sistema muestra:
-  · Porcentaje de tareas canceladas
-  · Número de tareas canceladas
-  · Total de tareas analizadas
-  · Indicador visual de semáforo;
-  stop
+  if (¿Existen tareas con horas planificadas?) then (NO)
+    :El sistema muestra que no hay datos
+    disponibles para los filtros aplicados;
+    stop
+  else (SÍ)
+    :El sistema calcula:
+    · Índice = horas_cerradas / horas_planificadas × 100
+    · Total horas planificadas del proyecto
+    · Total horas reales registradas;
+    :El sistema muestra:
+    · Índice de eficiencia con semáforo
+    · Horas planificadas vs reales
+    · Desglose por tarea o proyecto;
+    stop
+  endif
 endif
 
 note right
-  Semáforo de referencia:
-  < 5%   → verde (nivel normal)
-  5-10%  → naranja (nivel a vigilar)
-  > 10%  → rojo (nivel elevado)
+  Eficiente:  > 90%
+  En margen: 70-90%
+  Deficiente: < 70%
+  Opera sobre horas (no importes).
+  Endpoint: GET /metrics/project-efficiency
 end note
 
 @enduml
