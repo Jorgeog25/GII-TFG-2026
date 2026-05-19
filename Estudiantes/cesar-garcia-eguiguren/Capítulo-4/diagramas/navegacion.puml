@@ -149,6 +149,7 @@ Busqueda --> DetTarea         : consultarDetalleTarea()
 ' ── P9 · Snapshots ────────────────────────────────────────────
 Visor    --> DetSnap          : consultarDetalleSnapshot()
 VisorInicial    --> NoAuth           : cerrarSesion()
+Visor --> Visor : eliminarSnapshot()
 DetSnap  --> Visor            : eliminarSnapshot()
 DetSnap  --> Visor            : volver()
 Visor --> VisorInicial     : volver()
