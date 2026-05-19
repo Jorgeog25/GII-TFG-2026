@@ -6,7 +6,7 @@ En este Trabajo de Fin de Grado se propone realizar un diseño e implementar un 
 
 La motivación que lleva a realizar este trabajo sale de una necesidad por parte de CIC.
 
- Actualmente, el esfuerzo de los ingenieros de QA esta en hacer tareas de elevada carga; como puede ser la interpretación de documentación (Documentos de Requisitos Funcionales y Documentos de Diseño del Sistema), el análisis de los requisitos funcionales y casos de uso que contienen dichos documentos, la redacción manual de planes de prueba dentro de un excel, en KiwiTCMS ahora mismo solo hay unos cuantos ejemplos de los scenarios en lenguaje Gherkin y estan dentro de una carpeta de VSCode donde trabaja el ingeniero, no estan en ninguna API. Estas actividades requieren considerable inversión de tiempo y conocimiento especializado, lo que limita la escalabilidad del proceso y genera dependencia del expertise individual del equipo.
+ Actualmente, el esfuerzo de los ingenieros de QA esta en hacer tareas de elevada carga; como puede ser la interpretación de documentación (Documentos de Requisitos Funcionales y Documentos de Diseño del Sistema), el análisis de los requisitos funcionales y casos de uso que contienen dichos documentos, la redacción manual de planes de prueba dentro de un excel, en Kiwi TCMS ahora mismo solo hay unos cuantos ejemplos de los escenarios en lenguaje Gherkin y estan dentro de una carpeta de VSCode donde trabaja el ingeniero, no estan en ninguna API. Estas actividades requieren considerable inversión de tiempo y conocimiento especializado, lo que limita la escalabilidad del proceso y genera dependencia del expertise individual del equipo.
 
 ## Problemática Identificada
 

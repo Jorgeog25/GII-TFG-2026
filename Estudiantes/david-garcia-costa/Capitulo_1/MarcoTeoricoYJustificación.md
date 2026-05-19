@@ -47,7 +47,7 @@ Estas capacidades son especialmente valiosas cuando se desea automatizar proceso
 ## Diferencia entre IA generativa e IA agentica
 
 La IA generativa tradicional responde a una entrada mediante la producción de una salida, normalmente textual.  
-La IA agentica dgamos que incorpora objetivos, uso de herramientas, pasos intermedios y la capacidad de verificación o control del flujo. Por ello, esta última resulta más adecuada para procesos donde se necesita algo más que una respuesta aislada.  
+La IA agentica incorpora objetivos, uso de herramientas, pasos intermedios y la capacidad de verificación o control del flujo. Por ello, esta última resulta más adecuada para procesos donde se necesita algo más que una respuesta aislada.  
 
 Esta distinción es relevante porque la propuesta del TFG no se limita a pedir al modelo que por ejemplo “redacte” escenarios, sino que requiere una arquitectura capaz de procesar los documentos, estructurar esa información, transformarla y registrarla en una herramienta externa.  
 Una característica clave de los agentes es su capacidad para utilizar herramientas externas, como APIs, sistemas de almacenamiento, navegadores o conectores. 
@@ -103,12 +103,12 @@ Aun así, como ocurre con otras herramientas de automatización, su foco princip
 
 ### 5. Kiwi TCMS
 
-Kiwi TCMS es una herramienta de gestión de pruebas de código abierto que permite definir casos de prueba, organizarlos en planes de prueba, registrar sus ejecuciones y mantener la trazabilidad de todo el proceso de validación. Dentro de este contexto, un scenario es una manera de describir un caso de prueba como una situación concreta que se quiere comprobar en el sistema. 
+Kiwi TCMS es una herramienta de gestión de pruebas de código abierto que permite definir casos de prueba, organizarlos en planes de prueba, registrar sus ejecuciones y mantener la trazabilidad de todo el proceso de validación. Dentro de este contexto, un escenario es una manera de describir un caso de prueba como una situación concreta que se quiere comprobar en el sistema. 
 
 Para que esa descripción sea más clara, natural y fácil de seguir, suele utilizarse la estructura Given / When / Then / And, propia del enfoque BDD (Behavior Driven Development). Given define el contexto inicial o las condiciones previas, When indica la acción que realiza el usuario o el sistema, y Then expresa el resultado esperado. La palabra And permite añadir información o pasos adicionales sin romper la estructura. Esta forma de redactar los casos de prueba hace que sean mucho más comprensibles, tanto para perfiles de testing como para desarrollo, y facilita una comunicación más clara entre todos los implicados.
 
 
-Su interés en este trabajo es especialmente alto porque puede actuar como punto de destino de los scenarios generados por el sistema multiagente. Además, el hecho de contar con API facilita su integración con arquitecturas basadas en herramientas y automatización, lo que la convierte en un elemento especialmente adecuado para la propuesta concreta de este TFG.  
+Su interés en este trabajo es especialmente alto porque puede actuar como punto de destino de los escenarios generados por el sistema multiagente. Además, el hecho de contar con API facilita su integración con arquitecturas basadas en herramientas y automatización, lo que la convierte en un elemento especialmente adecuado para la propuesta concreta de este TFG.  
 
 Digamos para detallar mas, uno de los agentes se encarga de conectarse con la API de Kiwi TCMS para insertar automáticamente la información generada en la herramienta (A partir de los escenarios, este agente crea los casos de prueba dentro de la plataforma)
 
