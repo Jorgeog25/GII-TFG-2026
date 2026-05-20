@@ -150,6 +150,7 @@ Visor    --> DetSnap          : consultarDetalleSnapshot()
 VisorInicial    --> NoAuth           : cerrarSesion()
 DetSnap  --> Visor            : eliminarSnapshot()
 DetSnap  --> Visor            : volver()
+Visor --> Visor            : eliminarSnapshot()
 Visor --> VisorInicial     : volver()
 
 @enduml

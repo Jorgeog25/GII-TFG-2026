@@ -138,5 +138,7 @@ Busqueda --> DetTarea         : consultarDetalleTarea()
 Visor    --> DetSnap          : consultarDetalleSnapshot()
 DetSnap  --> Visor            : volver()
 Visor --> VisorInicial     : volver()
+Visor --> Visor            : eliminarSnapshot()
+DetSnap --> Visor : eliminarSnapshot()
 
 @enduml
