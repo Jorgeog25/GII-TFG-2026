@@ -48,6 +48,21 @@ A nivel general, la percepción obtenida de la entrevista con el cliente fue pos
 
 - Los resultados muestran que el uso de agentes de IA reduce el tiempo necesario para generar casos de prueba y aumenta considerablemente el volumen de escenarios generados dentro del mismo intervalo temporal.
 
+## Limitaciones del sistema desarrollado
+
+Aunque el prototipo cumple con el objetivo planteado, presenta una serie de limitaciones que deben tenerse en cuenta a la hora de interpretar los resultados obtenidos.
+
+En primer lugar, se trata de un prototipo funcional desarrollado y validado en un entorno controlado. Esto significa que el sistema permite comprobar la viabilidad de la propuesta, pero no puede considerarse todavía una solución preparada para producción sin realizar antes tareas adicionales de endurecimiento, despliegue, seguridad, monitorización y mantenimiento.
+
+Una limitación importante es que el flujo manual y el flujo automático funcionan como dos vías diferenciadas. Una vez que una sesión se traspasa al flujo de agentes, queda marcada como automática y no se contempla volver al flujo manual dentro de esa misma sesión. Esta decisión simplifica el control del prototipo y evita mezclar estados, pero reduce la flexibilidad para el usuario final.
+
+Otra limitación está relacionada con la persistencia de los artefactos generados por los agentes. Mientras que la aplicación web utiliza MongoDB como base de datos principal, el subsistema de agentes almacena parte de sus resultados en ficheros JSON locales durante el desarrollo. Esta solución ha sido suficiente para el prototipo, pero no es la opción más adecuada para un entorno real, ya que dificulta la concurrencia, la trazabilidad centralizada y la gestión robusta de versiones.
+
+También debe tenerse en cuenta la dependencia de servicios externos y configuración previa. La publicación en Kiwi TCMS requiere que la API XML-RPC esté disponible y que los identificadores de producto, categoría, prioridad, estado y clasificación estén correctamente configurados. Si alguno de estos parámetros cambia o no está disponible, la publicación puede fallar.
+
+En cuanto al uso de Inteligencia Artificial, los resultados generados por los agentes dependen de la calidad de la documentación de entrada, del modelo utilizado y del contexto proporcionado. Aunque el sistema estructura la información y mantiene una revisión humana antes de publicar, no puede garantizar por sí solo que todos los casos de uso, requisitos o escenarios generados sean completos, correctos o suficientes. Por este motivo, el enfoque *Human-In-The-Loop* sigue siendo necesario.
+
+
 ## Aprendizaje obtenido
 
 Durante el desarrollo de este trabajo he aprendido cómo se construyen agentes de Inteligencia Artificial y cómo pueden integrarse dentro de una solución software actual. También he podido trabajar con tecnologías modernas y comprender cómo se conectan entre sí diferentes componentes como una aplicación web, una base de datos, una API externa y un sistema multiagente.

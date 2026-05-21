@@ -220,7 +220,7 @@ Este archivo contiene la integración real con Kiwi TCMS. Recibe el Gherkin apro
 
 ![Introducir documentación funcional con detalle](CasosUsoRelevantes/IntroducirDocumentacionFuncional/IntroducirDocumentacionFuncional2.png)
 
-### UC-03: Crear traspaso al flujo automático
+### UC-39: Crear traspaso al flujo automático
 
 ![Crear traspaso al flujo automático](CasosUsoRelevantes/CrearTraspasoFlujoAuto/CrearTraspasoFlujoAuto.png)
 
