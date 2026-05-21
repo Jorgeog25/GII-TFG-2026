@@ -30,9 +30,8 @@ state "RIESGO_ABIERTO"              as MetRiesgo
 state "RETRABAJO_ABIERTO"           as MetRetrabajo
 state "ESTIMACION_ABIERTO"          as MetEstimacion
 state "LEADTIME_ABIERTO"            as MetLeadTime
-state "TIEMPO_ESTADO_ABIERTO"       as MetTiempoEstado
-state "CANCELADAS_ABIERTO"          as MetCanceladas
-state "TIEMPO_PRIORIDAD_ABIERTO"    as MetTiempoPrioridad
+state "EFICIENCIA_ABIERTO"          as MetEficiencia
+state "RENTABILIDAD_HORAS_ABIERTO"    as MetRentabilidadHoras
 
 [*] --> NoAuth
 
@@ -100,9 +99,8 @@ Metricas --> MetRiesgo          : consultarRiesgoProyecto()
 Metricas --> MetRetrabajo       : consultarRetrabajo()
 Metricas --> MetEstimacion      : consultarExactitudEstimacion()
 Metricas --> MetLeadTime        : consultarLeadTime()
-Metricas --> MetTiempoEstado    : consultarTiempoPorEstado()
-Metricas --> MetCanceladas      : consultarTareasCanceladas()
-Metricas --> MetTiempoPrioridad : consultarTiempoPorPrioridad()
+Metricas --> MetEficiencia      : consultarEficienciaProyecto()
+Metricas --> MetRentabilidadHoras : consultarRentabilidadHoras()
 
 ' ── P10 · Métricas individuales (patrón común, scope aplicado) ─
 MetProd          --> MetProd          : guardarSnapshot()
@@ -121,12 +119,10 @@ MetEstimacion    --> MetEstimacion    : guardarSnapshot()
 MetEstimacion    --> Metricas         : volver()
 MetLeadTime      --> MetLeadTime      : guardarSnapshot()
 MetLeadTime      --> Metricas         : volver()
-MetTiempoEstado  --> MetTiempoEstado  : guardarSnapshot()
-MetTiempoEstado  --> Metricas         : volver()
-MetCanceladas    --> MetCanceladas    : guardarSnapshot()
-MetCanceladas    --> Metricas         : volver()
-MetTiempoPrioridad --> MetTiempoPrioridad : guardarSnapshot()
-MetTiempoPrioridad --> Metricas       : volver()
+MetEficiencia    --> MetEficiencia    : guardarSnapshot()
+MetEficiencia    --> Metricas         : volver()
+MetRentabilidadHoras --> MetRentabilidadHoras : guardarSnapshot()
+MetRentabilidadHoras --> Metricas       : volver()
 
 ' ── P6 · Otros análisis ───────────────────────────────────────
 Graficos   --> Graficos       : guardarSnapshot()
@@ -142,5 +138,7 @@ Busqueda --> DetTarea         : consultarDetalleTarea()
 Visor    --> DetSnap          : consultarDetalleSnapshot()
 DetSnap  --> Visor            : volver()
 Visor --> VisorInicial     : volver()
+Visor --> Visor            : eliminarSnapshot()
+DetSnap --> Visor : eliminarSnapshot()
 
 @enduml

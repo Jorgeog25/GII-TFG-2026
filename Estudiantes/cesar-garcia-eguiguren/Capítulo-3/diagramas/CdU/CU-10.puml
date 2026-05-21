@@ -1,0 +1,104 @@
+@startuml CU-10_CatalogoMetricas
+
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam sequenceParticipantBackgroundColor #141824
+skinparam sequenceParticipantBorderColor #2A3850
+skinparam sequenceParticipantFontColor #E2E8F5
+skinparam sequenceActorBackgroundColor #1E2840
+skinparam sequenceActorBorderColor #38BDF8
+skinparam sequenceLifeLineBorderColor #2A3850
+skinparam noteBackgroundColor #141824
+skinparam noteBorderColor #38BDF8
+skinparam sequenceGroupBackgroundColor #0D1018
+skinparam sequenceGroupBorderColor #2A3850
+skinparam sequenceGroupFontColor #38BDF8
+skinparam sequenceGroupHeaderFontColor #38BDF8
+skinparam sequenceGroupBodyBackgroundColor #0D1018
+skinparam sequenceLifeLineBackgroundColor #0D1018
+skinparam sequenceLifeLineBorderColor #2A3850
+skinparam sequenceDividerBackgroundColor #141824
+skinparam sequenceDividerBorderColor #2A3850
+
+title CU-10 · Mostrar Catálogo de Métricas
+
+actor "Usuario\n(Director/Responsable)" as U
+participant "Metrics.jsx\n(React SPA)" as UI
+participant "api/metrics.js" as FS
+participant "routes/metrics.py" as RT
+participant "Auth\nMiddleware" as AUTH
+participant "{Metric}Service" as SVC
+participant "{metric}_repo.py" as REPO
+database "PostgreSQL\n(Odoo RO)" as PG
+
+== Carga del catálogo (local) ==
+U -> UI : navega a /metrics
+UI -> UI : buildMetrics(isDirector)\nconstruye array de métricas\n(11 o 12 según rol)
+UI -> UI : renderiza cuadrícula\nde MetricCards + panel\nde detalle vacío
+
+== Filtrado por categoría ==
+U -> UI : selecciona grupo\n(Todas/Proyecto/Empleado/General)
+UI -> UI : filtra métricas\nvisibles según grupo
+
+== Selección de métrica ==
+U -> UI : clic en tarjeta\nde métrica seleccionada
+
+alt la métrica requiere parámetros
+  UI -> UI : muestra panel de\nparámetros (empleado,\nproyecto, fechas)
+  U -> UI : configura parámetros
+end
+
+UI -> UI : canFetch = true?\nVerifica parámetros obligatorios
+note right of UI
+  canFetch = true si:
+  - No requiere empleado, o employeeId está dado
+  - No requiere proyecto, o projectId está dado
+end note
+
+== Invocación del CU individual (<<extend>> P10) ==
+UI -> FS : apiMap[selected](params)\ne.g. getProductivity({...})
+FS -> RT : GET /metrics/{metric-key}\n?employee_id=X&project_id=Y\nAuthorization: Bearer JWT
+activate RT
+
+RT -> AUTH : require_manager_or_above()
+AUTH -> AUTH : decode_token(JWT)\nextraer role, scope
+AUTH --> RT : CurrentUser
+
+alt rol == empleado
+  RT --> FS : 403 Forbidden
+  FS --> UI : muestra ErrorState
+else autorizado
+  RT -> RT : validar parámetros\nverify_*_exists → 404\nverify_*_scope → 403\nvalidate_date_range → 400
+  note right of RT
+    **CAPA 2 — Verificación individual**
+    Si employee_id o project_id dados:
+    - verify_employee_scope(cu, id)
+    - verify_project_scope(cu, id)
+    403 si no tiene acceso
+  end note
+
+  RT -> SVC : {Metric}Service(db).calculate(...)
+  activate SVC
+  SVC -> REPO : get_{metric}_data(db, filtros)
+  activate REPO
+  REPO -> PG : query específica de la métrica\n(reutiliza subqueries de task.py\ny timesheet.py)
+  PG --> REPO : rows
+  deactivate REPO
+  SVC -> SVC : aplicar fórmula\ny construir respuesta
+  SVC --> RT : {Metric}Response
+  deactivate SVC
+  RT --> FS : 200 OK + JSON
+end
+deactivate RT
+
+FS --> UI : data
+UI -> UI : cachear en metricCache\ny metricCardCache
+UI -> UI : renderizar MetricDetail\n(KPIs + gráfico + SaveSnapshotButton)\ny actualizar preview\nen MetricCard
+
+opt Guardar snapshot
+  U -> UI : pulsa "Guardar snapshot"
+  UI -> UI : <<extend>> CU-17\nGuardar Snapshot
+end
+
+@enduml

@@ -18,9 +18,9 @@ Todos los casos de uso de este paquete comparten además una relación `<<extend
 - [CU-27 — Consultar Tasa de Retrabajo](#cu-27--consultar-tasa-de-retrabajo)
 - [CU-28 — Consultar Exactitud de Estimación](#cu-28--consultar-exactitud-de-estimación)
 - [CU-29 — Consultar Lead Time](#cu-29--consultar-lead-time)
-- [CU-30 — Consultar Tiempo por Estado](#cu-30--consultar-tiempo-por-estado)
-- [CU-31 — Consultar Tareas Canceladas](#cu-31--consultar-tareas-canceladas)
-- [CU-32 — Consultar Tiempo Invertido por Prioridad](#cu-32--consultar-tiempo-invertido-por-prioridad)
+- [CU-30 — Consultar Distribución por Cliente](#cu-30--consultar-distribución-por-cliente)
+- [CU-31 — Consultar Eficiencia de Proyecto](#cu-31--consultar-eficiencia-de-proyecto)
+- [CU-32 — Consultar Rentabilidad por Horas Estimadas/Reales](#cu-32--consultar-rentabilidad-por-horas-estimadasreales)
 
 ---
 
@@ -233,75 +233,79 @@ Todos los casos de uso de este paquete comparten además una relación `<<extend
 
 ---
 
-## CU-30 — Consultar Tiempo por Estado
+## CU-30 — Consultar Distribución por Cliente
 
 | Campo | Valor |
 |---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01 completado. Si se filtra por empleado o proyecto, ambos deben pertenecer al ámbito del actor. |
-| **Postcondición** | El actor conoce las horas medias que las tareas permanecen en cada etapa del flujo Kanban. |
+| **Actores** | Director (exclusivo) |
+| **Precondición** | CU-01 completado con rol Director. Rango de fechas válido. |
+| **Postcondición** | El Director conoce el porcentaje de horas imputadas por cliente en el período analizado. |
 
 ![Diagrama de flujo](../imagenes/CdU/metricas/flujoCU10.9.png)
 
 **Flujo principal:**
-1. El actor selecciona la métrica *Tiempo por Estado*.
-2. El actor puede aplicar filtros opcionales: proyecto concreto y empleado concreto.
-3. El sistema analiza el historial de cambios de etapa de las tareas y calcula cuánto tiempo permanecieron en cada una.
-4. El sistema muestra una tabla con el nombre de cada etapa, el tiempo medio de permanencia en horas y el número de tareas analizadas, ordenada de mayor a menor tiempo.
+1. El Director selecciona la métrica *Distribución por Cliente*.
+2. El actor configura el rango de fechas de análisis.
+3. El sistema agrupa las horas imputadas en partes analíticos por cliente (partner) en el período indicado.
+4. El sistema calcula el porcentaje que representa cada cliente sobre el total de horas del período.
+5. El sistema muestra un gráfico de tarta y una tabla con el nombre del cliente, las horas totales imputadas y su porcentaje sobre el global.
 
 **Flujos alternativos:**
-- `FA-01`: Sin datos de historial de cambios → estado vacío con mensaje informativo.
+- `FA-01`: Sin partes analíticos en el período → panel vacío con mensaje informativo.
 
-**Observación:** Los datos provienen del historial de cambios de etapa registrado por Odoo en `mail_tracking_value`. Sin ese registro no es posible reconstruir los tiempos por estado. Esta métrica permite identificar etapas-cuello-de-botella donde las tareas se acumulan antes de avanzar.
+**Observación:** La agrupación se realiza sobre `account_analytic_line` filtrando por `project_id IS NOT NULL` y uniendo con `res_partner` a través del proyecto. Solo el Director tiene acceso a esta métrica dado que expone datos financieros globales sin restricción de ámbito. El endpoint subyacente es `GET /metrics/client-distribution` con guard `require_director`.
 
 **Relaciones:** Invocado desde CU-10 vía `<<extend>>`. `<<extend>>` hacia CU-17.
 
 ---
 
-## CU-31 — Consultar Tareas Canceladas
+## CU-31 — Consultar Eficiencia de Proyecto
+
+| Campo | Valor |
+|---|---|
+| **Actores** | Director, Responsable |
+| **Precondición** | CU-01 completado. El proyecto seleccionado pertenece al ámbito del actor. |
+| **Postcondición** | El actor conoce la eficiencia horaria del proyecto: cuántas horas planificadas se han ejecutado vs las realmente registradas. |
+
+![Diagrama de flujo](../imagenes/CdU/metricas/flujoCU10.10.png)
+
+**Flujo principal:**
+1. El actor selecciona la métrica *Eficiencia de Proyecto*.
+2. El actor puede aplicar filtros opcionales: proyecto concreto y flag `root_only` para excluir subtareas.
+3. El sistema verifica que el proyecto pertenece al ámbito del actor.
+4. El sistema compara las horas planificadas (`planned_hours`) de las tareas con las horas reales registradas (`account_analytic_line.unit_amount`).
+5. El sistema calcula el índice de eficiencia: `(horas_cerradas / horas_planificadas) × 100`.
+6. El sistema muestra el índice de eficiencia, el total de horas planificadas, el total de horas reales y un indicador de semáforo por proyecto o tarea.
+
+**Flujos alternativos:**
+- `FA-01`: Proyecto fuera del ámbito del actor → acceso denegado.
+- `FA-02`: Sin tareas con horas planificadas → panel vacío con mensaje informativo.
+
+**Observación:** Esta métrica opera sobre horas, no sobre importes económicos (a diferencia de CU-32, que mide rentabilidad económica). El índice se clasifica como eficiente cuando supera el 90 %, en margen cuando se sitúa entre el 70 % y el 90 %, y deficiente por debajo del 70 %. El endpoint subyacente es `GET /metrics/project-efficiency`.
+
+**Relaciones:** Invocado desde CU-10 vía `<<extend>>`. `<<extend>>` hacia CU-17.
+
+## CU-32 — Consultar Rentabilidad por Horas Estimadas/Reales
 
 | Campo | Valor |
 |---|---|
 | **Actores** | Director, Responsable |
 | **Precondición** | CU-01 completado. Si se filtra por proyecto, debe pertenecer al ámbito del actor. |
-| **Postcondición** | El actor conoce el porcentaje de tareas canceladas en el período. |
-
-![Diagrama de flujo](../imagenes/CdU/metricas/flujoCU10.10.png)
-
-**Flujo principal:**
-1. El actor selecciona la métrica *Tareas Canceladas*.
-2. El actor puede aplicar filtros opcionales: proyecto concreto y rango de fechas.
-3. El sistema identifica las tareas cuya etapa corresponde a una etapa de cancelación y calcula su porcentaje sobre el total de tareas del ámbito.
-4. El sistema muestra el porcentaje de tareas canceladas, el número absoluto de canceladas, el total de tareas analizadas y un indicador de semáforo.
-
-**Flujos alternativos:**
-- `FA-01`: Sin tareas en el ámbito → estado vacío con mensaje informativo.
-
-**Observación:** Una tarea se considera cancelada cuando el nombre de su etapa contiene la palabra «cancelado» (sin distinción de mayúsculas). El semáforo de referencia clasifica el nivel como normal por debajo del 5 %, a vigilar entre el 5 % y el 10 %, y elevado por encima del 10 %.
-
-**Relaciones:** Invocado desde CU-10 vía `<<extend>>`. `<<extend>>` hacia CU-17.
-
----
-
-## CU-32 — Consultar Tiempo Invertido por Prioridad
-
-| Campo | Valor |
-|---|---|
-| **Actores** | Director, Responsable |
-| **Precondición** | CU-01 completado. Si se filtra por empleado o proyecto, ambos deben pertenecer al ámbito del actor. |
-| **Postcondición** | El actor conoce las horas medias invertidas por nivel de prioridad. |
+| **Postcondición** | El actor conoce la desviación entre horas estimadas y horas reales registradas en el proyecto o ámbito analizado, y su impacto en la rentabilidad. |
 
 ![Diagrama de flujo](../imagenes/CdU/metricas/flujoCU10.11.png)
 
 **Flujo principal:**
-1. El actor selecciona la métrica *Tiempo por Prioridad*.
-2. El actor puede aplicar filtros opcionales: empleado concreto y proyecto concreto.
-3. El sistema agrupa las tareas cerradas por nivel de prioridad y calcula las horas medias invertidas en cada grupo.
-4. El sistema muestra las horas medias invertidas por nivel: prioridad Normal y prioridad Urgente.
+1. El actor selecciona la métrica *Rentabilidad por Horas*.
+2. El actor puede aplicar filtros opcionales: proyecto concreto y rango de fechas.
+3. El sistema compara las horas planificadas (`planned_hours`) con las horas reales registradas en los partes de horas (`account_analytic_line.unit_amount`) para las tareas del ámbito.
+4. El sistema calcula el ratio de eficiencia horaria: `horas_estimadas / horas_reales × 100`.
+5. El sistema muestra el ratio global, la desviación total en horas, el desglose por proyecto o tarea y un indicador de semáforo.
 
 **Flujos alternativos:**
-- `FA-01`: Sin tareas cerradas con horas registradas → estado vacío con mensaje informativo.
+- `FA-01`: Sin tareas con horas planificadas y reales → panel vacío con mensaje informativo.
+- `FA-02`: Proyecto fuera del ámbito del actor → acceso denegado.
 
-**Observación:** Esta métrica permite identificar si las tareas urgentes consumen desproporcionadamente más tiempo que las de prioridad normal, lo que puede indicar problemas en la planificación o en la priorización del equipo. El cálculo agrupa por el campo `priority` de la tarea (`"0"` Normal, `"1"` Urgente) y promedia las horas reales registradas.
+**Observación:** Esta métrica permite evaluar si el esfuerzo real invertido en un proyecto se ajusta a la planificación inicial, y cuantificar el impacto económico de las desviaciones usando el coste horario de los empleados (`hourly_cost`). Un ratio superior al 100 % indica que el proyecto consumió menos horas de las previstas; un ratio inferior indica sobrecoste de horas.
 
 **Relaciones:** Invocado desde CU-10 vía `<<extend>>`. `<<extend>>` hacia CU-17.

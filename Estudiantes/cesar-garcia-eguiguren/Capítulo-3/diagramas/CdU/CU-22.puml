@@ -1,0 +1,107 @@
+@startuml CU-22_Productividad
+!theme plain
+skinparam backgroundColor #07090F
+skinparam defaultFontColor #E2E8F5
+skinparam ArrowColor #38BDF8
+skinparam sequenceParticipantBackgroundColor #141824
+skinparam sequenceParticipantBorderColor #2A3850
+skinparam sequenceParticipantFontColor #E2E8F5
+skinparam sequenceActorBackgroundColor #1E2840
+skinparam sequenceActorBorderColor #38BDF8
+skinparam sequenceLifeLineBorderColor #2A3850
+skinparam noteBackgroundColor #141824
+skinparam noteBorderColor #38BDF8
+skinparam sequenceGroupBackgroundColor #0D1018
+skinparam sequenceGroupBorderColor #2A3850
+skinparam sequenceGroupFontColor #38BDF8
+skinparam sequenceGroupHeaderFontColor #38BDF8
+skinparam sequenceGroupBodyBackgroundColor #0D1018
+skinparam sequenceLifeLineBackgroundColor #0D1018
+skinparam sequenceLifeLineBorderColor #2A3850
+skinparam sequenceDividerBackgroundColor #141824
+skinparam sequenceDividerBorderColor #2A3850
+
+title CU-22 · Consultar Productividad
+
+actor "Usuario\n(Director/Responsable)" as U
+participant "Metrics.jsx\n(React SPA)" as UI
+participant "api/metrics.js" as FS
+participant "routes/metrics.py" as RT
+participant "ProductivityService" as SVC
+participant "productivity.py\n(repo)" as REPO
+participant "task.py\n(subqueries)" as TSQ
+database "PostgreSQL\n(Odoo RO)" as PG
+
+U -> UI : selecciona "Productividad"\nen catálogo (CU-10)
+UI -> UI : needsEmployee=false\nneedsProject=false\nneedsDates=true\ncanFetch = true
+
+opt parámetros opcionales
+  U -> UI : configura empleado,\nproyecto o fechas
+end
+
+UI -> FS : getProductivity(\n  {employee_id, project_id,\n   date_from, date_to})
+FS -> RT : GET /metrics/productivity\n?employee_id=X&project_id=Y\n&date_from=Z&date_to=W\nAuthorization: Bearer JWT
+activate RT
+
+RT -> RT : require_manager_or_above(token)
+alt rol == empleado
+  RT --> FS : 403 Forbidden
+else autorizado
+
+  RT -> RT : validaciones opcionales
+  note right of RT
+    Si employee_id dado:
+      verify_employee_exists → 404
+      verify_employee_scope → 403
+    Si project_id dado:
+      verify_project_exists → 404
+      verify_project_scope → 403
+    Si fechas:
+      validate_date_range → 400
+  end note
+
+  RT -> SVC : ProductivityService(db)\n.calculate(employee_id,\n  project_id, date_from,\n  date_to, root_only)
+  activate SVC
+
+  SVC -> REPO : get_completed_tasks_with_hours(\n  db, employee_id, project_id,\n  date_from, date_to, root_only)
+  activate REPO
+
+  REPO -> REPO : subconsulta de horas reales:\nSELECT task_id,\n  SUM(unit_amount) AS actual_hours\nFROM account_analytic_line\n[WHERE employee_id = :eid]\n[AND date >= :from AND date <= :to]\nGROUP BY task_id
+  note right of REPO
+    Si employee_id dado:
+    las horas se filtran al
+    empleado concreto para
+    productividad individual
+  end note
+
+  REPO -> TSQ : closed_stage_ids_subq(db)
+  TSQ --> REPO : subquery IDs etapas cerradas
+
+  REPO -> PG : SELECT id, name, planned_hours,\n  parent_id, COALESCE(actual_hrs, 0)\nFROM project_task\nOUTER JOIN subconsulta_horas\nWHERE active = TRUE\n  AND is_closed = TRUE\n  AND stage_id IN (closed_ids)\n  AND planned_hours > 0\n  [AND project_id = :pid]\n  [AND parent_id IS NULL]
+  PG --> REPO : rows (tareas + horas)
+  deactivate REPO
+
+  SVC -> SVC : Para cada tarea con actual_hours > 0:\n  pct = (planned / actual) × 100\nAcumular suma y contador
+  SVC -> SVC : items.sort(productivity_pct DESC)
+  SVC -> SVC : avg = Σpct / count(valid)\nsi count = 0 → avg = 0
+  SVC --> RT : ProductivityResponse {\n  average_productivity,\n  total_tasks,\n  tasks: [...] }
+  deactivate SVC
+
+  RT --> FS : 200 OK + JSON
+end
+deactivate RT
+
+FS --> UI : data
+UI -> UI : cachear resultado\nen metricCache + metricCardCache
+
+== Renderizado del resultado ==
+UI -> UI : MetricCard preview:\n  gauge + valor % +\n  "{N} tareas analizadas"
+UI -> UI : MetricDetail:\n  KPI productividad media\n  KPI total tareas\n  BarChart horizontal top 8
+UI --> U : muestra panel completo
+
+opt Guardar snapshot
+  U -> UI : pulsa "Guardar snapshot"
+  UI -> UI : <<extend>> CU-17\ntype='metric',\nname='productivity'
+end
+
+@enduml
