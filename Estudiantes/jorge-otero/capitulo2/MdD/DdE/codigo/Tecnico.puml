@@ -9,10 +9,10 @@ CorreoRecibido --> AnalizandoCorreo
 
 AnalizandoCorreo --> InterpretandoIntencion
 
-InterpretandoIntencion --> EvaluarPeticion
+InterpretandoIntencion --> EvaluarSolicitud
 
-EvaluarPeticion --> SinConsulta : no requiere datos
-EvaluarPeticion --> ConsultandoSistemas : requiere datos
+EvaluarSolicitud --> SinConsulta : no requiere datos
+EvaluarSolicitud --> ConsultandoSistemas : requiere datos
 
 ConsultandoSistemas --> ConsultaSgipe
 ConsultaSgipe --> ConsultaPetter
