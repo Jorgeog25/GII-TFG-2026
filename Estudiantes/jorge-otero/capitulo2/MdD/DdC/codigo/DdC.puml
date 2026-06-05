@@ -22,7 +22,7 @@ package "Comunicacion" {
 
 package "Procesamiento" {
     class Intencion
-    class Peticion
+    class Solicitud
 }
 
 package "Sistemas Internos" {
@@ -32,8 +32,8 @@ package "Sistemas Internos" {
 Cliente -[hidden]-> Correo
 Correo -[hidden]-> Respuesta
 Correo -[hidden]-> Intencion
-Intencion -[hidden]-> Peticion
-Peticion -[hidden]-> AplicacionInterna
+Intencion -[hidden]-> Solicitud
+Solicitud -[hidden]-> AplicacionInterna
 
 
 Cliente "1" --> "0..*" Correo : envia
@@ -41,9 +41,9 @@ Cliente "1" --> "0..*" Correo : envia
 Tecnico "1" --> "0..*" Correo : analiza
 
 Correo "1" *--> "1" Intencion : contiene
-Correo "1" *--> "0..1" Peticion : contiene
+Correo "1" *--> "0..1" Solicitud : contiene
 
-Tecnico "1" --> "0..*" Peticion : interpreta
+Tecnico "1" --> "0..*" Solicitud : interpreta
 Tecnico "1" ..> "1..*" AplicacionInterna : consulta
 
 Tecnico "1" -> "0..*" Respuesta : genera
