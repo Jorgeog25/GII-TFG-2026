@@ -44,7 +44,7 @@ Correo enviado también por un cliente. El sistema mueve el mensaje a una carpet
 
 Corresponde a cualquier asunto diferente de los anteriores.
 
-## Detalle del caso Defaul
+## Detalle del caso Default
 
 Cuando el asunto no coincide con ninguno de los casos anteriores, el correo es analizado por un agente configurado mediante un prompt. Este agente devuelve un JSON con la intención del mensaje y todos los números de más de cuatro cifras mencionados en el correo.
 
